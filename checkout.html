@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Finaliser la commande - CARLOS SHOP</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ===== CSS VARIABLES & RESET ===== */
+:root {
+  --primary: #0f172a;
+  --accent: #00d4ff;
+  --accent2: #7c3aed;
+  --accent-gold: #f59e0b;
+  --bg: #0a0e1a;
+  --card-bg: #111827;
+  --card-border: #1e293b;
+  --text: #e2e8f0;
+  --text-muted: #64748b;
+  --red: #ef4444;
+  --green: #22c55e;
+  --orange: #f59e0b;
+  --blue: #3b82f6;
+  --radius: 12px;
+  --shadow: 0 4px 30px rgba(0,212,255,0.08);
+}
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'Exo 2',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  line-height:1.6;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:var(--primary); }
+::-webkit-scrollbar-thumb { background:var(--accent); border-radius:3px; }
+
+/* ===== HEADER / NAV ===== */
+.navbar {
+  position:fixed; top:0; width:100%; z-index:1000;
+  background:rgba(10,14,26,0.95);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--card-border);
+  padding:0 24px;
+  display:flex; align-items:center; justify-content:space-between;
+  height:68px;
+}
+.brand-icon{height:38px;width:auto;display:block;}
+.nav-logo {
+  display:flex; align-items:center; gap:10px;
+  text-decoration:none;
+}
+.logo-text {
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700; font-size:1.6rem;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  letter-spacing:3px;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+  margin-top:68px;
+  padding:32px 24px;
+  max-width:1200px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.checkout-container {
+  display:grid;
+  grid-template-columns:1fr 400px;
+  gap:24px;
+  margin-top:24px;
+}
+
+.section {
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:var(--radius);
+  padding:24px;
+  box-shadow:var(--shadow);
+}
+
+.section-title {
+  font-size:1.3rem;
+  font-weight:700;
+  color:var(--accent);
+  margin-bottom:20px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+/* ===== FORMS ===== */
+.form-group {
+  margin-bottom:20px;
+}
+
+.form-label {
+  display:block;
+  font-weight:600;
+  font-size:.85rem;
+  color:var(--text-muted);
+  margin-bottom:8px;
+}
+
+.form-input, .form-select, .form-textarea {
+  width:100%;
+  padding:12px 16px;
+  background:var(--bg);
+  border:1px solid var(--card-border);
+  border-radius:8px;
+  color:var(--text);
+  font-family:inherit;
+  font-size:.9rem;
+  transition:all .2s;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(0,212,255,0.1);
+}
+
+.form-row {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+.radio-group {
+  display:flex;
+  gap:16px;
+  margin-top:8px;
+}
+
+.radio-option {
+  flex:1;
+  position:relative;
+}
+
+.radio-option input[type="radio"] {
+  position:absolute;
+  opacity:0;
+}
+
+.radio-label {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:12px;
+  background:var(--bg);
+  border:2px solid var(--card-border);
+  border-radius:8px;
+  cursor:pointer;
+  transition:all .2s;
+  font-weight:600;
+  font-size:.85rem;
+}
+
+.radio-option input[type="radio"]:checked + .radio-label {
+  border-color:var(--accent);
+  background:rgba(0,212,255,0.1);
+  color:var(--accent);
+}
+
+/* ===== ORDER SUMMARY ===== */
+.order-item {
+  display:flex;
+  gap:12px;
+  padding:12px;
+  background:var(--bg);
+  border-radius:8px;
+  margin-bottom:12px;
+}
+
+.order-item-image {
+  width:60px;
+  height:60px;
+  object-fit:cover;
+  border-radius:6px;
+}
+
+.order-item-info {
+  flex:1;
+}
+
+.order-item-name {
+  font-size:.9rem;
+  font-weight:600;
+  color:var(--text);
+  margin-bottom:4px;
+}
+
+.order-item-details {
+  font-size:.8rem;
+  color:var(--text-muted);
+}
+
+.order-item-price {
+  font-size:.9rem;
+  font-weight:700;
+  color:var(--accent);
+  text-align:right;
+}
+
+.summary-row {
+  display:flex;
+  justify-content:space-between;
+  padding:12px 0;
+  font-size:.9rem;
+}
+
+.summary-row.total {
+  font-size:1.4rem;
+  font-weight:700;
+  color:var(--accent);
+  padding-top:16px;
+  border-top:2px solid var(--card-border);
+  margin-top:12px;
+}
+
+.divider {
+  height:1px;
+  background:var(--card-border);
+  margin:16px 0;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  padding:14px 28px;
+  border-radius:8px;
+  font-weight:600;
+  font-size:.9rem;
+  cursor:pointer;
+  border:none;
+  transition:all .25s;
+  font-family:inherit;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  text-decoration:none;
+  width:100%;
+}
+
+.btn-primary {
+  background:linear-gradient(135deg,var(--accent),#0099cc);
+  color:#0a0e1a;
+  box-shadow:0 4px 20px rgba(0,212,255,0.3);
+}
+
+.btn-primary:hover {
+  transform:translateY(-2px);
+  box-shadow:0 6px 28px rgba(0,212,255,0.45);
+}
+
+.btn-secondary {
+  background:var(--card-bg);
+  color:var(--text);
+  border:1px solid var(--card-border);
+  margin-top:12px;
+}
+
+.btn-secondary:hover {
+  border-color:var(--accent);
+  color:var(--accent);
+}
+
+/* ===== SUCCESS MESSAGE ===== */
+.success-message {
+  display:none;
+  text-align:center;
+  padding:48px 24px;
+}
+
+.success-message.show {
+  display:block;
+}
+
+.success-icon {
+  font-size:5rem;
+  margin-bottom:24px;
+}
+
+.success-title {
+  font-size:2rem;
+  font-weight:700;
+  color:var(--green);
+  margin-bottom:12px;
+}
+
+.success-text {
+  font-size:1.1rem;
+  color:var(--text-muted);
+  margin-bottom:24px;
+}
+
+.order-number {
+  display:inline-block;
+  padding:12px 24px;
+  background:var(--bg);
+  border:1px solid var(--card-border);
+  border-radius:8px;
+  font-family:'Rajdhani',sans-serif;
+  font-size:1.3rem;
+  font-weight:700;
+  color:var(--accent);
+  margin-bottom:32px;
+}
+
+.required {
+  color:var(--red);
+}
+
+@media (max-width: 968px) {
+  .checkout-container {
+    grid-template-columns:1fr;
+  }
+  
+  .form-row {
+    grid-template-columns:1fr;
+  }
+}
+</style>
+<link rel="icon" type="image/png" href="images/favicon.png"/>
+<script src="js/auth.js"></script>
+<script>if (typeof AuthCS === 'undefined') { location.replace('index.html'); } else { AuthCS.requireAuth(); }</script>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="accueil.html" class="nav-logo">
+    <img src="images/logo-icon.png" alt="Carlos Shop" class="brand-icon"/>
+    <span class="logo-text">CARLOS SHOP</span>
+  </a>
+  <div class="nav-links">
+    <a href="accueil.html">🏠 Accueil</a>
+    <a href="shop.html">🛒 Boutique</a>
+    <a href="suivi_commandes.html">📦 Commandes</a>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+  <div id="checkoutForm">
+    <h1 style="font-size:2.2rem; font-weight:700; color:var(--accent); margin-bottom:8px;">
+      🛒 Finaliser votre commande
+    </h1>
+    <p style="color:var(--text-muted); margin-bottom:32px;">
+      Complétez vos informations pour valider votre commande
+    </p>
+
+    <div class="checkout-container">
+      <!-- LEFT COLUMN - FORM -->
+      <div>
+        <!-- CONTACT INFO -->
+        <div class="section">
+          <h2 class="section-title">📋 Informations de contact</h2>
+          <form id="orderForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Prénom <span class="required">*</span></label>
+                <input type="text" class="form-input" id="firstName" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Nom <span class="required">*</span></label>
+                <input type="text" class="form-input" id="lastName" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Email <span class="required">*</span></label>
+              <input type="email" class="form-input" id="email" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Téléphone <span class="required">*</span></label>
+              <input type="tel" class="form-input" id="phone" required placeholder="+237 6XX XXX XXX">
+            </div>
+          </form>
+        </div>
+
+        <!-- DELIVERY INFO -->
+        <div class="section" style="margin-top:24px;">
+          <h2 class="section-title">🚚 Adresse de livraison</h2>
+          
+          <div class="form-group">
+            <label class="form-label">Adresse complète <span class="required">*</span></label>
+            <input type="text" class="form-input" id="address" required placeholder="Numéro, rue">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Ville <span class="required">*</span></label>
+              <input type="text" class="form-input" id="city" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Code postal</label>
+              <input type="text" class="form-input" id="postal">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Quartier / Zone</label>
+            <input type="text" class="form-input" id="district">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Instructions de livraison (optionnel)</label>
+            <textarea class="form-textarea" id="deliveryNotes" rows="3" placeholder="Étage, code d'accès, point de repère..."></textarea>
+          </div>
+        </div>
+
+        <!-- PAYMENT METHOD -->
+        <div class="section" style="margin-top:24px;">
+          <h2 class="section-title">💳 Mode de paiement</h2>
+          
+          <div class="form-group">
+            <label class="form-label">Choisissez votre mode de paiement <span class="required">*</span></label>
+            <div class="radio-group">
+              <div class="radio-option">
+                <input type="radio" name="payment" id="paymentCash" value="cash" checked>
+                <label for="paymentCash" class="radio-label">
+                  💵 Paiement à la livraison
+                </label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" name="payment" id="paymentMobile" value="mobile">
+                <label for="paymentMobile" class="radio-label">
+                  📱 Mobile Money
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div id="mobileMoneyInfo" style="display:none; margin-top:16px; padding:16px; background:var(--bg); border-radius:8px;">
+            <div class="form-group" style="margin-bottom:12px;">
+              <label class="form-label">Opérateur</label>
+              <select class="form-select" id="mobileOperator">
+                <option value="">Sélectionner...</option>
+                <option value="orange">Orange Money</option>
+                <option value="mtn">MTN Mobile Money</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Numéro Mobile Money</label>
+              <input type="tel" class="form-input" id="mobileNumber" placeholder="+237 6XX XXX XXX">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN - ORDER SUMMARY -->
+      <div>
+        <div class="section" style="position:sticky; top:84px;">
+          <h2 class="section-title">📦 Récapitulatif</h2>
+          
+          <div id="orderItems"></div>
+          
+          <div class="divider"></div>
+          
+          <div id="orderSummary"></div>
+          
+          <button class="btn btn-primary" onclick="placeOrder()">
+            ✓ Confirmer la commande
+          </button>
+          <a href="shop.html" class="btn btn-secondary">
+            ← Retour à la boutique
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS MESSAGE (hidden by default) -->
+  <div id="successMessage" class="success-message">
+    <div class="success-icon">✅</div>
+    <h1 class="success-title">Commande confirmée !</h1>
+    <p class="success-text">
+      Merci pour votre commande. Suivez son avancement dans « Mes commandes ».
+    </p>
+    <div class="order-number">
+      Commande N° <span id="orderNumberDisplay"></span>
+    </div>
+    <div style="max-width:500px; margin:0 auto;">
+      <a href="suivi_commandes.html" class="btn btn-primary">
+        📦 Suivre ma commande
+      </a>
+      <a href="shop.html" class="btn btn-secondary">
+        🛒 Continuer mes achats
+      </a>
+    </div>
+  </div>
+</main>
+
+<script src="js/catalog.js"></script>
+<script>
+let SHOP_CFG = { shippingFee: 0, freeShippingFrom: 0 };
+Catalog.settings.get().then(s => { SHOP_CFG = s; if (typeof renderOrderSummary === 'function' && cart.length) renderOrderSummary(); }).catch(() => {});
+// Pré-remplir le formulaire avec le compte connecté
+document.addEventListener('DOMContentLoaded', () => {
+  const u = AuthCS.getUser();
+  if (!u) return;
+  const parts = (u.fullname || '').trim().split(/\s+/);
+  const set = (id, v) => { const el = document.getElementById(id); if (el && !el.value) el.value = v || ''; };
+  set('firstName', parts[0]);
+  set('lastName', parts.slice(1).join(' '));
+  set('email', u.email);
+});
+</script>
+<script>
+const CART_KEY = AuthCS.cartKey('cart');
+let cart = [];
+try { cart = JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch (e) {}
+
+// ===== RENDER ORDER ITEMS =====
+function renderOrderItems() {
+  const orderItems = document.getElementById('orderItems');
+  
+  if (cart.length === 0) {
+    window.location.href = 'shop.html';
+    return;
+  }
+  
+  orderItems.innerHTML = cart.map(item => `
+    <div class="order-item">
+      <img src="${item.image}" alt="${item.name}" class="order-item-image" onerror="this.onerror=null;this.src='images/logo-icon.png';this.style.objectFit='contain';this.style.padding='12px';this.style.background='#0f172a'">
+      <div class="order-item-info">
+        <div class="order-item-name">${item.name}</div>
+        <div class="order-item-details">Quantité: ${item.quantity}</div>
+      </div>
+      <div class="order-item-price">${(item.price * item.quantity).toLocaleString()} FCFA</div>
+    </div>
+  `).join('');
+  
+  renderOrderSummary();
+}
+
+// ===== RENDER ORDER SUMMARY =====
+function renderOrderSummary() {
+  const orderSummary = document.getElementById('orderSummary');
+  
+  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const shipping = (subtotal >= SHOP_CFG.freeShippingFrom ? 0 : SHOP_CFG.shippingFee);
+  const total = subtotal + shipping;
+  
+  orderSummary.innerHTML = `
+    <div class="summary-row">
+      <span>Sous-total (${cart.reduce((sum, item) => sum + item.quantity, 0)} articles)</span>
+      <span>${subtotal.toLocaleString()} FCFA</span>
+    </div>
+    <div class="summary-row">
+      <span>Frais de livraison</span>
+      <span>${shipping === 0 ? 'Gratuite ✓' : shipping.toLocaleString() + ' FCFA'}</span>
+    </div>
+    ${shipping === 0 ? '' : `
+      <div class="summary-row" style="font-size:.75rem; color:var(--text-muted);">
+        <span colspan="2">Livraison gratuite à partir de ${(SHOP_CFG.freeShippingFrom || 0).toLocaleString()} FCFA</span>
+      </div>
+    `}
+    <div class="summary-row total">
+      <span>Total</span>
+      <span>${total.toLocaleString()} FCFA</span>
+    </div>
+  `;
+}
+
+// ===== TOGGLE MOBILE MONEY INFO =====
+document.addEventListener('DOMContentLoaded', () => {
+  renderOrderItems();
+  
+  const paymentRadios = document.querySelectorAll('input[name="payment"]');
+  const mobileMoneyInfo = document.getElementById('mobileMoneyInfo');
+  
+  paymentRadios.forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      if (e.target.value === 'mobile') {
+        mobileMoneyInfo.style.display = 'block';
+      } else {
+        mobileMoneyInfo.style.display = 'none';
+      }
+    });
+  });
+});
+
+// ===== PLACE ORDER =====
+async function placeOrder() {
+  // Validate form
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName = document.getElementById('lastName').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const address = document.getElementById('address').value.trim();
+  const city = document.getElementById('city').value.trim();
+  const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+  
+  if (!firstName || !lastName || !email || !phone || !address || !city) {
+    alert('❌ Veuillez remplir tous les champs obligatoires (*)');
+    return;
+  }
+  
+  // Validate email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    alert('❌ Veuillez entrer une adresse email valide');
+    return;
+  }
+  
+  // Validate mobile money if selected
+  if (paymentMethod === 'mobile') {
+    const mobileOperator = document.getElementById('mobileOperator').value;
+    const mobileNumber = document.getElementById('mobileNumber').value.trim();
+    
+    if (!mobileOperator || !mobileNumber) {
+      alert('❌ Veuillez remplir les informations Mobile Money');
+      return;
+    }
+  }
+  
+  const btn = document.querySelector('[onclick="placeOrder()"]');
+  if (btn) btn.disabled = true;
+  let order;
+  try {
+    // Le serveur recalcule prix, livraison et stock : on n'envoie que les identifiants et quantités
+    order = await Catalog.orders.create({
+      items: cart.map(i => ({ id: i.id, qty: i.quantity })),
+      method: paymentMethod,
+      delivery: {
+        firstName, lastName, phone, address, city,
+        postal: document.getElementById('postal').value.trim(),
+        district: document.getElementById('district').value.trim(),
+        notes: document.getElementById('deliveryNotes').value.trim()
+      }
+    });
+  } catch (err) {
+    alert('❌ ' + err.message);
+    if (btn) btn.disabled = false;
+    return;
+  }
+  const orderNumber = order.id;
+  localStorage.removeItem(CART_KEY);
+  cart = [];
+
+  // Show success message
+  document.getElementById('checkoutForm').style.display = 'none';
+  document.getElementById('successMessage').classList.add('show');
+  document.getElementById('orderNumberDisplay').textContent = orderNumber;
+  
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>

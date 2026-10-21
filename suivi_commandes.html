@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Suivi des Commandes - CARLOS SHOP</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ===== CSS VARIABLES & RESET ===== */
+:root {
+  --primary: #0f172a;
+  --accent: #00d4ff;
+  --accent2: #7c3aed;
+  --accent-gold: #f59e0b;
+  --bg: #0a0e1a;
+  --card-bg: #111827;
+  --card-border: #1e293b;
+  --text: #e2e8f0;
+  --text-muted: #64748b;
+  --red: #ef4444;
+  --green: #22c55e;
+  --orange: #f59e0b;
+  --blue: #3b82f6;
+  --radius: 12px;
+  --shadow: 0 4px 30px rgba(0,212,255,0.08);
+}
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'Exo 2',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  line-height:1.6;
+  padding-bottom:60px;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:var(--primary); }
+::-webkit-scrollbar-thumb { background:var(--accent); border-radius:3px; }
+
+/* ===== HEADER / NAV ===== */
+.navbar {
+  position:fixed; top:0; width:100%; z-index:1000;
+  background:rgba(10,14,26,0.95);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--card-border);
+  padding:0 24px;
+  display:flex; align-items:center; justify-content:space-between;
+  height:68px;
+}
+.brand-icon{height:38px;width:auto;display:block;}
+.nav-logo {
+  display:flex; align-items:center; gap:10px;
+  text-decoration:none;
+}
+.logo-text {
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700; font-size:1.6rem;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  letter-spacing:3px;
+}
+.nav-links { display:flex; gap:6px; align-items:center; }
+.nav-links a {
+  color:var(--text-muted); text-decoration:none;
+  padding:8px 14px; border-radius:8px;
+  font-size:.85rem; font-weight:600; letter-spacing:.5px;
+  transition:all .2s;
+}
+.nav-links a:hover, .nav-links a.active {
+  color:var(--accent); background:rgba(0,212,255,0.08);
+}
+.lang-select {
+  background:var(--card-bg); border:1px solid var(--card-border);
+  color:var(--text); padding:6px 10px; border-radius:8px;
+  font-size:.78rem; cursor:pointer; font-family:inherit;
+}
+
+/* ===== MAIN CONTAINER ===== */
+.container {
+  max-width:1200px;
+  margin:100px auto 0;
+  padding:0 24px;
+}
+
+/* ===== PAGE HEADER ===== */
+.page-header {
+  text-align:center;
+  margin-bottom:48px;
+  padding:40px 20px;
+  background:linear-gradient(135deg, rgba(0,212,255,0.05), rgba(124,58,237,0.05));
+  border-radius:var(--radius);
+  border:1px solid var(--card-border);
+}
+.page-header h1 {
+  font-family:'Rajdhani',sans-serif;
+  font-size:clamp(2rem, 5vw, 3rem);
+  font-weight:700;
+  margin-bottom:12px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.page-header p {
+  color:var(--text-muted);
+  font-size:.95rem;
+}
+
+/* ===== SEARCH BAR ===== */
+.search-section {
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:var(--radius);
+  padding:32px;
+  margin-bottom:32px;
+  box-shadow:var(--shadow);
+}
+.search-section h2 {
+  font-size:1.3rem;
+  margin-bottom:20px;
+  color:var(--accent);
+}
+.search-form {
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.search-input {
+  flex:1;
+  min-width:280px;
+  padding:14px 18px;
+  background:var(--bg);
+  border:1px solid var(--card-border);
+  border-radius:8px;
+  color:var(--text);
+  font-size:.9rem;
+  font-family:inherit;
+  transition:all .2s;
+}
+.search-input:focus {
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(0,212,255,0.1);
+}
+.btn {
+  padding:14px 28px;
+  border-radius:8px;
+  font-weight:600;
+  font-size:.88rem;
+  cursor:pointer;
+  border:none;
+  transition:all .25s;
+  font-family:inherit;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  justify-content:center;
+}
+.btn-primary {
+  background:linear-gradient(135deg,var(--accent),#0099cc);
+  color:#0a0e1a;
+  box-shadow:0 4px 20px rgba(0,212,255,0.3);
+}
+.btn-primary:hover {
+  transform:translateY(-2px);
+  box-shadow:0 6px 28px rgba(0,212,255,0.45);
+}
+.btn-secondary {
+  background:var(--card-bg);
+  color:var(--text);
+  border:1px solid var(--card-border);
+}
+.btn-secondary:hover {
+  border-color:var(--accent);
+  color:var(--accent);
+}
+
+/* ===== ORDER CARDS ===== */
+.orders-grid {
+  display:grid;
+  gap:24px;
+}
+.order-card {
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:var(--radius);
+  padding:24px;
+  box-shadow:var(--shadow);
+  transition:all .3s;
+}
+.order-card:hover {
+  transform:translateY(-4px);
+  box-shadow:0 8px 40px rgba(0,212,255,0.15);
+  border-color:var(--accent);
+}
+.order-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-bottom:20px;
+  padding-bottom:16px;
+  border-bottom:1px solid var(--card-border);
+  flex-wrap:wrap;
+  gap:12px;
+}
+.order-id {
+  font-family:'Rajdhani',sans-serif;
+  font-size:1.1rem;
+  font-weight:700;
+  color:var(--accent);
+}
+.order-date {
+  color:var(--text-muted);
+  font-size:.82rem;
+}
+.status-badge {
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:.75rem;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+.status-pending {
+  background:rgba(245,158,11,0.15);
+  color:var(--orange);
+  border:1px solid rgba(245,158,11,0.3);
+}
+.status-processing {
+  background:rgba(59,130,246,0.15);
+  color:var(--blue);
+  border:1px solid rgba(59,130,246,0.3);
+}
+.status-shipped {
+  background:rgba(124,58,237,0.15);
+  color:var(--accent2);
+  border:1px solid rgba(124,58,237,0.3);
+}
+.status-delivered {
+  background:rgba(34,197,94,0.15);
+  color:var(--green);
+  border:1px solid rgba(34,197,94,0.3);
+}
+.status-cancelled {
+  background:rgba(239,68,68,0.15);
+  color:var(--red);
+  border:1px solid rgba(239,68,68,0.3);
+}
+
+/* ===== ORDER TIMELINE ===== */
+.order-timeline {
+  margin:20px 0;
+}
+.timeline-item {
+  display:flex;
+  gap:16px;
+  margin-bottom:24px;
+  position:relative;
+}
+.timeline-item:not(:last-child)::before {
+  content:'';
+  position:absolute;
+  left:11px;
+  top:32px;
+  width:2px;
+  height:calc(100% + 8px);
+  background:var(--card-border);
+}
+.timeline-dot {
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  background:var(--card-bg);
+  border:3px solid var(--card-border);
+  flex-shrink:0;
+  margin-top:4px;
+  transition:all .3s;
+}
+.timeline-item.active .timeline-dot {
+  border-color:var(--accent);
+  background:var(--accent);
+  box-shadow:0 0 16px rgba(0,212,255,0.4);
+}
+.timeline-item.completed .timeline-dot {
+  border-color:var(--green);
+  background:var(--green);
+}
+.timeline-content {
+  flex:1;
+}
+.timeline-title {
+  font-weight:600;
+  font-size:.9rem;
+  margin-bottom:4px;
+  color:var(--text);
+}
+.timeline-item.active .timeline-title {
+  color:var(--accent);
+}
+.timeline-item.completed .timeline-title {
+  color:var(--green);
+}
+.timeline-desc {
+  font-size:.8rem;
+  color:var(--text-muted);
+  line-height:1.5;
+}
+.timeline-date {
+  font-size:.75rem;
+  color:var(--text-muted);
+  margin-top:6px;
+  display:block;
+}
+
+/* ===== ORDER ITEMS ===== */
+.order-items {
+  margin:20px 0;
+}
+.item-row {
+  display:flex;
+  gap:16px;
+  padding:12px 0;
+  border-bottom:1px solid rgba(30,41,59,0.3);
+}
+.item-row:last-child {
+  border-bottom:none;
+}
+.item-image {
+  width:60px;
+  height:60px;
+  border-radius:8px;
+  object-fit:cover;
+  background:var(--bg);
+}
+.item-details {
+  flex:1;
+}
+.item-name {
+  font-weight:600;
+  font-size:.9rem;
+  margin-bottom:4px;
+}
+.item-meta {
+  font-size:.78rem;
+  color:var(--text-muted);
+}
+.item-price {
+  font-weight:700;
+  color:var(--accent);
+  font-size:.95rem;
+  align-self:center;
+}
+
+/* ===== ORDER SUMMARY ===== */
+.order-summary {
+  background:var(--bg);
+  border-radius:8px;
+  padding:16px;
+  margin-top:20px;
+}
+.summary-row {
+  display:flex;
+  justify-content:space-between;
+  padding:8px 0;
+  font-size:.88rem;
+}
+.summary-row.total {
+  border-top:2px solid var(--card-border);
+  margin-top:8px;
+  padding-top:12px;
+  font-weight:700;
+  font-size:1.05rem;
+  color:var(--accent);
+}
+
+/* ===== ORDER ACTIONS ===== */
+.order-actions {
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+  flex-wrap:wrap;
+}
+.btn-sm {
+  padding:10px 20px;
+  font-size:.82rem;
+}
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+  text-align:center;
+  padding:80px 20px;
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:var(--radius);
+}
+.empty-icon {
+  font-size:4rem;
+  margin-bottom:20px;
+  opacity:.5;
+}
+.empty-title {
+  font-size:1.4rem;
+  font-weight:600;
+  margin-bottom:12px;
+  color:var(--text-muted);
+}
+.empty-desc {
+  color:var(--text-muted);
+  font-size:.9rem;
+  margin-bottom:24px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:768px) {
+  .navbar { padding:0 16px; }
+  .container { padding:0 16px; }
+  .search-form { flex-direction:column; }
+  .search-input { min-width:100%; }
+  .order-header { flex-direction:column; align-items:flex-start; }
+  .order-actions { flex-direction:column; }
+  .btn { width:100%; }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+  from { opacity:0; transform:translateY(20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+.order-card {
+  animation:fadeIn .5s ease;
+}
+.order-card:nth-child(1) { animation-delay:.05s; }
+.order-card:nth-child(2) { animation-delay:.1s; }
+.order-card:nth-child(3) { animation-delay:.15s; }
+.order-card:nth-child(4) { animation-delay:.2s; }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.8);
+  backdrop-filter:blur(8px);
+  z-index:9999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.modal-overlay.open { display:flex; }
+.modal-content {
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:var(--radius);
+  max-width:600px;
+  width:100%;
+  max-height:90vh;
+  overflow-y:auto;
+  padding:32px;
+  position:relative;
+  box-shadow:0 20px 60px rgba(0,0,0,0.5);
+}
+.modal-close {
+  position:absolute;
+  top:16px;
+  right:16px;
+  background:none;
+  border:none;
+  color:var(--text-muted);
+  font-size:1.8rem;
+  cursor:pointer;
+  width:36px;
+  height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+  transition:all .2s;
+}
+.modal-close:hover {
+  background:rgba(239,68,68,0.15);
+  color:var(--red);
+}
+.modal-title {
+  font-size:1.5rem;
+  font-weight:700;
+  margin-bottom:24px;
+  color:var(--accent);
+}
+</style>
+<link rel="icon" type="image/png" href="images/favicon.png"/>
+<script src="js/auth.js"></script>
+<script>if (typeof AuthCS === 'undefined') { location.replace('index.html'); } else { AuthCS.requireAuth(); }</script>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="accueil.html" class="nav-logo">
+    <img src="images/logo-icon.png" alt="Carlos Shop" class="brand-icon"/>
+    <span class="logo-text">CARLOS SHOP</span>
+  </a>
+  <div class="nav-links">
+    <a href="accueil.html">🏠 <span data-i18n="home">Accueil</span></a>
+    <a href="shop.html">🛒 Boutique</a>
+    <a href="#" class="active">📦 <span data-i18n="orders">Commandes</span></a>
+    <a href="admin.html" data-admin-only>⚙️ <span data-i18n="admin">Admin</span></a>
+  </div>
+  <select class="lang-select" id="langSelect" onchange="changeLang(this.value)">
+    <option value="fr">🇫🇷 FR</option>
+    <option value="en">🇬🇧 EN</option>
+    
+  </select>
+</nav>
+
+<!-- MAIN CONTAINER -->
+<div class="container">
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <h1>📦 <span data-i18n="track_orders">Suivi des Commandes</span></h1>
+    <p data-i18n="track_desc">Suivez l'état de vos commandes en temps réel</p>
+  </div>
+
+  <!-- SEARCH SECTION -->
+  <div class="search-section">
+    <h2>🔍 <span data-i18n="search_order">Rechercher une commande</span></h2>
+    <form class="search-form" onsubmit="searchOrder(event)">
+      <input type="text" 
+             class="search-input" 
+             id="orderSearch" 
+             placeholder="Numéro de commande ou email..."
+             data-i18n-placeholder="order_placeholder">
+      <button type="submit" class="btn btn-primary">
+        <span data-i18n="search">Rechercher</span>
+      </button>
+      <button type="button" class="btn btn-secondary" onclick="resetSearch()">
+        <span data-i18n="reset">Réinitialiser</span>
+      </button>
+    </form>
+  </div>
+
+  <!-- ORDERS GRID -->
+  <div class="orders-grid" id="ordersGrid">
+    <!-- Orders will be rendered here -->
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div class="empty-state" id="emptyState" style="display:none;">
+    <div class="empty-icon">📭</div>
+    <h3 class="empty-title" data-i18n="no_orders">Aucune commande trouvée</h3>
+    <p class="empty-desc" data-i18n="no_orders_desc">Vos commandes apparaîtront ici une fois que vous aurez effectué un achat.</p>
+    <a href="accueil.html" class="btn btn-primary" style="margin-top:20px;">
+      <span data-i18n="start_shopping">Commencer vos achats</span>
+    </a>
+  </div>
+</div>
+
+<!-- ORDER DETAILS MODAL -->
+<div class="modal-overlay" id="orderModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeOrderModal()">×</button>
+    <h2 class="modal-title" id="modalTitle">Détails de la commande</h2>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script src="js/catalog.js"></script>
+<script>
+// ===== TRANSLATIONS =====
+const I18N = {
+  fr: {
+    home: "Accueil",
+    orders: "Commandes",
+    admin: "Admin",
+    track_orders: "Suivi des Commandes",
+    track_desc: "Suivez l'état de vos commandes en temps réel",
+    search_order: "Rechercher une commande",
+    order_placeholder: "Numéro de commande ou email...",
+    search: "Rechercher",
+    reset: "Réinitialiser",
+    no_orders: "Aucune commande trouvée",
+    no_orders_desc: "Vos commandes apparaîtront ici une fois que vous aurez effectué un achat.",
+    start_shopping: "Commencer vos achats",
+    order_details: "Détails de la commande",
+    view_details: "Voir détails",
+    cancel_order: "Annuler",
+    download_invoice: "Télécharger facture",
+    contact_support: "Contacter support",
+    total: "Total",
+    shipping: "Livraison",
+    subtotal: "Sous-total",
+    quantity: "Qté",
+    status_pending: "En attente",
+    status_processing: "En traitement",
+    status_shipped: "Expédiée",
+    status_delivered: "Livrée",
+    status_cancelled: "Annulée",
+    order_placed: "Commande passée",
+    payment_confirmed: "Paiement confirmé",
+    preparing_order: "Préparation en cours",
+    order_shipped: "Expédition",
+    out_for_delivery: "En livraison",
+    order_delivered: "Livraison effectuée",
+  },
+  en: {
+    home: "Home",
+    orders: "Orders",
+    admin: "Admin",
+    track_orders: "Order Tracking",
+    track_desc: "Track your orders in real-time",
+    search_order: "Search for an order",
+    order_placeholder: "Order number or email...",
+    search: "Search",
+    reset: "Reset",
+    no_orders: "No orders found",
+    no_orders_desc: "Your orders will appear here once you make a purchase.",
+    start_shopping: "Start Shopping",
+    order_details: "Order Details",
+    view_details: "View Details",
+    cancel_order: "Cancel",
+    download_invoice: "Download Invoice",
+    contact_support: "Contact Support",
+    total: "Total",
+    shipping: "Shipping",
+    subtotal: "Subtotal",
+    quantity: "Qty",
+    status_pending: "Pending",
+    status_processing: "Processing",
+    status_shipped: "Shipped",
+    status_delivered: "Delivered",
+    status_cancelled: "Cancelled",
+    order_placed: "Order Placed",
+    payment_confirmed: "Payment Confirmed",
+    preparing_order: "Preparing Order",
+    order_shipped: "Shipped",
+    out_for_delivery: "Out for Delivery",
+    order_delivered: "Delivered",
+  },
+  ar: {
+    home: "الرئيسية",
+    orders: "الطلبات",
+    admin: "الإدارة",
+    track_orders: "تتبع الطلبات",
+    track_desc: "تتبع حالة طلباتك في الوقت الفعلي",
+    search_order: "البحث عن طلب",
+    order_placeholder: "رقم الطلب أو البريد الإلكتروني...",
+    search: "بحث",
+    reset: "إعادة تعيين",
+    no_orders: "لا توجد طلبات",
+    no_orders_desc: "ستظهر طلباتك هنا بمجرد إجراء عملية شراء.",
+    start_shopping: "ابدأ التسوق",
+    order_details: "تفاصيل الطلب",
+    view_details: "عرض التفاصيل",
+    cancel_order: "إلغاء",
+    download_invoice: "تحميل الفاتورة",
+    contact_support: "اتصل بالدعم",
+    total: "المجموع",
+    shipping: "الشحن",
+    subtotal: "المجموع الفرعي",
+    quantity: "الكمية",
+    status_pending: "قيد الانتظار",
+    status_processing: "قيد المعالجة",
+    status_shipped: "تم الشحن",
+    status_delivered: "تم التسليم",
+    status_cancelled: "ملغى",
+    order_placed: "تم تقديم الطلب",
+    payment_confirmed: "تم تأكيد الدفع",
+    preparing_order: "جاري التحضير",
+    order_shipped: "تم الشحن",
+    out_for_delivery: "قيد التوصيل",
+    order_delivered: "تم التسليم",
+  }
+};
+
+let currentLang = localStorage.getItem('lang') || 'fr';
+
+// ===== COMMANDES DE L'UTILISATEUR CONNECTÉ =====
+// Sources : boutique (checkout.html) et accueil (paiement) — voir js/catalog.js
+let ORDERS = [];
+async function loadUserOrders() {
+  const me = (AuthCS.getUser() || {}).email || '';
+  const list = await Catalog.orders.forUser();
+  const rank = { pending: 0, processing: 1, shipped: 2, delivered: 3 };
+  return list.map(o => {
+    const placed = new Date(o.date).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' });
+    const r = o.status === 'cancelled' ? -1 : (rank[o.status] == null ? 0 : rank[o.status]);
+    return {
+      key: o.key, id: o.id, date: placed, status: o.status, email: o.email,
+      items: o.items.map(i => ({ name: i.name, price: i.price, qty: i.qty, image: i.image || 'images/logo-icon.png' })),
+      shipping: o.shipping,
+      timeline: [
+        { step: "order_placed", date: placed, completed: true },
+        { step: "payment_confirmed", date: "", completed: r >= 0 },
+        { step: "preparing_order", date: "", completed: r >= 1 },
+        { step: "order_shipped", date: "", completed: r >= 2 },
+        { step: "out_for_delivery", date: "", completed: r >= 3 },
+        { step: "order_delivered", date: "", completed: r >= 3 }
+      ]
+    };
+  });
+}
+let filteredOrders = [];
+
+// ===== RENDER ORDERS =====
+function renderOrders() {
+  const grid = document.getElementById('ordersGrid');
+  const empty = document.getElementById('emptyState');
+  
+  if (filteredOrders.length === 0) {
+    grid.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+  
+  grid.style.display = 'grid';
+  empty.style.display = 'none';
+  
+  grid.innerHTML = filteredOrders.map(order => {
+    const subtotal = order.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    const total = subtotal + order.shipping;
+    
+    return `
+      <div class="order-card">
+        <div class="order-header">
+          <div>
+            <div class="order-id">#${order.id}</div>
+            <div class="order-date">📅 ${order.date}</div>
+          </div>
+          <span class="status-badge status-${order.status}">
+            ${I18N[currentLang]['status_' + order.status]}
+          </span>
+        </div>
+        
+        <div class="order-items">
+          ${order.items.map(item => `
+            <div class="item-row">
+              <img src="${item.image}" alt="${item.name}" class="item-image" onerror="this.onerror=null;this.src='images/logo-icon.png';this.style.objectFit='contain';this.style.padding='12px';this.style.background='#0f172a'">
+              <div class="item-details">
+                <div class="item-name">${item.name}</div>
+                <div class="item-meta">${I18N[currentLang].quantity}: ${item.qty}</div>
+              </div>
+              <div class="item-price">${item.price * item.qty} DH</div>
+            </div>
+          `).join('')}
+        </div>
+        
+        <div class="order-summary">
+          <div class="summary-row">
+            <span>${I18N[currentLang].subtotal}:</span>
+            <span>${subtotal} DH</span>
+          </div>
+          <div class="summary-row">
+            <span>${I18N[currentLang].shipping}:</span>
+            <span>${order.shipping > 0 ? order.shipping + ' DH' : 'Gratuit'}</span>
+          </div>
+          <div class="summary-row total">
+            <span>${I18N[currentLang].total}:</span>
+            <span>${total} DH</span>
+          </div>
+        </div>
+        
+        <div class="order-actions">
+          <button class="btn btn-primary btn-sm" onclick="viewOrderDetails('${order.id}')">
+            📋 ${I18N[currentLang].view_details}
+          </button>
+          ${order.status === 'pending' || order.status === 'processing' ? 
+            `<button class="btn btn-secondary btn-sm" onclick="cancelOrder('${order.id}')">
+              ❌ ${I18N[currentLang].cancel_order}
+            </button>` : ''}
+          <button class="btn btn-secondary btn-sm" onclick="downloadInvoice('${order.id}')">
+            📄 ${I18N[currentLang].download_invoice}
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ===== SEARCH ORDER =====
+function searchOrder(e) {
+  e.preventDefault();
+  const query = document.getElementById('orderSearch').value.toLowerCase().trim();
+  
+  if (!query) {
+    filteredOrders = [...ORDERS];
+  } else {
+    filteredOrders = ORDERS.filter(order => 
+      order.id.toLowerCase().includes(query) || 
+      order.email.toLowerCase().includes(query)
+    );
+  }
+  
+  renderOrders();
+}
+
+function resetSearch() {
+  document.getElementById('orderSearch').value = '';
+  filteredOrders = [...ORDERS];
+  renderOrders();
+}
+
+// ===== VIEW ORDER DETAILS =====
+function viewOrderDetails(orderId) {
+  const order = ORDERS.find(o => o.id === orderId);
+  if (!order) return;
+  
+  const subtotal = order.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
+  const total = subtotal + order.shipping;
+  
+  const modalBody = document.getElementById('modalBody');
+  modalBody.innerHTML = `
+    <div class="order-timeline">
+      ${order.timeline.map((step, idx) => {
+        const isActive = step.completed && !order.timeline[idx + 1]?.completed;
+        return `
+          <div class="timeline-item ${step.completed ? 'completed' : ''} ${isActive ? 'active' : ''}">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-title">${I18N[currentLang][step.step]}</div>
+              <div class="timeline-desc">
+                ${step.date ? 
+                  `<span class="timeline-date">📅 ${step.date}</span>` : 
+                  '<span class="timeline-date" style="color:var(--text-muted);">En attente...</span>'}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+    
+    <div style="margin-top:24px; padding-top:24px; border-top:1px solid var(--card-border);">
+      <h3 style="margin-bottom:16px; color:var(--accent);">📦 Articles commandés</h3>
+      ${order.items.map(item => `
+        <div class="item-row">
+          <img src="${item.image}" alt="${item.name}" class="item-image" onerror="this.onerror=null;this.src='images/logo-icon.png';this.style.objectFit='contain';this.style.padding='12px';this.style.background='#0f172a'">
+          <div class="item-details">
+            <div class="item-name">${item.name}</div>
+            <div class="item-meta">${I18N[currentLang].quantity}: ${item.qty}</div>
+          </div>
+          <div class="item-price">${item.price * item.qty} DH</div>
+        </div>
+      `).join('')}
+      
+      <div class="order-summary" style="margin-top:16px;">
+        <div class="summary-row">
+          <span>${I18N[currentLang].subtotal}:</span>
+          <span>${subtotal} DH</span>
+        </div>
+        <div class="summary-row">
+          <span>${I18N[currentLang].shipping}:</span>
+          <span>${order.shipping > 0 ? order.shipping + ' DH' : 'Gratuit'}</span>
+        </div>
+        <div class="summary-row total">
+          <span>${I18N[currentLang].total}:</span>
+          <span>${total} DH</span>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('modalTitle').textContent = `${I18N[currentLang].order_details} #${order.id}`;
+  document.getElementById('orderModal').classList.add('open');
+}
+
+function closeOrderModal() {
+  document.getElementById('orderModal').classList.remove('open');
+}
+
+// ===== CANCEL ORDER =====
+async function cancelOrder(orderId) {
+  if (!confirm('Êtes-vous sûr de vouloir annuler cette commande ?')) return;
+  const order = ORDERS.find(o => o.id === orderId);
+  if (!order) return;
+  try {
+    await Catalog.orders.cancel(order.key);
+    order.status = 'cancelled';
+    renderOrders();
+    alert('Commande annulée avec succès.');
+  } catch (e) { alert('❌ ' + e.message); }
+}
+
+// ===== DOWNLOAD INVOICE =====
+function downloadInvoice(orderId) {
+  alert(`Téléchargement de la facture pour la commande #${orderId}...`);
+  // Implement actual invoice download logic here
+}
+
+// ===== CHANGE LANGUAGE =====
+function changeLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+  applyI18n();
+  renderOrders();
+}
+
+function applyI18n() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (I18N[currentLang][key]) {
+      el.textContent = I18N[currentLang][key];
+    }
+  });
+  
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (I18N[currentLang][key]) {
+      el.placeholder = I18N[currentLang][key];
+    }
+  });
+  
+  document.getElementById('langSelect').value = currentLang;
+  document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', async () => {
+  try { ORDERS = await loadUserOrders(); } catch (e) { console.error(e); }
+  filteredOrders = [...ORDERS];
+  applyI18n();
+  renderOrders();
+});
+</script>
+</body>
+</html>

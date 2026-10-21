@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Connexion - CARLOS SHOP</title>
+<link rel="icon" type="image/png" href="images/favicon.png"/>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ===== CSS VARIABLES & RESET ===== */
+:root {
+  --primary: #0f172a;
+  --accent: #00d4ff;
+  --accent2: #7c3aed;
+  --bg: #0a0e1a;
+  --card-bg: #111827;
+  --card-border: #1e293b;
+  --text: #e2e8f0;
+  --text-muted: #64748b;
+  --red: #ef4444;
+  --green: #22c55e;
+  --radius: 12px;
+  --shadow: 0 4px 30px rgba(0,212,255,0.08);
+}
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'Exo 2',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+  line-height:1.6;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+/* ===== BACKGROUND ===== */
+.auth-bg {
+  position:fixed;
+  inset:0;
+  z-index:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 50%, rgba(124,58,237,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 40%, rgba(0,212,255,0.1) 0%, transparent 70%),
+    var(--bg);
+}
+.auth-grid {
+  position:fixed;
+  inset:0;
+  z-index:0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+  background-size:60px 60px;
+}
+
+/* ===== AUTH CONTAINER ===== */
+.auth-container {
+  position:relative;
+  z-index:1;
+  width:100%;
+  max-width:460px;
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:var(--radius);
+  padding:40px;
+  box-shadow:var(--shadow);
+  animation:fadeInUp 0.6s ease;
+}
+
+/* ===== LOGO ===== */
+.auth-logo {
+  text-align:center;
+  margin-bottom:20px;
+}
+.auth-logo-img { width:100%; max-width:230px; height:auto; display:inline-block; }
+.logo-text {
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  font-size:2.2rem;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  letter-spacing:3px;
+}
+.auth-title {
+  text-align:center;
+  font-size:1.6rem;
+  font-weight:600;
+  margin-bottom:8px;
+  color:var(--text);
+}
+.auth-subtitle {
+  text-align:center;
+  font-size:0.9rem;
+  color:var(--text-muted);
+  margin-bottom:32px;
+}
+
+/* ===== FORM ===== */
+.auth-form {
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+.form-group {
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.form-label {
+  font-size:0.85rem;
+  font-weight:600;
+  color:var(--text);
+  letter-spacing:0.3px;
+}
+.form-input {
+  background:var(--primary);
+  border:1px solid var(--card-border);
+  border-radius:8px;
+  padding:12px 16px;
+  font-size:0.9rem;
+  color:var(--text);
+  font-family:inherit;
+  transition:all 0.2s;
+  outline:none;
+}
+.form-input:focus {
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(0,212,255,0.1);
+}
+.form-input::placeholder {
+  color:var(--text-muted);
+}
+
+/* ===== CHECKBOX & LINKS ===== */
+.form-row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font-size:0.85rem;
+}
+.form-checkbox {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--text-muted);
+}
+.form-checkbox input[type="checkbox"] {
+  width:18px;
+  height:18px;
+  cursor:pointer;
+  accent-color:var(--accent);
+}
+.forgot-link {
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:600;
+}
+.forgot-link:hover {
+  text-decoration:underline;
+}
+
+/* ===== BUTTON ===== */
+.btn {
+  padding:14px 28px;
+  border-radius:10px;
+  font-weight:600;
+  font-size:0.9rem;
+  cursor:pointer;
+  border:none;
+  font-family:inherit;
+  transition:all 0.25s;
+  letter-spacing:0.5px;
+}
+.btn-primary {
+  background:linear-gradient(135deg,var(--accent),#0099cc);
+  color:#0a0e1a;
+  box-shadow:0 4px 20px rgba(0,212,255,0.3);
+  width:100%;
+}
+.btn-primary:hover {
+  transform:translateY(-2px);
+  box-shadow:0 6px 28px rgba(0,212,255,0.45);
+}
+.btn-primary:active {
+  transform:translateY(0);
+}
+
+/* ===== DIVIDER ===== */
+.divider {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin:24px 0;
+  color:var(--text-muted);
+  font-size:0.8rem;
+}
+.divider::before,
+.divider::after {
+  content:'';
+  flex:1;
+  height:1px;
+  background:var(--card-border);
+}
+
+/* ===== SOCIAL BUTTONS ===== */
+.social-btns {
+  display:flex;
+  gap:12px;
+}
+.btn-social {
+  flex:1;
+  padding:12px;
+  border-radius:8px;
+  border:1px solid var(--card-border);
+  background:transparent;
+  color:var(--text);
+  font-size:0.85rem;
+  font-weight:600;
+  cursor:pointer;
+  transition:all 0.2s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+.btn-social:hover {
+  border-color:var(--accent);
+  background:rgba(0,212,255,0.06);
+}
+
+/* ===== FOOTER LINK ===== */
+.auth-footer {
+  text-align:center;
+  margin-top:24px;
+  font-size:0.85rem;
+  color:var(--text-muted);
+}
+.auth-footer a {
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:600;
+}
+.auth-footer a:hover {
+  text-decoration:underline;
+}
+
+/* ===== ERROR MESSAGE ===== */
+.error-message {
+  background:rgba(239,68,68,0.1);
+  border:1px solid rgba(239,68,68,0.3);
+  color:var(--red);
+  padding:12px 16px;
+  border-radius:8px;
+  font-size:0.85rem;
+  display:none;
+}
+.error-message.show {
+  display:block;
+  animation:shake 0.3s;
+}
+
+/* ===== SUCCESS MESSAGE ===== */
+.success-message {
+  background:rgba(34,197,94,0.1);
+  border:1px solid rgba(34,197,94,0.3);
+  color:var(--green);
+  padding:12px 16px;
+  border-radius:8px;
+  font-size:0.85rem;
+  display:none;
+}
+.success-message.show {
+  display:block;
+  animation:fadeIn 0.3s;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+  from {
+    opacity:0;
+    transform:translateY(30px);
+  }
+  to {
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+@keyframes fadeIn {
+  from { opacity:0; }
+  to { opacity:1; }
+}
+@keyframes shake {
+  0%, 100% { transform:translateX(0); }
+  25% { transform:translateX(-10px); }
+  75% { transform:translateX(10px); }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+  .auth-container {
+    padding:28px 20px;
+  }
+  .auth-title {
+    font-size:1.4rem;
+  }
+  .logo-text {
+    font-size:1.8rem;
+  }
+  .form-row {
+    flex-direction:column;
+    gap:12px;
+    align-items:flex-start;
+  }
+}
+</style>
+<script src="js/auth.js"></script>
+<script>if (typeof AuthCS !== 'undefined') AuthCS.redirectIfLoggedIn();</script>
+</head>
+<body>
+<div class="auth-bg"></div>
+<div class="auth-grid"></div>
+
+<div class="auth-container">
+  <!-- Logo -->
+  <div class="auth-logo">
+    <img src="images/logo.png" alt="CARLOS SHOP - Le numérique à portée de main" class="auth-logo-img"/>
+  </div>
+
+  <!-- Title -->
+  <h1 class="auth-title">Bon retour !</h1>
+  <p class="auth-subtitle">Connectez-vous pour continuer vos achats</p>
+
+  <!-- Error/Success Messages -->
+  <div id="errorMsg" class="error-message"></div>
+  <div id="successMsg" class="success-message"></div>
+
+  <!-- Form -->
+  <form class="auth-form" id="loginForm">
+    <div class="form-group">
+      <label class="form-label" for="email">Adresse email</label>
+      <input 
+        type="email" 
+        id="email" 
+        class="form-input" 
+        placeholder="exemple@email.com" 
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="password">Mot de passe</label>
+      <input 
+        type="password" 
+        id="password" 
+        class="form-input" 
+        placeholder="••••••••" 
+        required
+      />
+    </div>
+
+    <div class="form-row">
+      <div class="form-checkbox">
+        <input type="checkbox" id="remember"/>
+        <label for="remember">Se souvenir de moi</label>
+      </div>
+      <a href="#" class="forgot-link" onclick="forgotPassword(); return false;">
+        Mot de passe oublié ?
+      </a>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+      Se connecter
+    </button>
+  </form>
+
+  <!-- Divider -->
+  <div class="divider">OU CONTINUER AVEC</div>
+
+  <!-- Social Buttons -->
+  <div class="social-btns">
+    <button class="btn-social" onclick="socialLogin('google')">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
+        <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
+        <path d="M9.003 18c2.43 0 4.467-.806 5.956-2.18L12.05 13.56c-.806.54-1.836.86-3.047.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9.003 18z" fill="#34A853"/>
+        <path d="M3.964 10.712c-.18-.54-.282-1.117-.282-1.71 0-.593.102-1.17.282-1.71V4.96H.957C.347 6.175 0 7.55 0 9.002c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+        <path d="M9.003 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.464.891 11.426 0 9.002 0 5.48 0 2.438 2.017.957 4.958L3.964 7.29c.708-2.127 2.692-3.71 5.036-3.71z" fill="#EA4335"/>
+      </svg>
+      Google
+    </button>
+    <button class="btn-social" onclick="socialLogin('facebook')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2">
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+      </svg>
+      Facebook
+    </button>
+  </div>
+
+  <!-- Footer -->
+  <div class="auth-footer">
+    Vous n'avez pas de compte ? <a href="index.html">Créer un compte</a>
+  </div>
+</div>
+
+<script>
+// Show error message
+function showError(message) {
+  const errorMsg = document.getElementById('errorMsg');
+  const successMsg = document.getElementById('successMsg');
+  
+  successMsg.classList.remove('show');
+  errorMsg.textContent = message;
+  errorMsg.classList.add('show');
+  
+  setTimeout(() => {
+    errorMsg.classList.remove('show');
+  }, 5000);
+}
+
+// Show success message
+function showSuccess(message) {
+  const errorMsg = document.getElementById('errorMsg');
+  const successMsg = document.getElementById('successMsg');
+  
+  errorMsg.classList.remove('show');
+  successMsg.textContent = message;
+  successMsg.classList.add('show');
+}
+
+// Form submission
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const email = document.getElementById('email').value.trim().toLowerCase();
+  const password = document.getElementById('password').value;
+  const remember = document.getElementById('remember').checked;
+  
+  // Validation
+  if (!email || !password) {
+    showError('❌ Veuillez remplir tous les champs');
+    return;
+  }
+  
+  const btn = e.submitter || document.querySelector('#loginForm button[type=submit]');
+  if (btn) btn.disabled = true;
+  try {
+    await AuthCS.login(email, password, remember);
+    showSuccess('✅ Connexion réussie ! Redirection...');
+    setTimeout(() => { window.location.href = 'accueil.html'; }, 600);
+  } catch (error) {
+    showError('❌ ' + (error.message || 'Une erreur est survenue. Veuillez réessayer.'));
+    if (btn) btn.disabled = false;
+  }
+});
+
+// Forgot password
+function forgotPassword() {
+  const email = document.getElementById('email').value.trim();
+  if (!email) {
+    alert('Veuillez entrer votre adresse email pour réinitialiser votre mot de passe.');
+    return;
+  }
+  alert('La réinitialisation par email n\'est pas encore disponible.\nContactez l\'administrateur de la boutique pour récupérer votre accès.');
+}
+
+// Social login (simulation)
+function socialLogin(provider) {
+  alert(`Connexion avec ${provider} sera bientôt disponible !`);
+}
+
+</script>
+</body>
+</html>

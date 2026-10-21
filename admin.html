@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Administration - CARLOS SHOP</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+/* ===== CSS VARIABLES & RESET ===== */
+:root {
+  --primary: #0f172a;
+  --accent: #00d4ff;
+  --accent2: #7c3aed;
+  --accent-gold: #f59e0b;
+  --bg: #0a0e1a;
+  --card-bg: #111827;
+  --card-border: #1e293b;
+  --text: #e2e8f0;
+  --text-muted: #64748b;
+  --red: #ef4444;
+  --green: #22c55e;
+  --orange: #f59e0b;
+  --blue: #3b82f6;
+  --radius: 12px;
+  --shadow: 0 4px 30px rgba(0,212,255,0.08);
+}
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'Exo 2',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  line-height:1.6;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:var(--primary); }
+::-webkit-scrollbar-thumb { background:var(--accent); border-radius:3px; }
+
+/* ===== HEADER / NAV ===== */
+.navbar {
+  position:fixed; top:0; width:100%; z-index:1000;
+  background:rgba(10,14,26,0.95);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--card-border);
+  padding:0 24px;
+  display:flex; align-items:center; justify-content:space-between;
+  height:68px;
+}
+.brand-icon{height:38px;width:auto;display:block;}
+.nav-logo {
+  display:flex; align-items:center; gap:10px;
+  text-decoration:none;
+}
+.logo-text {
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700; font-size:1.6rem;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  letter-spacing:3px;
+}
+.nav-links { display:flex; gap:6px; align-items:center; }
+.nav-links a {
+  color:var(--text-muted); text-decoration:none;
+  padding:8px 14px; border-radius:8px;
+  font-size:.85rem; font-weight:600; letter-spacing:.5px;
+  transition:all .2s;
+}
+.nav-links a:hover, .nav-links a.active {
+  color:var(--accent); background:rgba(0,212,255,0.08);
+}
+.lang-select {
+  background:var(--card-bg); border:1px solid var(--card-border);
+  color:var(--text); padding:6px 10px; border-radius:8px;
+  font-size:.78rem; cursor:pointer; font-family:inherit;
+}
+
+/* ===== SIDEBAR ===== */
+.layout {
+  display:flex;
+  margin-top:68px;
+}
+.sidebar {
+  width:260px;
+  background:var(--card-bg);
+  border-right:1px solid var(--card-border);
+  height:calc(100vh - 68px);
+  position:fixed;
+  overflow-y:auto;
+  padding:24px 0;
+}
+.sidebar-item {
+  padding:12px 24px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:var(--text-muted);
+  text-decoration:none;
+  cursor:pointer;
+  transition:all .2s;
+  font-size:.88rem;
+  font-weight:500;
+}
+.sidebar-item:hover, .sidebar-item.active {
+  background:rgba(0,212,255,0.08);
+  color:var(--accent);
+  border-left:3px solid var(--accent);
+}
+.sidebar-icon {
+  font-size:1.2rem;
+  width:24px;
+  text-align:center;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+  flex:1;
+  margin-left:260px;
+  padding:32px;
+}
+
+/* ===== STATS GRID ===== */
+.stats-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+  gap:20px;
+  margin-bottom:32px;
+}
+.stat-card {
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:var(--radius);
+  padding:24px;
+  box-shadow:var(--shadow);
+  transition:all .3s;
+}
+.stat-card:hover {
+  transform:translateY(-4px);
+  box-shadow:0 8px 40px rgba(0,212,255,0.15);
+  border-color:var(--accent);
+}
+.stat-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:16px;
+}
+.stat-icon {
+  font-size:2rem;
+  opacity:.7;
+}
+.stat-trend {
+  font-size:.75rem;
+  padding:4px 8px;
+  border-radius:12px;
+  font-weight:600;
+}
+.stat-trend.up {
+  background:rgba(34,197,94,0.15);
+  color:var(--green);
+}
+.stat-trend.down {
+  background:rgba(239,68,68,0.15);
+  color:var(--red);
+}
+.stat-value {
+  font-size:2rem;
+  font-weight:700;
+  color:var(--accent);
+  margin-bottom:4px;
+  font-family:'Rajdhani',sans-serif;
+}
+.stat-label {
+  color:var(--text-muted);
+  font-size:.85rem;
+}
+
+/* ===== SECTION ===== */
+.section {
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:var(--radius);
+  padding:24px;
+  margin-bottom:24px;
+  box-shadow:var(--shadow);
+}
+.section-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+  padding-bottom:16px;
+  border-bottom:1px solid var(--card-border);
+}
+.section-title {
+  font-size:1.3rem;
+  font-weight:700;
+  color:var(--accent);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.btn {
+  padding:10px 20px;
+  border-radius:8px;
+  font-weight:600;
+  font-size:.85rem;
+  cursor:pointer;
+  border:none;
+  transition:all .25s;
+  font-family:inherit;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  text-decoration:none;
+}
+.btn-primary {
+  background:linear-gradient(135deg,var(--accent),#0099cc);
+  color:#0a0e1a;
+  box-shadow:0 4px 20px rgba(0,212,255,0.3);
+}
+.btn-primary:hover {
+  transform:translateY(-2px);
+  box-shadow:0 6px 28px rgba(0,212,255,0.45);
+}
+.btn-secondary {
+  background:var(--card-bg);
+  color:var(--text);
+  border:1px solid var(--card-border);
+}
+.btn-secondary:hover {
+  border-color:var(--accent);
+  color:var(--accent);
+}
+.btn-success {
+  background:var(--green);
+  color:#fff;
+}
+.btn-danger {
+  background:var(--red);
+  color:#fff;
+}
+.btn-sm {
+  padding:6px 12px;
+  font-size:.78rem;
+}
+
+/* ===== TABLE ===== */
+.table-container {
+  overflow-x:auto;
+}
+table {
+  width:100%;
+  border-collapse:collapse;
+  font-size:.85rem;
+}
+thead {
+  background:var(--bg);
+}
+th {
+  padding:12px;
+  text-align:left;
+  font-weight:600;
+  color:var(--text-muted);
+  border-bottom:2px solid var(--card-border);
+}
+td {
+  padding:12px;
+  border-bottom:1px solid rgba(30,41,59,0.3);
+}
+tr:hover {
+  background:rgba(0,212,255,0.03);
+}
+.status-badge {
+  padding:4px 10px;
+  border-radius:12px;
+  font-size:.7rem;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  display:inline-block;
+}
+.status-pending {
+  background:rgba(245,158,11,0.15);
+  color:var(--orange);
+  border:1px solid rgba(245,158,11,0.3);
+}
+.status-processing {
+  background:rgba(59,130,246,0.15);
+  color:var(--blue);
+  border:1px solid rgba(59,130,246,0.3);
+}
+.status-shipped {
+  background:rgba(124,58,237,0.15);
+  color:var(--accent2);
+  border:1px solid rgba(124,58,237,0.3);
+}
+.status-delivered {
+  background:rgba(34,197,94,0.15);
+  color:var(--green);
+  border:1px solid rgba(34,197,94,0.3);
+}
+.status-cancelled {
+  background:rgba(239,68,68,0.15);
+  color:var(--red);
+  border:1px solid rgba(239,68,68,0.3);
+}
+
+/* ===== STOCK ALERTS ===== */
+.alert {
+  padding:14px 18px;
+  border-radius:8px;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:.88rem;
+}
+.alert-warning {
+  background:rgba(245,158,11,0.15);
+  border:1px solid rgba(245,158,11,0.3);
+  color:var(--orange);
+}
+.alert-danger {
+  background:rgba(239,68,68,0.15);
+  border:1px solid rgba(239,68,68,0.3);
+  color:var(--red);
+}
+.alert-icon {
+  font-size:1.4rem;
+}
+
+/* ===== FORMS ===== */
+.form-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+  gap:16px;
+  margin-bottom:20px;
+}
+.form-group {
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.form-label {
+  font-weight:600;
+  font-size:.85rem;
+  color:var(--text-muted);
+}
+.form-input, .form-select, .form-textarea {
+  padding:10px 14px;
+  background:var(--bg);
+  border:1px solid var(--card-border);
+  border-radius:8px;
+  color:var(--text);
+  font-size:.88rem;
+  font-family:inherit;
+  transition:all .2s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(0,212,255,0.1);
+}
+.form-textarea {
+  min-height:100px;
+  resize:vertical;
+}
+
+/* ===== CHART PLACEHOLDER ===== */
+.chart-container {
+  height:300px;
+  background:var(--bg);
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--text-muted);
+  font-size:.9rem;
+}
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.8);
+  backdrop-filter:blur(8px);
+  z-index:9999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.modal-overlay.open { display:flex; }
+.modal-content {
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:var(--radius);
+  max-width:700px;
+  width:100%;
+  max-height:90vh;
+  overflow-y:auto;
+  padding:32px;
+  position:relative;
+  box-shadow:0 20px 60px rgba(0,0,0,0.5);
+}
+.modal-close {
+  position:absolute;
+  top:16px;
+  right:16px;
+  background:none;
+  border:none;
+  color:var(--text-muted);
+  font-size:1.8rem;
+  cursor:pointer;
+  width:36px;
+  height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+  transition:all .2s;
+}
+.modal-close:hover {
+  background:rgba(239,68,68,0.15);
+  color:var(--red);
+}
+.modal-title {
+  font-size:1.5rem;
+  font-weight:700;
+  margin-bottom:24px;
+  color:var(--accent);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:1024px) {
+  .sidebar {
+    width:200px;
+  }
+  .main-content {
+    margin-left:200px;
+  }
+}
+@media (max-width:768px) {
+  .sidebar {
+    display:none;
+  }
+  .main-content {
+    margin-left:0;
+    padding:20px;
+  }
+  .stats-grid {
+    grid-template-columns:1fr;
+  }
+  .form-grid {
+    grid-template-columns:1fr;
+  }
+  table {
+    font-size:.75rem;
+  }
+  th, td {
+    padding:8px;
+  }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+  from { opacity:0; transform:translateY(20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+.section {
+  animation:fadeIn .5s ease;
+}
+
+/* ===== TAB CONTENT ===== */
+.tab-content {
+  display:none;
+}
+.tab-content.active {
+  display:block;
+}
+</style>
+<link rel="icon" type="image/png" href="images/favicon.png"/>
+<script src="js/auth.js"></script>
+<script>if (typeof AuthCS === 'undefined') { location.replace('index.html'); } else { AuthCS.requireAdmin(); }</script>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="accueil.html" class="nav-logo">
+    <img src="images/logo-icon.png" alt="Carlos Shop" class="brand-icon"/>
+    <span class="logo-text">CARLOS SHOP</span>
+  </a>
+  <div class="nav-links">
+    <a href="accueil.html">🏠 Accueil</a>
+    <a href="shop.html">🛒 Boutique</a>
+    <a href="suivi_commandes.html">📦 Commandes</a>
+    <a href="#" class="active">⚙️ Admin</a>
+  </div>
+  <select class="lang-select" id="langSelect" onchange="changeLang(this.value)">
+    <option value="fr">🇫🇷 FR</option>
+    <option value="en">🇬🇧 EN</option>
+  </select>
+</nav>
+
+<!-- LAYOUT -->
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-item active" onclick="showTab('dashboard')">
+      <span class="sidebar-icon">📊</span>
+      <span>Tableau de bord</span>
+    </div>
+    <div class="sidebar-item" onclick="showTab('orders')">
+      <span class="sidebar-icon">📦</span>
+      <span>Gestion commandes</span>
+    </div>
+    <div class="sidebar-item" onclick="showTab('products')">
+      <span class="sidebar-icon">🛠️</span>
+      <span>Gestion produits</span>
+    </div>
+    <div class="sidebar-item" onclick="showTab('training')">
+      <span class="sidebar-icon">🎓</span>
+      <span>Gestion formations</span>
+    </div>
+    <div class="sidebar-item" onclick="showTab('stock')">
+      <span class="sidebar-icon">📦</span>
+      <span>Gestion stock</span>
+    </div>
+    <div class="sidebar-item" onclick="showTab('customers')">
+      <span class="sidebar-icon">👥</span>
+      <span>Clients</span>
+    </div>
+    <div class="sidebar-item" onclick="showTab('analytics')">
+      <span class="sidebar-icon">📈</span>
+      <span>Analyses</span>
+    </div>
+    <div class="sidebar-item" onclick="showTab('settings')">
+      <span class="sidebar-icon">⚙️</span>
+      <span>Paramètres</span>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    
+    <!-- DASHBOARD TAB -->
+    <div class="tab-content active" id="dashboard">
+      <h1 style="font-size:2rem; font-weight:700; margin-bottom:24px; color:var(--accent);">
+        📊 Tableau de bord
+      </h1>
+      
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header"><span class="stat-icon">💰</span></div>
+          <div class="stat-value" id="statRevenue">0 FCFA</div>
+          <div class="stat-label">Chiffre d'affaires (hors annulées)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header"><span class="stat-icon">📦</span></div>
+          <div class="stat-value" id="statOrders">0</div>
+          <div class="stat-label" id="statOrdersLabel">Commandes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header"><span class="stat-icon">👥</span></div>
+          <div class="stat-value" id="statCustomers">0</div>
+          <div class="stat-label">Clients inscrits</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header"><span class="stat-icon">⚠️</span></div>
+          <div class="stat-value" id="statStockOut">0</div>
+          <div class="stat-label">Produits en rupture</div>
+        </div>
+      </div>
+
+      <!-- RECENT ORDERS -->
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">📦 Commandes récentes</h2>
+          <button class="btn btn-primary btn-sm" onclick="showTab('orders')">Voir tout</button>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>N° Commande</th>
+                <th>Client</th>
+                <th>Date</th>
+                <th>Montant</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="recentOrdersTable">
+              <!-- Will be populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- STOCK ALERTS -->
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">⚠️ Alertes stock</h2>
+        </div>
+        <div id="stockAlerts"></div>
+      </div>
+    </div>
+
+    <!-- ORDERS TAB -->
+    <div class="tab-content" id="orders">
+      <h1 style="font-size:2rem; font-weight:700; margin-bottom:24px; color:var(--accent);">
+        📦 Gestion des commandes
+      </h1>
+      
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Toutes les commandes</h2>
+          <div style="display:flex; gap:10px;">
+            <select class="form-select" style="width:auto;" onchange="filterOrders(this.value)">
+              <option value="all">Tous les statuts</option>
+              <option value="pending">En attente</option>
+              <option value="processing">En traitement</option>
+              <option value="shipped">Expédiées</option>
+              <option value="delivered">Livrées</option>
+              <option value="cancelled">Annulées</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>N° Commande</th>
+                <th>Client</th>
+                <th>Email</th>
+                <th>Date</th>
+                <th>Articles</th>
+                <th>Montant</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTable">
+              <!-- Will be populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS TAB -->
+    <div class="tab-content" id="products">
+      <h1 style="font-size:2rem; font-weight:700; margin-bottom:24px; color:var(--accent);">
+        🛠️ Gestion des produits
+      </h1>
+      
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Catalogue produits <span id="productsCount" style="color:var(--text-muted);font-weight:400;font-size:.9rem;"></span></h2>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;"><button class="btn btn-secondary demo-btn" style="display:none;" onclick="removeDemoItems()" title="Retire les articles d'exemple, vos propres articles restent">🧹 Supprimer les exemples</button><button class="btn btn-primary" onclick="openProductModal()">+ Ajouter un produit</button></div>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Nom</th>
+                <th>Catégorie</th>
+                <th>Prix</th>
+                <th>Stock</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="productsTable">
+              <!-- Will be populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRAINING TAB -->
+    <div class="tab-content" id="training">
+      <h1 style="font-size:2rem; font-weight:700; margin-bottom:24px; color:var(--accent);">
+        🎓 Gestion des formations
+      </h1>
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Catalogue formations <span id="trainingCount" style="color:var(--text-muted);font-weight:400;font-size:.9rem;"></span></h2>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;"><button class="btn btn-secondary demo-btn" style="display:none;" onclick="removeDemoItems()" title="Retire les articles d'exemple, vos propres articles restent">🧹 Supprimer les exemples</button><button class="btn btn-primary" onclick="openTrainingModal()">+ Ajouter une formation</button></div>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Visuel</th>
+                <th>Nom</th>
+                <th>Contenu</th>
+                <th>Prix</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="trainingTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- STOCK TAB -->
+    <div class="tab-content" id="stock">
+      <h1 style="font-size:2rem; font-weight:700; margin-bottom:24px; color:var(--accent);">
+        📦 Gestion du stock
+      </h1>
+      
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Inventaire</h2>
+          <button class="btn btn-primary" onclick="openStockModal()">+ Ajuster stock</button>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Produit</th>
+                <th>SKU</th>
+                <th>Stock actuel</th>
+                <th>Stock minimum</th>
+                <th>Statut</th>
+                <th>Dernière mise à jour</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="stockTable">
+              <!-- Will be populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- CUSTOMERS TAB -->
+    <div class="tab-content" id="customers">
+      <h1 style="font-size:2rem; font-weight:700; margin-bottom:24px; color:var(--accent);">
+        👥 Gestion des clients
+      </h1>
+      
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Liste des clients</h2>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Commandes</th>
+                <th>Total dépensé</th>
+                <th>Inscrit le</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="customersTable">
+              <!-- Will be populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANALYTICS TAB -->
+    <div class="tab-content" id="analytics">
+      <h1 style="font-size:2rem; font-weight:700; margin-bottom:24px; color:var(--accent);">
+        📈 Analyses et statistiques
+      </h1>
+      
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Ventes mensuelles</h2>
+        </div>
+        <div class="chart-container" style="position:relative; height:400px;">
+          <canvas id="salesChart"></canvas><span class="chart-empty" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;color:var(--text-muted);">Pas encore de données : elles apparaîtront avec les premières commandes.</span>
+        </div>
+      </div>
+      
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Produits les plus vendus</h2>
+        </div>
+        <div class="chart-container" style="position:relative; height:400px;">
+          <canvas id="topProductsChart"></canvas><span class="chart-empty" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;color:var(--text-muted);">Pas encore de données : elles apparaîtront avec les premières commandes.</span>
+        </div>
+      </div>
+      
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Répartition des commandes par statut</h2>
+        </div>
+        <div class="chart-container" style="position:relative; height:400px;">
+          <canvas id="ordersStatusChart"></canvas><span class="chart-empty" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;color:var(--text-muted);">Pas encore de données : elles apparaîtront avec les premières commandes.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS TAB -->
+    <div class="tab-content" id="settings">
+      <h1 style="font-size:2rem; font-weight:700; margin-bottom:24px; color:var(--accent);">
+        ⚙️ Paramètres
+      </h1>
+
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Informations de la boutique</h2>
+        </div>
+        <p style="color:var(--text-muted);font-size:.85rem;margin-bottom:16px;">Ces informations s'affichent dans la rubrique « Contact » de l'accueil.</p>
+        <form onsubmit="saveSettings(event)">
+          <div class="form-grid">
+            <div class="form-group"><label class="form-label">Nom du magasin</label><input type="text" class="form-input" id="sStoreName"></div>
+            <div class="form-group"><label class="form-label">Email de contact</label><input type="email" class="form-input" id="sEmail"></div>
+            <div class="form-group"><label class="form-label">Téléphone</label><input type="tel" class="form-input" id="sPhone"></div>
+            <div class="form-group"><label class="form-label">Adresse</label><input type="text" class="form-input" id="sAddress"></div>
+            <div class="form-group"><label class="form-label">Horaires d'ouverture</label><input type="text" class="form-input" id="sHours" placeholder="ex : Lun–Sam, 8h–18h"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea class="form-textarea" id="sDesc"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="margin-top:20px;">💾 Enregistrer les modifications</button>
+        </form>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Paramètres de livraison</h2>
+        </div>
+        <p style="color:var(--text-muted);font-size:.85rem;margin-bottom:16px;">Appliqués au paiement de la boutique.</p>
+        <form onsubmit="saveShippingSettings(event)">
+          <div class="form-grid">
+            <div class="form-group"><label class="form-label">Frais de livraison standard (FCFA)</label><input type="number" class="form-input" id="sShipFee" min="0"></div>
+            <div class="form-group"><label class="form-label">Livraison gratuite à partir de (FCFA)</label><input type="number" class="form-input" id="sFreeFrom" min="0"></div>
+            <div class="form-group"><label class="form-label">Délai de livraison (jours)</label><input type="number" class="form-input" id="sDelivery" min="1"></div>
+          </div>
+          <button type="submit" class="btn btn-primary" style="margin-top:20px;">💾 Enregistrer</button>
+        </form>
+      </div>
+      <div class="section" style="margin-top:24px;">
+        <div class="section-header"><h2 class="section-title">🔒 Sécurité du compte administrateur</h2></div>
+        <p style="color:var(--text-muted);font-size:.85rem;margin-bottom:16px;">Changez régulièrement votre mot de passe (8 caractères minimum).</p>
+        <form onsubmit="changeAdminPassword(event)" autocomplete="off">
+          <div class="form-grid">
+            <div class="form-group"><label class="form-label">Mot de passe actuel</label><input type="password" class="form-input" id="pwCurrent" required autocomplete="current-password"></div>
+            <div class="form-group"><label class="form-label">Nouveau mot de passe</label><input type="password" class="form-input" id="pwNew" required minlength="8" autocomplete="new-password"></div>
+            <div class="form-group"><label class="form-label">Confirmer le nouveau mot de passe</label><input type="password" class="form-input" id="pwNew2" required minlength="8" autocomplete="new-password"></div>
+          </div>
+          <button type="submit" class="btn btn-primary" style="margin-top:20px;">🔒 Changer le mot de passe</button>
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeProductModal()">×</button>
+    <h2 class="modal-title" id="productModalTitle">Ajouter un produit</h2>
+    <form onsubmit="saveProduct(event)">
+      <input type="hidden" id="pId">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Nom du produit (FR) *</label>
+          <input type="text" class="form-input" id="pNameFr" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nom (EN) — facultatif</label>
+          <input type="text" class="form-input" id="pNameEn" placeholder="Repris du français si vide">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nom (AR) — facultatif</label>
+          <input type="text" class="form-input" id="pNameAr" placeholder="Repris du français si vide">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Catégorie *</label>
+          <select class="form-select" id="pCat" required>
+            <option value="electronics">📱 Électronique</option>
+            <option value="digital">💾 Digital</option>
+            <option value="accessories">🎧 Accessoires</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Prix (FCFA) *</label>
+          <input type="number" class="form-input" id="pPrice" min="0" step="1" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Ancien prix barré (FCFA) — facultatif</label>
+          <input type="number" class="form-input" id="pOldPrice" min="0" step="1">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Stock *</label>
+          <input type="number" class="form-input" id="pStock" min="0" value="0" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Stock minimum (alerte)</label>
+          <input type="number" class="form-input" id="pMinStock" min="0" value="5">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Badge</label>
+          <select class="form-select" id="pTag">
+            <option value="">Aucun</option>
+            <option value="new">Nouveau</option>
+            <option value="hot">Populaire</option>
+            <option value="sale">Promo</option>
+            <option value="digital">Digital</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Emoji (si pas de photo)</label>
+          <input type="text" class="form-input" id="pEmoji" value="📦" maxlength="4">
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:16px;">
+        <label class="form-label">Description (FR) — facultatif</label>
+        <textarea class="form-textarea" id="pDesc" style="min-height:70px;"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Photo du produit</label>
+        <input type="file" class="form-input" id="pImageFile" accept="image/*" onchange="onImagePicked('p')">
+        <input type="url" class="form-input" id="pImageUrl" placeholder="… ou collez un lien https://…" oninput="onImageUrl('p')" style="margin-top:8px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-top:8px;">
+          <img id="pImgPreview" alt="" style="max-height:90px;max-width:160px;border-radius:8px;display:none;border:1px solid var(--card-border);">
+          <button type="button" class="btn btn-secondary btn-sm" id="pImgRemove" style="display:none;" onclick="clearImage('p')">Retirer la photo</button>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px; margin-top:24px;">
+        <button type="submit" class="btn btn-primary">💾 Enregistrer</button>
+        <button type="button" class="btn btn-secondary" onclick="closeProductModal()">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- TRAINING MODAL -->
+<div class="modal-overlay" id="trainingModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeTrainingModal()">×</button>
+    <h2 class="modal-title" id="trainingModalTitle">Ajouter une formation</h2>
+    <form onsubmit="saveTraining(event)">
+      <input type="hidden" id="tId">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Titre (FR) *</label>
+          <input type="text" class="form-input" id="tNameFr" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Titre (EN) — facultatif</label>
+          <input type="text" class="form-input" id="tNameEn" placeholder="Repris du français si vide">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Titre (AR) — facultatif</label>
+          <input type="text" class="form-input" id="tNameAr" placeholder="Repris du français si vide">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Contenu / durée (FR) *</label>
+          <input type="text" class="form-input" id="tLessons" placeholder="ex : 24 leçons • 12h" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Prix (FCFA) *</label>
+          <input type="number" class="form-input" id="tPrice" min="0" step="1" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Ancien prix barré (FCFA) — facultatif</label>
+          <input type="number" class="form-input" id="tOldPrice" min="0" step="1">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Emoji (si pas de visuel)</label>
+          <input type="text" class="form-input" id="tEmoji" value="🎓" maxlength="4">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Couleur de la carte</label>
+          <input type="color" class="form-input" id="tColor" value="#7c3aed" style="height:42px;padding:4px;">
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:16px;">
+        <label class="form-label">Description (FR) *</label>
+        <textarea class="form-textarea" id="tDesc" style="min-height:70px;" required></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Visuel de la formation</label>
+        <input type="file" class="form-input" id="tImageFile" accept="image/*" onchange="onImagePicked('t')">
+        <input type="url" class="form-input" id="tImageUrl" placeholder="… ou collez un lien https://…" oninput="onImageUrl('t')" style="margin-top:8px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-top:8px;">
+          <img id="tImgPreview" alt="" style="max-height:90px;max-width:160px;border-radius:8px;display:none;border:1px solid var(--card-border);">
+          <button type="button" class="btn btn-secondary btn-sm" id="tImgRemove" style="display:none;" onclick="clearImage('t')">Retirer le visuel</button>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px; margin-top:24px;">
+        <button type="submit" class="btn btn-primary">💾 Enregistrer</button>
+        <button type="button" class="btn btn-secondary" onclick="closeTrainingModal()">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="infoModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeInfoModal()">×</button>
+    <h2 class="modal-title" id="infoTitle"></h2>
+    <div id="infoBody"></div>
+  </div>
+</div>
+
+<div id="adminToast" style="position:fixed;bottom:24px;right:24px;background:var(--card-bg);border:1px solid var(--accent);color:var(--text);padding:12px 18px;border-radius:10px;z-index:10000;display:none;box-shadow:0 8px 30px rgba(0,0,0,.5);font-size:.9rem;"></div>
+
+<!-- STOCK ADJUSTMENT MODAL -->
+<div class="modal-overlay" id="stockModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeStockModal()">×</button>
+    <h2 class="modal-title">Ajuster le stock</h2>
+    <form onsubmit="adjustStock(event)">
+      <div class="form-group">
+        <label class="form-label">Produit</label>
+        <select class="form-select" id="stockProductSelect" required>
+          <option value="">Sélectionner un produit...</option>
+        </select>
+      </div>
+      
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Stock actuel</label>
+          <input type="number" class="form-input" id="currentStock" readonly>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Ajustement</label>
+          <input type="number" class="form-input" id="stockAdjustment" placeholder="+10 ou -5" required>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Raison</label>
+        <select class="form-select" required>
+          <option value="">Sélectionner...</option>
+          <option value="restock">Réapprovisionnement</option>
+          <option value="return">Retour client</option>
+          <option value="damage">Produit endommagé</option>
+          <option value="sale">Vente directe</option>
+          <option value="correction">Correction d'inventaire</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Notes (optionnel)</label>
+        <textarea class="form-textarea" rows="3"></textarea>
+      </div>
+      
+      <div style="display:flex; gap:10px; margin-top:24px;">
+        <button type="submit" class="btn btn-primary">💾 Appliquer</button>
+        <button type="button" class="btn btn-secondary" onclick="closeStockModal()">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/catalog.js"></script>
+<script>
+// ===== ÉTAT : toutes les données viennent de la base réelle (aucune donnée fictive) =====
+let currentLang = 'fr';
+let adminOrders = [], adminUsers = [];
+let orderFilter = 'all';
+const fmt = n => Number(n || 0).toLocaleString('fr-FR') + ' FCFA';
+const fmtDate = d => { const x = new Date(d); return isNaN(x) ? '—' : x.toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }); };
+const itemCount = o => o.items.reduce((t, i) => t + (i.qty || 1), 0);
+
+// ===== TAB NAVIGATION =====
+function showTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+  
+  document.getElementById(tabName).classList.add('active');
+  event.target.closest('.sidebar-item').classList.add('active');
+  
+  // Données à jour à chaque ouverture d'onglet
+  if (['dashboard', 'orders', 'customers', 'analytics'].includes(tabName)) reloadCatalog();
+  if (tabName === 'settings') loadSettingsForm();
+  if (tabName === 'dashboard') renderDashboard();
+  if (tabName === 'orders') renderOrders();
+  if (tabName === 'products') renderProducts();
+  if (tabName === 'training') renderTrainingAdmin();
+  if (tabName === 'stock') renderStock();
+  if (tabName === 'customers') renderCustomers();
+}
+
+// ===== RENDER FUNCTIONS =====
+function statusBadge(st) { return `<span class="status-badge status-${esc(st)}">${getStatusLabel(st)}</span>`; }
+
+function renderDashboard() {
+  const live = adminOrders.filter(o => o.status !== 'cancelled');
+  document.getElementById('statRevenue').textContent = fmt(live.reduce((t, o) => t + o.total, 0));
+  document.getElementById('statOrders').textContent = adminOrders.length;
+  const pend = adminOrders.filter(o => o.status === 'pending').length;
+  document.getElementById('statOrdersLabel').textContent = pend ? `Commandes (dont ${pend} en attente)` : 'Commandes';
+  document.getElementById('statCustomers').textContent = adminUsers.length;
+  document.getElementById('statStockOut').textContent = adminProducts.filter(p => p.stock === 0).length;
+
+  document.getElementById('recentOrdersTable').innerHTML = adminOrders.length ? adminOrders.slice(0, 5).map(o => `
+    <tr>
+      <td><strong>${esc(o.id)}</strong></td>
+      <td>${esc(o.customerName)}</td>
+      <td>${fmtDate(o.date)}</td>
+      <td><strong>${fmt(o.total)}</strong></td>
+      <td>${statusBadge(o.status)}</td>
+      <td><button class="btn btn-secondary btn-sm" data-key="${esc(o.key)}" onclick="viewOrderDetails(this.dataset.key)">Détails</button></td>
+    </tr>`).join('')
+    : '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px;">Aucune commande pour le moment. Elles apparaîtront ici dès qu\'un client passera commande.</td></tr>';
+
+  // Alertes stock réelles
+  const out = adminProducts.filter(p => p.stock === 0);
+  const low = adminProducts.filter(p => p.stock > 0 && p.stock <= stockState(p).min);
+  const alerts = out.map(p => `<div class="alert alert-danger"><span class="alert-icon">🚨</span><div><strong>Rupture de stock :</strong> ${esc(p.name.fr)} (0 unité)</div></div>`)
+    .concat(low.map(p => `<div class="alert alert-warning"><span class="alert-icon">⚠️</span><div><strong>Stock faible :</strong> ${esc(p.name.fr)} (${p.stock} unité${p.stock > 1 ? 's' : ''} restante${p.stock > 1 ? 's' : ''})</div></div>`));
+  document.getElementById('stockAlerts').innerHTML = alerts.length ? alerts.join('')
+    : '<p style="color:var(--text-muted);">✅ Aucune alerte : tous les produits sont suffisamment approvisionnés.</p>';
+}
+
+function renderOrders() {
+  const list = orderFilter === 'all' ? adminOrders : adminOrders.filter(o => o.status === orderFilter);
+  document.getElementById('ordersTable').innerHTML = list.length ? list.map(o => `
+    <tr>
+      <td><strong>${esc(o.id)}</strong></td>
+      <td>${esc(o.customerName)}</td>
+      <td>${esc(o.email)}</td>
+      <td>${fmtDate(o.date)}</td>
+      <td>${itemCount(o)}</td>
+      <td><strong>${fmt(o.total)}</strong></td>
+      <td>${statusBadge(o.status)}</td>
+      <td>
+        <div style="display:flex; gap:6px; align-items:center;">
+          <button class="btn btn-secondary btn-sm" title="Détails" data-key="${esc(o.key)}" onclick="viewOrderDetails(this.dataset.key)">👁️</button>
+          <select class="form-select" style="width:auto;padding:6px 8px;font-size:.8rem;" data-key="${esc(o.key)}" onchange="changeOrderStatus(this.dataset.key, this.value)">
+            ${['pending', 'processing', 'shipped', 'delivered', 'cancelled'].map(st => `<option value="${st}" ${o.status === st ? 'selected' : ''}>${getStatusLabel(st)}</option>`).join('')}
+          </select>
+        </div>
+      </td>
+    </tr>`).join('')
+    : `<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:24px;">${adminOrders.length ? 'Aucune commande avec ce statut.' : 'Aucune commande pour le moment.'}</td></tr>`;
+}
+
+// ===== CATALOGUE RÉEL (base partagée avec l'accueil et la boutique) =====
+let adminProducts = [], adminTraining = [];
+const CAT_LABEL = { electronics: '📱 Électronique', digital: '💾 Digital', accessories: '🎧 Accessoires' };
+const esc = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+function adminToast(msg) {
+  const t = document.getElementById('adminToast');
+  t.textContent = msg; t.style.display = 'block';
+  clearTimeout(adminToast._t); adminToast._t = setTimeout(() => t.style.display = 'none', 2600);
+}
+function thumb(it, fallback) {
+  return it.image
+    ? `<img src="${esc(it.image)}" alt="" style="width:50px;height:50px;border-radius:6px;object-fit:cover;" onerror="this.style.visibility='hidden'">`
+    : `<div style="width:50px;height:50px;border-radius:6px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1.6rem;">${esc(it.emoji || fallback)}</div>`;
+}
+function stockState(p) {
+  const min = p.minStock == null ? 5 : p.minStock;
+  return { min, color: p.stock === 0 ? 'var(--red)' : p.stock <= min ? 'var(--orange)' : 'var(--green)' };
+}
+
+async function reloadCatalog() {
+  await Catalog.ensureSeeded();
+  adminProducts = await Catalog.getProducts();
+  adminTraining = await Catalog.getTraining();
+  adminOrders = await Catalog.orders.getAll();
+  try { adminUsers = (await Catalog.users.getAll()).filter(u => u.role !== 'admin'); } catch (e) { adminUsers = []; }
+  renderProducts(); renderTrainingAdmin(); renderStock();
+  renderDashboard(); renderOrders(); renderCustomers(); renderCharts();
+  const nDemo = adminProducts.filter(Catalog.isDemo).length + adminTraining.filter(Catalog.isDemo).length;
+  document.querySelectorAll('.demo-btn').forEach(b => { b.style.display = nDemo ? 'inline-block' : 'none'; b.textContent = '🧹 Supprimer les ' + nDemo + ' exemples'; });
+}
+
+function renderProducts() {
+  document.getElementById('productsCount').textContent = '(' + adminProducts.length + ')';
+  document.getElementById('productsTable').innerHTML = adminProducts.length ? adminProducts.map(p => {
+    const st = stockState(p);
+    return `
+    <tr>
+      <td>${thumb(p, '📦')}</td>
+      <td><strong>${esc(p.name.fr)}</strong></td>
+      <td>${CAT_LABEL[p.cat] || esc(p.cat)}</td>
+      <td><strong>${p.price.toLocaleString()} FCFA</strong>${p.oldPrice > p.price ? `<br><span style="color:var(--text-muted);text-decoration:line-through;font-size:.8rem;">${p.oldPrice.toLocaleString()}</span>` : ''}</td>
+      <td><span style="color:${st.color}; font-weight:600;">${p.stock}</span></td>
+      <td>${p.stock === 0 ? '<span class="status-badge" style="background:rgba(239,68,68,0.15); color:var(--red);">Rupture</span>'
+          : p.stock <= st.min ? '<span class="status-badge status-pending">Faible</span>'
+          : '<span class="status-badge status-delivered">En stock</span>'}</td>
+      <td><div style="display:flex; gap:6px;">
+        <button class="btn btn-secondary btn-sm" title="Modifier" onclick="openProductModal(${p.id})">✏️</button>
+        <button class="btn btn-danger btn-sm" title="Supprimer" onclick="deleteProduct(${p.id})">🗑️</button>
+      </div></td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:24px;">Aucun produit. Cliquez sur « + Ajouter un produit ».</td></tr>';
+}
+
+function renderTrainingAdmin() {
+  document.getElementById('trainingCount').textContent = '(' + adminTraining.length + ')';
+  document.getElementById('trainingTable').innerHTML = adminTraining.length ? adminTraining.map(t => `
+    <tr>
+      <td>${thumb(t, '🎓')}</td>
+      <td><strong>${esc(t.name.fr)}</strong></td>
+      <td>${esc(t.lessons ? t.lessons.fr : '')}</td>
+      <td><strong>${t.price.toLocaleString()} FCFA</strong>${t.oldPrice > t.price ? `<br><span style="color:var(--text-muted);text-decoration:line-through;font-size:.8rem;">${t.oldPrice.toLocaleString()}</span>` : ''}</td>
+      <td><div style="display:flex; gap:6px;">
+        <button class="btn btn-secondary btn-sm" title="Modifier" onclick="openTrainingModal(${t.id})">✏️</button>
+        <button class="btn btn-danger btn-sm" title="Supprimer" onclick="deleteTraining(${t.id})">🗑️</button>
+      </div></td>
+    </tr>`).join('') : '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px;">Aucune formation. Cliquez sur « + Ajouter une formation ».</td></tr>';
+}
+
+function renderStock() {
+  document.getElementById('stockTable').innerHTML = adminProducts.map(p => {
+    const st = stockState(p);
+    return `
+    <tr>
+      <td><strong>${esc(p.name.fr)}</strong></td>
+      <td>SKU-${String(p.id).padStart(5, '0')}</td>
+      <td><span style="color:${st.color}; font-weight:700; font-size:1.1rem;">${p.stock}</span></td>
+      <td>${st.min}</td>
+      <td>${p.stock === 0 ? '<span class="status-badge" style="background:rgba(239,68,68,0.15); color:var(--red);">🚨 Rupture</span>'
+          : p.stock <= st.min ? '<span class="status-badge status-pending">⚠️ Faible</span>'
+          : '<span class="status-badge status-delivered">✓ OK</span>'}</td>
+      <td>${p.updatedAt ? new Date(p.updatedAt).toLocaleString('fr-FR') : '—'}</td>
+      <td><button class="btn btn-primary btn-sm" onclick="quickAdjustStock(${p.id})">📦 Ajuster</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function customerStats(u) {
+  const mine = adminOrders.filter(o => o.email === (u.email || '').toLowerCase());
+  return { mine, count: mine.length, spent: mine.filter(o => o.status !== 'cancelled').reduce((t, o) => t + o.total, 0) };
+}
+function renderCustomers() {
+  document.getElementById('customersTable').innerHTML = adminUsers.length ? adminUsers.map(u => {
+    const st = customerStats(u);
+    return `
+    <tr>
+      <td><strong>${esc(u.fullname)}</strong></td>
+      <td>${esc(u.email)}</td>
+      <td>${esc(u.phone || (st.mine[0] && st.mine[0].phone) || '—')}</td>
+      <td><strong>${st.count}</strong></td>
+      <td><strong style="color:var(--accent);">${fmt(st.spent)}</strong></td>
+      <td>${u.createdAt ? new Date(u.createdAt).toLocaleDateString('fr-FR') : '—'}</td>
+      <td><button class="btn btn-secondary btn-sm" data-email="${esc(u.email)}" onclick="viewCustomerDetails(this.dataset.email)">👁️ Détails</button></td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:24px;">Aucun client inscrit pour le moment.</td></tr>';
+}
+
+// ===== HELPER FUNCTIONS =====
+function getStatusLabel(status) {
+  const labels = {
+    pending: "En attente",
+    processing: "En traitement",
+    shipped: "Expédiée",
+    delivered: "Livrée",
+    cancelled: "Annulée"
+  };
+  return labels[status] || status;
+}
+
+function filterOrders(status) {
+  orderFilter = status;
+  renderOrders();
+}
+
+// ===== PHOTOS =====
+const pendingImg = { p: '', t: '' };
+function showImg(prefix) {
+  const img = document.getElementById(prefix + 'ImgPreview'), rm = document.getElementById(prefix + 'ImgRemove');
+  if (pendingImg[prefix]) { img.src = pendingImg[prefix]; img.style.display = 'block'; rm.style.display = 'inline-block'; }
+  else { img.removeAttribute('src'); img.style.display = 'none'; rm.style.display = 'none'; }
+}
+async function onImagePicked(prefix) {
+  const f = document.getElementById(prefix + 'ImageFile').files[0];
+  if (!f) return;
+  try { pendingImg[prefix] = await Catalog.fileToDataURL(f, 700); document.getElementById(prefix + 'ImageUrl').value = ''; }
+  catch (e) { alert("Impossible de lire cette image."); }
+  showImg(prefix);
+}
+function onImageUrl(prefix) {
+  const v = document.getElementById(prefix + 'ImageUrl').value.trim();
+  if (v) { pendingImg[prefix] = v; document.getElementById(prefix + 'ImageFile').value = ''; showImg(prefix); }
+}
+function clearImage(prefix) {
+  pendingImg[prefix] = '';
+  document.getElementById(prefix + 'ImageFile').value = '';
+  document.getElementById(prefix + 'ImageUrl').value = '';
+  showImg(prefix);
+}
+const val = id => document.getElementById(id).value;
+const numOr = (id, d) => { const v = val(id).trim(); return v === '' ? d : Number(v); };
+
+// ===== PRODUITS : ajouter / modifier / supprimer =====
+function openProductModal(id) {
+  const p = id ? adminProducts.find(x => x.id === id) : null;
+  document.getElementById('productModalTitle').textContent = p ? 'Modifier le produit' : 'Ajouter un produit';
+  document.getElementById('pId').value = p ? p.id : '';
+  document.getElementById('pNameFr').value = p ? p.name.fr : '';
+  document.getElementById('pNameEn').value = p && p.name.en !== p.name.fr ? p.name.en : '';
+  document.getElementById('pNameAr').value = p && p.name.ar !== p.name.fr ? p.name.ar : '';
+  document.getElementById('pCat').value = p ? p.cat : 'electronics';
+  document.getElementById('pPrice').value = p ? p.price : '';
+  document.getElementById('pOldPrice').value = p && p.oldPrice > p.price ? p.oldPrice : '';
+  document.getElementById('pStock').value = p ? p.stock : 0;
+  document.getElementById('pMinStock').value = p && p.minStock != null ? p.minStock : 5;
+  document.getElementById('pTag').value = p && p.tag ? p.tag : '';
+  document.getElementById('pEmoji').value = p ? (p.emoji || '📦') : '📦';
+  document.getElementById('pDesc').value = p && p.desc ? p.desc.fr : '';
+  document.getElementById('pImageFile').value = '';
+  document.getElementById('pImageUrl').value = p && p.image && !p.image.startsWith('data:') ? p.image : '';
+  pendingImg.p = p ? (p.image || '') : '';
+  showImg('p');
+  document.getElementById('productModal').classList.add('open');
+}
+function closeProductModal() { document.getElementById('productModal').classList.remove('open'); }
+
+async function saveProduct(e) {
+  e.preventDefault();
+  try {
+    const id = val('pId') ? Number(val('pId')) : 0;
+    const old = adminProducts.find(x => x.id === id) || {};
+    const fr = val('pNameFr').trim(), d = val('pDesc').trim();
+    await Catalog.saveProduct(Object.assign({}, old, {
+      id, demo: false, name: { fr, en: val('pNameEn').trim() || fr, ar: val('pNameAr').trim() || fr },
+      cat: val('pCat'), emoji: val('pEmoji').trim() || '📦',
+      price: numOr('pPrice', 0), oldPrice: numOr('pOldPrice', 0),
+      stock: numOr('pStock', 0), minStock: numOr('pMinStock', 5),
+      tag: val('pTag') || null, rating: old.rating || 4.5,
+      desc: { fr: d, en: d, ar: d }, image: pendingImg.p || '',
+      updatedAt: new Date().toISOString()
+    }));
+    closeProductModal(); await reloadCatalog();
+    adminToast(old.id ? '✅ Produit modifié' : '✅ Produit ajouté — visible dans la boutique');
+  } catch (err) { console.error(err); alert("Enregistrement impossible : " + err.message); }
+}
+async function deleteProduct(id) {
+  const p = adminProducts.find(x => x.id === id);
+  if (!p || !confirm('Supprimer « ' + p.name.fr + ' » ? Il disparaîtra de la boutique.')) return;
+  await Catalog.removeProduct(id); await reloadCatalog(); adminToast('🗑️ Produit supprimé');
+}
+
+// ===== FORMATIONS : ajouter / modifier / supprimer =====
+function openTrainingModal(id) {
+  const t = id ? adminTraining.find(x => x.id === id) : null;
+  document.getElementById('trainingModalTitle').textContent = t ? 'Modifier la formation' : 'Ajouter une formation';
+  document.getElementById('tId').value = t ? t.id : '';
+  document.getElementById('tNameFr').value = t ? t.name.fr : '';
+  document.getElementById('tNameEn').value = t && t.name.en !== t.name.fr ? t.name.en : '';
+  document.getElementById('tNameAr').value = t && t.name.ar !== t.name.fr ? t.name.ar : '';
+  document.getElementById('tLessons').value = t && t.lessons ? t.lessons.fr : '';
+  document.getElementById('tPrice').value = t ? t.price : '';
+  document.getElementById('tOldPrice').value = t && t.oldPrice > t.price ? t.oldPrice : '';
+  document.getElementById('tEmoji').value = t ? (t.emoji || '🎓') : '🎓';
+  document.getElementById('tColor').value = t && /^#[0-9a-f]{6}$/i.test(t.color || '') ? t.color : '#7c3aed';
+  document.getElementById('tDesc').value = t && t.desc ? t.desc.fr : '';
+  document.getElementById('tImageFile').value = '';
+  document.getElementById('tImageUrl').value = t && t.image && !t.image.startsWith('data:') ? t.image : '';
+  pendingImg.t = t ? (t.image || '') : '';
+  showImg('t');
+  document.getElementById('trainingModal').classList.add('open');
+}
+function closeTrainingModal() { document.getElementById('trainingModal').classList.remove('open'); }
+
+async function saveTraining(e) {
+  e.preventDefault();
+  try {
+    const id = val('tId') ? Number(val('tId')) : 0;
+    const old = adminTraining.find(x => x.id === id) || {};
+    const fr = val('tNameFr').trim(), l = val('tLessons').trim(), d = val('tDesc').trim();
+    await Catalog.saveTraining(Object.assign({}, old, {
+      id, demo: false, name: { fr, en: val('tNameEn').trim() || fr, ar: val('tNameAr').trim() || fr },
+      lessons: { fr: l, en: l, ar: l }, desc: { fr: d, en: d, ar: d },
+      emoji: val('tEmoji').trim() || '🎓', color: val('tColor'),
+      price: numOr('tPrice', 0), oldPrice: numOr('tOldPrice', 0), stock: 999,
+      image: pendingImg.t || ''
+    }));
+    closeTrainingModal(); await reloadCatalog();
+    adminToast(old.id ? '✅ Formation modifiée' : '✅ Formation ajoutée — visible sur l\'accueil');
+  } catch (err) { console.error(err); alert("Enregistrement impossible : " + err.message); }
+}
+async function deleteTraining(id) {
+  const t = adminTraining.find(x => x.id === id);
+  if (!t || !confirm('Supprimer la formation « ' + t.name.fr + ' » ?')) return;
+  await Catalog.removeTraining(id); await reloadCatalog(); adminToast('🗑️ Formation supprimée');
+}
+
+async function removeDemoItems() {
+  const n = adminProducts.filter(Catalog.isDemo).length + adminTraining.filter(Catalog.isDemo).length;
+  if (!n || !confirm('Supprimer les ' + n + ' produits et formations d\'exemple ?\nVos propres articles ne sont pas touchés.')) return;
+  await Catalog.removeDemo(); await reloadCatalog(); adminToast('🧹 Exemples supprimés');
+}
+
+// ===== STOCK =====
+function openStockModal() {
+  const select = document.getElementById('stockProductSelect');
+  select.innerHTML = '<option value="">Sélectionner un produit...</option>' +
+    adminProducts.map(p => `<option value="${p.id}">${esc(p.name.fr)} (Stock: ${p.stock})</option>`).join('');
+  document.getElementById('stockAdjustment').value = '';
+  document.getElementById('stockModal').classList.add('open');
+}
+function closeStockModal() { document.getElementById('stockModal').classList.remove('open'); }
+function quickAdjustStock(productId) {
+  const product = adminProducts.find(p => p.id === productId);
+  if (!product) return;
+  openStockModal();
+  document.getElementById('stockProductSelect').value = productId;
+  document.getElementById('currentStock').value = product.stock;
+}
+async function adjustStock(e) {
+  e.preventDefault();
+  const p = adminProducts.find(x => x.id === Number(val('stockProductSelect')));
+  const delta = Number(val('stockAdjustment'));
+  if (!p || !Number.isFinite(delta)) return;
+  p.stock = Math.max(0, p.stock + delta); p.updatedAt = new Date().toISOString();
+  await Catalog.saveProduct(p);
+  closeStockModal(); await reloadCatalog(); adminToast('✅ Stock mis à jour : ' + p.stock);
+}
+
+// ===== PARAMÈTRES DE LA BOUTIQUE =====
+async function loadSettingsForm() {
+  let c; try { c = await Catalog.settings.get(); } catch (e) { return; }
+  const set = (id, v) => document.getElementById(id).value = v == null ? '' : v;
+  set('sStoreName', c.storeName); set('sEmail', c.email); set('sPhone', c.phone); set('sAddress', c.address);
+  set('sHours', c.hours); set('sDesc', c.description);
+  set('sShipFee', c.shippingFee); set('sFreeFrom', c.freeShippingFrom); set('sDelivery', c.deliveryDays);
+}
+async function saveSettings(e) {
+  e.preventDefault();
+  try {
+    await Catalog.settings.save({ storeName: val('sStoreName').trim(), email: val('sEmail').trim(), phone: val('sPhone').trim(),
+      address: val('sAddress').trim(), hours: val('sHours').trim(), description: val('sDesc').trim() });
+    adminToast('✅ Informations enregistrées');
+  } catch (err) { alert('❌ ' + err.message); }
+}
+async function saveShippingSettings(e) {
+  e.preventDefault();
+  try {
+    await Catalog.settings.save({ shippingFee: numOr('sShipFee', 0), freeShippingFrom: numOr('sFreeFrom', 0), deliveryDays: numOr('sDelivery', 3) });
+    adminToast('✅ Livraison enregistrée');
+  } catch (err) { alert('❌ ' + err.message); }
+}
+async function changeAdminPassword(e) {
+  e.preventDefault();
+  const cur = val('pwCurrent'), nw = val('pwNew');
+  if (nw !== val('pwNew2')) { alert('❌ Les deux nouveaux mots de passe sont différents'); return; }
+  if (nw.length < 8) { alert('❌ Le nouveau mot de passe doit contenir au moins 8 caractères'); return; }
+  try {
+    await AuthCS.changePassword(cur, nw);
+    ['pwCurrent', 'pwNew', 'pwNew2'].forEach(id => document.getElementById(id).value = '');
+    adminToast('🔒 Mot de passe modifié');
+  } catch (err) { alert('❌ ' + err.message); }
+}
+
+// ===== COMMANDES & CLIENTS =====
+function openInfo(title, html) {
+  document.getElementById('infoTitle').textContent = title;
+  document.getElementById('infoBody').innerHTML = html;
+  document.getElementById('infoModal').classList.add('open');
+}
+function closeInfoModal() { document.getElementById('infoModal').classList.remove('open'); }
+const row = (k, v) => v ? `<div style="display:flex;gap:12px;padding:6px 0;border-bottom:1px solid var(--card-border);"><span style="color:var(--text-muted);min-width:130px;">${k}</span><span>${v}</span></div>` : '';
+
+function viewOrderDetails(key) {
+  const o = adminOrders.find(x => x.key === key);
+  if (!o) return;
+  const sub = o.items.reduce((t, i) => t + i.price * i.qty, 0);
+  openInfo('Commande ' + o.id,
+    row('Statut', statusBadge(o.status)) + row('Date', fmtDate(o.date)) + row('Client', esc(o.customerName)) +
+    row('Email', esc(o.email)) + row('Téléphone', esc(o.phone)) + row('Adresse', esc(o.address)) + row('Notes', esc(o.notes)) +
+    row('Paiement', esc((Catalog.METHODS && Catalog.METHODS[o.method]) || o.method)) + row('Code promo', esc(o.promo)) +
+    `<table style="margin-top:16px;"><thead><tr><th>Article</th><th>Qté</th><th>Prix</th></tr></thead><tbody>` +
+    o.items.map(i => `<tr><td>${esc(i.name)}</td><td>${i.qty}</td><td>${fmt(i.price * i.qty)}</td></tr>`).join('') +
+    `</tbody></table>` +
+    `<div style="text-align:right;margin-top:12px;color:var(--text-muted);">Sous-total : ${fmt(sub)}${o.shipping ? ' · Livraison : ' + fmt(o.shipping) : ''}</div>` +
+    `<div style="text-align:right;font-size:1.2rem;font-weight:700;color:var(--accent);">Total : ${fmt(o.total)}</div>`);
+}
+async function changeOrderStatus(key, status) {
+  await Catalog.orders.setStatus(key, status);
+  await reloadCatalog();
+  adminToast('✅ Statut mis à jour : ' + getStatusLabel(status));
+}
+function viewCustomerDetails(email) {
+  const u = adminUsers.find(x => x.email === email);
+  if (!u) return;
+  const st = customerStats(u);
+  openInfo(u.fullname,
+    row('Email', esc(u.email)) + row('Téléphone', esc(u.phone)) + row('Inscrit le', u.createdAt ? new Date(u.createdAt).toLocaleDateString('fr-FR') : '') +
+    row('Commandes', String(st.count)) + row('Total dépensé', fmt(st.spent)) +
+    (st.mine.length ? `<table style="margin-top:16px;"><thead><tr><th>N°</th><th>Date</th><th>Total</th><th>Statut</th></tr></thead><tbody>` +
+      st.mine.map(o => `<tr><td>${esc(o.id)}</td><td>${fmtDate(o.date)}</td><td>${fmt(o.total)}</td><td>${statusBadge(o.status)}</td></tr>`).join('') + `</tbody></table>`
+      : '<p style="margin-top:16px;color:var(--text-muted);">Aucune commande pour le moment.</p>'));
+}
+
+function changeLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+}
+
+// ===== UPDATE STOCK SELECT ON CHANGE =====
+document.addEventListener('DOMContentLoaded', () => {
+  renderDashboard();
+  reloadCatalog().catch(err => console.error('Données indisponibles', err));
+  window.addEventListener('focus', () => reloadCatalog().catch(() => {}));
+  
+  const stockSelect = document.getElementById('stockProductSelect');
+  if (stockSelect) {
+    stockSelect.addEventListener('change', function() {
+      const productId = parseInt(this.value);
+      const product = adminProducts.find(p => p.id === productId);
+      if (product) {
+        document.getElementById('currentStock').value = product.stock;
+      }
+    });
+  }
+});
+
+// ===== GRAPHIQUES (calculés à partir des vraies commandes) =====
+const charts = {};
+function chartOpts(extra) {
+  const grid = { color: 'rgba(30, 41, 59, 0.3)' }, ticks = { color: '#64748b', font: { size: 11 } };
+  return Object.assign({
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { color: '#e2e8f0', font: { size: 12, family: 'Exo 2' } } },
+      tooltip: { backgroundColor: 'rgba(17, 24, 39, 0.95)', titleColor: '#00d4ff', bodyColor: '#e2e8f0', borderColor: '#1e293b', borderWidth: 1 }
+    },
+    scales: { y: { beginAtZero: true, ticks, grid }, x: { ticks, grid } }
+  }, extra || {});
+}
+function drawChart(id, cfg, hasData) {
+  const cv = document.getElementById(id);
+  if (!cv) return;
+  if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+  const msg = cv.parentElement.querySelector('.chart-empty');
+  cv.style.display = hasData ? 'block' : 'none';
+  if (msg) msg.style.display = hasData ? 'none' : 'flex';
+  if (hasData && typeof Chart !== 'undefined') charts[id] = new Chart(cv, cfg);
+}
+function renderCharts() {
+  const live = adminOrders.filter(o => o.status !== 'cancelled');
+
+  // Ventes des 12 derniers mois
+  const now = new Date(), months = [];
+  for (let i = 11; i >= 0; i--) { const d = new Date(now.getFullYear(), now.getMonth() - i, 1); months.push({ k: d.getFullYear() + '-' + d.getMonth(), label: d.toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' }), v: 0 }); }
+  live.forEach(o => { const d = new Date(o.date), m = months.find(x => x.k === d.getFullYear() + '-' + d.getMonth()); if (m) m.v += o.total; });
+  drawChart('salesChart', { type: 'line', data: { labels: months.map(m => m.label), datasets: [{ label: 'Ventes (FCFA)', data: months.map(m => m.v),
+    borderColor: 'rgb(0, 212, 255)', backgroundColor: 'rgba(0, 212, 255, 0.1)', tension: 0.4, fill: true, borderWidth: 3 }] }, options: chartOpts() }, live.length > 0);
+
+  // Articles les plus vendus
+  const qty = {};
+  live.forEach(o => o.items.forEach(i => { qty[i.name] = (qty[i.name] || 0) + (i.qty || 1); }));
+  const top = Object.entries(qty).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  const palette = ['rgba(0,212,255,.8)', 'rgba(124,58,237,.8)', 'rgba(245,158,11,.8)', 'rgba(34,197,94,.8)', 'rgba(59,130,246,.8)', 'rgba(236,72,153,.8)', 'rgba(251,146,60,.8)', 'rgba(167,139,250,.8)'];
+  drawChart('topProductsChart', { type: 'bar', data: { labels: top.map(t => t[0]), datasets: [{ label: 'Unités vendues', data: top.map(t => t[1]), backgroundColor: palette, borderWidth: 1 }] },
+    options: chartOpts({ scales: { y: { beginAtZero: true, ticks: { color: '#64748b', precision: 0 }, grid: { color: 'rgba(30,41,59,.3)' } }, x: { ticks: { color: '#64748b' }, grid: { color: 'rgba(30,41,59,.3)' } } } }) }, top.length > 0);
+
+  // Répartition par statut
+  const sts = ['delivered', 'processing', 'shipped', 'pending', 'cancelled'];
+  drawChart('ordersStatusChart', { type: 'doughnut', data: { labels: sts.map(getStatusLabel), datasets: [{ data: sts.map(st => adminOrders.filter(o => o.status === st).length),
+    backgroundColor: ['rgba(34,197,94,.8)', 'rgba(59,130,246,.8)', 'rgba(124,58,237,.8)', 'rgba(245,158,11,.8)', 'rgba(239,68,68,.8)'], borderWidth: 2 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#e2e8f0', font: { size: 12, family: 'Exo 2' }, padding: 15 } } } } }, adminOrders.length > 0);
+}
+</script>
+
+</body>
+</html>

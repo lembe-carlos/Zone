@@ -1,0 +1,12 @@
+{
+  "name": "carlos-shop",
+  "version": "2.0.0",
+  "description": "CARLOS SHOP : boutique en ligne (serveur Node + base SQLite, sans dépendance)",
+  "private": true,
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node --no-warnings server/index.js",
+    "reset-admin": "node --no-warnings server/reset-admin.js"
+  },
+  "engines": { "node": ">=22.13" }
+}

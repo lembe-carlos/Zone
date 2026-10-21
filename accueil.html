@@ -1,0 +1,2369 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CARLOS SHOP</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ===== CSS VARIABLES & RESET ===== */
+:root {
+  --primary: #0f172a;
+  --accent: #00d4ff;
+  --accent2: #7c3aed;
+  --accent-gold: #f59e0b;
+  --bg: #0a0e1a;
+  --card-bg: #111827;
+  --card-border: #1e293b;
+  --text: #e2e8f0;
+  --text-muted: #64748b;
+  --red: #ef4444;
+  --green: #22c55e;
+  --radius: 12px;
+  --shadow: 0 4px 30px rgba(0,212,255,0.08);
+  --reserve: #f59e0b;
+  --reserve-bg: rgba(245,158,11,0.1);
+  --reserve-border: rgba(245,158,11,0.3);
+}
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'Exo 2',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+  line-height:1.6;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:var(--primary); }
+::-webkit-scrollbar-thumb { background:var(--accent); border-radius:3px; }
+
+/* ===== HEADER / NAV ===== */
+.navbar {
+  position:fixed; top:0; width:100%; z-index:1000;
+  background:rgba(10,14,26,0.85);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--card-border);
+  padding:0 24px;
+  display:flex; align-items:center; justify-content:space-between;
+  height:68px;
+  transition:background .3s;
+}
+.nav-logo {
+  display:flex; align-items:center; gap:10px;
+  text-decoration:none;
+}
+.brand-icon{height:38px;width:auto;display:block;}
+.logo-text {
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700; font-size:1.6rem;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  letter-spacing:3px;
+}
+.nav-links { display:flex; gap:6px; align-items:center; }
+.nav-links a {
+  color:var(--text-muted); text-decoration:none;
+  padding:8px 14px; border-radius:8px;
+  font-size:.85rem; font-weight:600; letter-spacing:.5px;
+  transition:all .2s;
+}
+.nav-links a { white-space:nowrap; }
+@media(max-width:1560px){ .nav-links a { padding:8px 9px; font-size:.8rem; } .nav-actions { gap:8px; } .user-menu span { display:none; } }
+@media(max-width:1250px){ .nav-logo .logo-text { display:none; } .nav-links a { padding:8px 7px; } }
+.nav-links a:hover, .nav-links a.active {
+  color:var(--accent); background:rgba(0,212,255,0.08);
+}
+.nav-actions { display:flex; align-items:center; gap:12px; }
+.lang-select {
+  background:var(--card-bg); border:1px solid var(--card-border);
+  color:var(--text); padding:6px 10px; border-radius:8px;
+  font-size:.78rem; cursor:pointer; font-family:inherit;
+  outline:none;
+}
+.cart-btn {
+  position:relative; background:none; border:none;
+  color:var(--text); cursor:pointer; font-size:1.3rem;
+  padding:8px; border-radius:8px; transition:all .2s;
+}
+.cart-btn:hover { background:rgba(0,212,255,0.1); color:var(--accent); }
+.cart-badge {
+  position:absolute; top:2px; right:2px;
+  background:var(--red); color:#fff;
+  font-size:.6rem; font-weight:700;
+  width:17px; height:17px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+}
+/* Reserve nav badge */
+.reserve-nav-btn { position:relative; }
+.reserve-nav-badge {
+  position:absolute; top:2px; right:2px;
+  background:var(--reserve); color:#0a0e1a;
+  font-size:.58rem; font-weight:700;
+  width:17px; height:17px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* ===== HERO ===== */
+.hero {
+  position:relative; min-height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  padding:100px 24px 60px;
+  overflow:hidden;
+}
+.hero-bg {
+  position:absolute; inset:0; z-index:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 50%, rgba(124,58,237,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 40%, rgba(0,212,255,0.1) 0%, transparent 70%),
+    var(--bg);
+}
+.hero-grid {
+  position:absolute; inset:0; z-index:0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+  background-size:60px 60px;
+}
+.hero-content { position:relative; z-index:1; text-align:center; max-width:780px; }
+.hero-badge {
+  display:inline-block; padding:6px 18px; border-radius:20px;
+  background:rgba(0,212,255,0.08); border:1px solid rgba(0,212,255,0.2);
+  color:var(--accent); font-size:.78rem; font-weight:600;
+  letter-spacing:1px; text-transform:uppercase; margin-bottom:24px;
+  animation:fadeInDown .6s ease;
+}
+.hero h1 {
+  font-family:'Rajdhani',sans-serif;
+  font-size:clamp(2.4rem,6vw,4.2rem);
+  font-weight:700; line-height:1.1; margin-bottom:18px;
+  animation:fadeInUp .7s ease .1s both;
+}
+.hero h1 span { color:var(--accent); }
+.hero p {
+  color:var(--text-muted); font-size:1.05rem; max-width:560px;
+  margin:0 auto 32px; animation:fadeInUp .7s ease .2s both;
+}
+.hero-btns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; animation:fadeInUp .7s ease .3s both; }
+.btn {
+  padding:12px 28px; border-radius:10px; font-weight:600;
+  font-size:.88rem; cursor:pointer; border:none;
+  text-decoration:none; transition:all .25s; letter-spacing:.5px;
+  font-family:inherit; display:inline-flex; align-items:center; gap:8px;
+}
+.btn-primary {
+  background:linear-gradient(135deg,var(--accent),#0099cc);
+  color:#0a0e1a; box-shadow:0 4px 20px rgba(0,212,255,0.3);
+}
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 6px 28px rgba(0,212,255,0.45); }
+.btn-outline {
+  background:transparent; border:1px solid var(--card-border); color:var(--text);
+}
+.btn-outline:hover { border-color:var(--accent); color:var(--accent); background:rgba(0,212,255,0.06); }
+
+/* ===== SECTIONS ===== */
+section { padding:80px 24px; }
+.section-header { text-align:center; margin-bottom:48px; }
+.section-header h2 {
+  font-family:'Rajdhani',sans-serif;
+  font-size:clamp(1.8rem,4vw,2.6rem); font-weight:700; margin-bottom:10px;
+}
+.section-header h2 span { color:var(--accent); }
+.section-header p { color:var(--text-muted); font-size:.95rem; }
+.accent-line {
+  width:50px; height:3px; background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-radius:2px; margin:14px auto 0;
+}
+
+/* ===== CATEGORIES TABS ===== */
+.cat-tabs {
+  display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:36px;
+}
+.cat-tab {
+  padding:8px 20px; border-radius:25px; border:1px solid var(--card-border);
+  background:var(--card-bg); color:var(--text-muted);
+  font-size:.82rem; font-weight:600; cursor:pointer;
+  transition:all .2s; font-family:inherit; letter-spacing:.3px;
+}
+.cat-tab:hover, .cat-tab.active {
+  background:rgba(0,212,255,0.1); border-color:var(--accent); color:var(--accent);
+}
+
+/* ===== PRODUCT GRID ===== */
+.products-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:22px; max-width:1200px; margin:0 auto;
+}
+.product-card {
+  background:var(--card-bg); border:1px solid var(--card-border);
+  border-radius:var(--radius); overflow:hidden;
+  transition:transform .25s, box-shadow .25s;
+  display:flex; flex-direction:column;
+}
+.product-card:hover {
+  transform:translateY(-4px);
+  box-shadow:0 8px 32px rgba(0,212,255,0.12);
+  border-color:rgba(0,212,255,0.25);
+}
+.product-img {
+  height:180px; background:var(--primary);
+  display:flex; align-items:center; justify-content:center;
+  position:relative; font-size:3.2rem;
+}
+.product-tag {
+  position:absolute; top:12px; left:12px;
+  background:var(--accent2); color:#fff;
+  font-size:.65rem; font-weight:700; padding:3px 10px;
+  border-radius:12px; letter-spacing:.5px; text-transform:uppercase;
+}
+.product-tag.digital { background:var(--accent-gold); }
+.product-tag.training { background:var(--green); }
+.product-body { padding:18px; flex:1; display:flex; flex-direction:column; }
+.product-cat {
+  font-size:.7rem; color:var(--text-muted); text-transform:uppercase;
+  letter-spacing:1px; margin-bottom:6px;
+}
+.product-name { font-weight:600; font-size:.95rem; margin-bottom:8px; flex:1; }
+.product-rating { color:var(--accent-gold); font-size:.75rem; margin-bottom:10px; }
+.product-price-row { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+.product-price { font-family:'Rajdhani',sans-serif; font-size:1.3rem; font-weight:700; color:var(--accent); }
+.product-price-old { font-size:.78rem; color:var(--text-muted); text-decoration:line-through; }
+.product-actions { display:flex; gap:8px; margin-top:auto; flex-wrap:wrap; }
+.product-actions .btn { flex:1; min-width:80px; padding:9px 12px; font-size:.78rem; justify-content:center; }
+.btn-cart {
+  background:rgba(0,212,255,0.1); color:var(--accent);
+  border:1px solid rgba(0,212,255,0.25);
+}
+.btn-cart:hover { background:rgba(0,212,255,0.2); }
+.btn-buy {
+  background:linear-gradient(135deg,var(--accent2),#6d28d9);
+  color:#fff;
+}
+.btn-buy:hover { box-shadow:0 4px 16px rgba(124,58,237,0.4); }
+
+/* ===== RESERVE BUTTON ON CARDS ===== */
+.btn-reserve {
+  background:linear-gradient(135deg, var(--reserve), #d97706);
+  color:#0a0e1a; font-weight:700;
+  border:none;
+}
+.btn-reserve:hover { box-shadow:0 4px 16px rgba(245,158,11,0.45); transform:translateY(-1px); }
+.btn-reserve.reserved {
+  background:rgba(245,158,11,0.12);
+  color:var(--reserve);
+  border:1px solid var(--reserve-border) !important;
+}
+.btn-reserve.reserved:hover { background:rgba(245,158,11,0.2); }
+
+/* ===== PROMO BANNER ===== */
+.promo-section {
+  background:linear-gradient(135deg, rgba(124,58,237,0.15), rgba(0,212,255,0.1));
+  border:1px solid var(--card-border);
+  border-radius:20px; padding:48px 32px;
+  max-width:900px; margin:0 auto;
+  text-align:center;
+}
+.promo-section h3 { font-family:'Rajdhani',sans-serif; font-size:1.8rem; margin-bottom:8px; }
+.promo-section p { color:var(--text-muted); margin-bottom:24px; font-size:.9rem; }
+.promo-input-row { display:flex; gap:10px; max-width:480px; margin:0 auto; flex-wrap:wrap; justify-content:center; }
+.promo-input {
+  flex:1; min-width:200px; padding:11px 18px; border-radius:10px;
+  background:var(--card-bg); border:1px solid var(--card-border);
+  color:var(--text); font-size:.88rem; outline:none; font-family:inherit;
+  transition:border-color .2s;
+}
+.promo-input:focus { border-color:var(--accent); }
+.promo-input::placeholder { color:var(--text-muted); }
+#promo-msg { margin-top:12px; font-size:.8rem; min-height:18px; font-weight:600; }
+
+/* ===== CART PANEL ===== */
+.cart-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,0.55);
+  z-index:999; opacity:0; pointer-events:none; transition:opacity .3s;
+}
+.cart-overlay.open { opacity:1; pointer-events:auto; }
+.cart-panel {
+  position:fixed; top:0; right:-420px; width:min(400px,100%);
+  height:100%; background:#111827; z-index:1000;
+  border-left:1px solid var(--card-border);
+  transition:right .35s cubic-bezier(.4,0,.2,1);
+  display:flex; flex-direction:column;
+}
+.cart-panel.open { right:0; }
+.cart-header {
+  padding:20px 24px; border-bottom:1px solid var(--card-border);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.cart-header h3 { font-family:'Rajdhani',sans-serif; font-size:1.3rem; }
+.cart-close { background:none; border:none; color:var(--text-muted); font-size:1.4rem; cursor:pointer; }
+.cart-close:hover { color:var(--red); }
+.cart-items { flex:1; overflow-y:auto; padding:16px 24px; }
+.cart-empty { text-align:center; color:var(--text-muted); padding:60px 0; font-size:.9rem; }
+.cart-item {
+  display:flex; gap:14px; align-items:center;
+  padding:14px 0; border-bottom:1px solid var(--card-border);
+}
+.cart-item-icon { font-size:1.6rem; width:42px; text-align:center; }
+.cart-item-info { flex:1; }
+.cart-item-name { font-size:.85rem; font-weight:600; margin-bottom:2px; }
+.cart-item-price { font-size:.78rem; color:var(--accent); }
+.cart-item-qty {
+  display:flex; align-items:center; gap:6px;
+}
+.qty-btn {
+  width:26px; height:26px; border-radius:6px;
+  background:var(--primary); border:1px solid var(--card-border);
+  color:var(--text); cursor:pointer; font-size:.85rem;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .15s;
+}
+.qty-btn:hover { border-color:var(--accent); color:var(--accent); }
+.cart-item-remove { background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:.85rem; }
+.cart-item-remove:hover { color:var(--red); }
+.cart-footer { padding:20px 24px; border-top:1px solid var(--card-border); }
+.cart-total-row { display:flex; justify-content:space-between; margin-bottom:8px; font-size:.88rem; }
+.cart-total-row.total { font-weight:700; font-size:1.1rem; color:var(--accent); }
+.cart-discount { color:var(--green); font-size:.78rem; margin-bottom:12px; }
+.cart-footer .btn { width:100%; justify-content:center; }
+
+/* ===== PAYMENT MODAL ===== */
+.modal-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,0.6);
+  z-index:2000; display:flex; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none; transition:opacity .3s; padding:20px;
+}
+.modal-overlay.open { opacity:1; pointer-events:auto; }
+.modal {
+  background:#111827; border:1px solid var(--card-border);
+  border-radius:18px; width:100%; max-width:500px;
+  max-height:90vh; overflow-y:auto;
+  transform:translateY(30px); transition:transform .3s;
+}
+.modal-overlay.open .modal { transform:translateY(0); }
+.modal-header {
+  padding:22px 28px; border-bottom:1px solid var(--card-border);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.modal-header h3 { font-family:'Rajdhani',sans-serif; font-size:1.3rem; }
+.modal-close { background:none; border:none; color:var(--text-muted); font-size:1.4rem; cursor:pointer; }
+.modal-close:hover { color:var(--red); }
+.modal-body { padding:24px 28px; }
+.payment-methods { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:24px; }
+.pay-method {
+  flex:1; min-width:100px; padding:14px 10px; border-radius:10px;
+  border:2px solid var(--card-border); background:var(--primary);
+  color:var(--text-muted); text-align:center; cursor:pointer;
+  transition:all .2s; font-size:.78rem; font-weight:600;
+}
+.pay-method:hover { border-color:var(--accent); color:var(--accent); }
+.pay-method.selected { border-color:var(--accent); background:rgba(0,212,255,0.08); color:var(--accent); }
+.pay-method .pay-icon { font-size:1.4rem; display:block; margin-bottom:4px; }
+.form-group { margin-bottom:16px; }
+.form-group label { display:block; font-size:.78rem; color:var(--text-muted); margin-bottom:6px; font-weight:600; }
+.form-group input, .form-group select {
+  width:100%; padding:10px 14px; border-radius:8px;
+  background:var(--primary); border:1px solid var(--card-border);
+  color:var(--text); font-size:.85rem; outline:none; font-family:inherit;
+  transition:border-color .2s;
+}
+.form-group input:focus, .form-group select:focus { border-color:var(--accent); }
+.form-group input::placeholder { color:var(--text-muted); }
+.form-group select { appearance:none; -webkit-appearance:none; cursor:pointer; }
+.payment-summary { background:var(--bg); border-radius:10px; padding:16px; margin:20px 0; }
+.pay-sum-row { display:flex; justify-content:space-between; font-size:.82rem; margin-bottom:6px; color:var(--text-muted); }
+.pay-sum-row.total { color:var(--accent); font-weight:700; font-size:1rem; margin-top:10px; padding-top:10px; border-top:1px solid var(--card-border); }
+.pay-sum-row .green { color:var(--green); }
+#pay-status { text-align:center; font-size:.82rem; min-height:20px; margin-top:8px; font-weight:600; }
+
+/* ===== FORMATIONS / TRAINING ===== */
+.training-card {
+  background:var(--card-bg); border:1px solid var(--card-border);
+  border-radius:var(--radius); overflow:hidden;
+  transition:transform .25s, box-shadow .25s;
+}
+.training-card:hover { transform:translateY(-4px); box-shadow:0 8px 32px rgba(34,197,94,0.12); border-color:rgba(34,197,94,0.3); }
+.training-img {
+  height:150px; display:flex; align-items:center; justify-content:center;
+  font-size:2.8rem; position:relative;
+}
+.training-body { padding:18px; }
+.training-lessons { font-size:.72rem; color:var(--text-muted); margin-bottom:6px; }
+.training-name { font-weight:600; font-size:.92rem; margin-bottom:6px; }
+.training-desc { font-size:.75rem; color:var(--text-muted); margin-bottom:12px; line-height:1.5; }
+.training-price-row { display:flex; align-items:center; justify-content:space-between; }
+.training-price { font-family:'Rajdhani',sans-serif; font-size:1.2rem; font-weight:700; color:var(--green); }
+.training-actions { display:flex; gap:8px; margin-top:12px; }
+.training-actions .btn { flex:1; padding:9px 12px; font-size:.78rem; justify-content:center; }
+
+/* ===== SOCIAL / FOOTER ===== */
+footer {
+  background:var(--primary); border-top:1px solid var(--card-border);
+  padding:50px 24px 28px;
+}
+.footer-grid {
+  max-width:1100px; margin:0 auto;
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:36px;
+}
+.footer-col h4 {
+  font-family:'Rajdhani',sans-serif; font-size:1rem;
+  margin-bottom:16px; color:var(--accent); letter-spacing:1px; text-transform:uppercase;
+}
+.footer-col a {
+  display:block; color:var(--text-muted); text-decoration:none;
+  font-size:.82rem; margin-bottom:8px; transition:color .2s;
+}
+.footer-col a:hover { color:var(--accent); }
+.social-links { display:flex; gap:10px; margin-top:8px; flex-wrap:wrap; }
+.social-link {
+  width:40px; height:40px; border-radius:10px;
+  background:var(--card-bg); border:1px solid var(--card-border);
+  color:var(--text-muted); display:flex; align-items:center; justify-content:center;
+  text-decoration:none; transition:all .25s; position:relative;
+}
+.social-link svg { width:18px; height:18px; fill:var(--text-muted); transition:fill .25s; }
+.social-link:hover { border-color:var(--accent); background:rgba(0,212,255,0.1); transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,212,255,0.2); }
+.social-link:hover svg { fill:var(--accent); }
+.social-link .social-tooltip {
+  position:absolute; bottom:-30px; left:50%; transform:translateX(-50%);
+  background:#1e293b; color:var(--text); font-size:.65rem; padding:3px 8px;
+  border-radius:5px; white-space:nowrap; opacity:0; pointer-events:none;
+  transition:opacity .2s; font-weight:600; letter-spacing:.3px;
+}
+.social-link:hover .social-tooltip { opacity:1; }
+.footer-bottom {
+  max-width:1100px; margin:32px auto 0; padding-top:20px;
+  border-top:1px solid var(--card-border);
+  display:flex; justify-content:space-between; align-items:center;
+  flex-wrap:wrap; gap:10px;
+}
+.footer-bottom p { font-size:.75rem; color:var(--text-muted); }
+
+/* ===== TOAST ===== */
+.toast {
+  position:fixed; bottom:24px; right:24px;
+  background:#1e293b; border:1px solid var(--accent);
+  color:var(--text); padding:14px 22px; border-radius:10px;
+  font-size:.82rem; z-index:3000;
+  transform:translateX(120%); transition:transform .35s cubic-bezier(.4,0,.2,1);
+  display:flex; align-items:center; gap:10px; max-width:320px;
+}
+.toast.show { transform:translateX(0); }
+.toast.error { border-color:var(--red); }
+.toast.reserve-toast { border-color:var(--reserve); }
+.toast .toast-icon { font-size:1.1rem; }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeInDown { from { opacity:0; transform:translateY(-16px); } to { opacity:1; transform:translateY(0); } }
+.reveal {
+  opacity:0; transform:translateY(28px);
+  transition:opacity .5s ease, transform .5s ease;
+}
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  .nav-links { display:none; }
+  .hero { padding-top:90px; }
+  .products-grid { grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); }
+  .promo-section { padding:32px 20px; }
+  .footer-grid { grid-template-columns:1fr 1fr; }
+}
+@media(max-width:480px){
+  .products-grid { grid-template-columns:1fr; max-width:360px; }
+  .payment-methods { flex-direction:column; }
+  .pay-method { min-width:unset; }
+}
+
+/* ===== AI CHAT ===== */
+.chat-fab {
+  position:fixed; bottom:28px; right:28px; z-index:900;
+  width:56px; height:56px; border-radius:50%;
+  background:linear-gradient(135deg,var(--accent2),#6d28d9);
+  box-shadow:0 4px 24px rgba(124,58,237,0.45);
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:transform .25s, box-shadow .25s; position:relative;
+}
+.chat-fab:hover { transform:scale(1.1); box-shadow:0 6px 30px rgba(124,58,237,0.6); }
+.chat-fab-icon { font-size:1.6rem; }
+.chat-fab-badge {
+  position:absolute; top:-4px; right:-4px;
+  background:var(--red); color:#fff; font-size:.6rem; font-weight:700;
+  width:18px; height:18px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  border:2px solid var(--bg);
+}
+.chat-fab.open .chat-fab-icon { display:none; }
+.chat-panel {
+  position:fixed; bottom:0; right:0; width:min(380px,100%); height:520px;
+  background:#111827; border-radius:18px 18px 0 0;
+  border:1px solid var(--card-border); border-bottom:none;
+  box-shadow:0 -8px 40px rgba(0,0,0,0.4);
+  z-index:901; display:flex; flex-direction:column;
+  transform:translateY(100%); transition:transform .35s cubic-bezier(.4,0,.2,1);
+}
+.chat-panel.open { transform:translateY(0); }
+.chat-header {
+  padding:14px 18px; border-bottom:1px solid var(--card-border);
+  display:flex; align-items:center; justify-content:space-between;
+  background:linear-gradient(135deg,#1a1040,#0f172a);
+  border-radius:18px 18px 0 0;
+}
+.chat-header-left { display:flex; align-items:center; gap:10px; }
+.chat-avatar {
+  width:36px; height:36px; border-radius:50%;
+  background:linear-gradient(135deg,var(--accent2),#6d28d9);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem;
+}
+.chat-name { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:.95rem; color:var(--text); }
+.chat-status { display:flex; align-items:center; gap:5px; font-size:.68rem; color:var(--text-muted); }
+.chat-dot { width:7px; height:7px; border-radius:50%; background:var(--green); animation:pulse-dot 2s infinite; }
+@keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.4} }
+.chat-close-btn { background:none; border:none; color:var(--text-muted); font-size:1rem; cursor:pointer; padding:4px; }
+.chat-close-btn:hover { color:var(--red); }
+.chat-messages {
+  flex:1; overflow-y:auto; padding:14px 16px; display:flex; flex-direction:column; gap:10px;
+}
+.chat-msg {
+  max-width:88%; padding:10px 14px; border-radius:14px;
+  font-size:.78rem; line-height:1.55; word-break:break-word;
+  animation:msgPop .2s ease;
+}
+@keyframes msgPop { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+.chat-msg.bot {
+  align-self:flex-start;
+  background:linear-gradient(135deg,#1e1b4b,#1a1040);
+  border:1px solid rgba(124,58,237,0.25);
+  color:var(--text); border-bottom-left-radius:4px;
+}
+.chat-msg.user {
+  align-self:flex-end;
+  background:linear-gradient(135deg,var(--accent2),#6d28d9);
+  color:#fff; border-bottom-right-radius:4px;
+}
+.chat-msg .msg-time { font-size:.6rem; opacity:.5; margin-top:3px; text-align:right; }
+.chat-msg.bot .msg-time { text-align:left; }
+.chat-typing {
+  padding:10px 16px; display:flex; align-items:center; gap:4px;
+}
+.typing-dot {
+  width:8px; height:8px; border-radius:50%;
+  background:var(--accent2); opacity:.4;
+  animation:typing-bounce 1.2s infinite;
+}
+.typing-dot:nth-child(2) { animation-delay:.2s; }
+.typing-dot:nth-child(3) { animation-delay:.4s; }
+@keyframes typing-bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+.chat-input-bar {
+  padding:12px 14px; border-top:1px solid var(--card-border);
+  display:flex; gap:8px; align-items:center;
+}
+.chat-input {
+  flex:1; padding:9px 14px; border-radius:20px;
+  background:var(--primary); border:1px solid var(--card-border);
+  color:var(--text); font-size:.78rem; outline:none; font-family:inherit;
+  transition:border-color .2s;
+}
+.chat-input:focus { border-color:var(--accent2); }
+.chat-input::placeholder { color:var(--text-muted); }
+.chat-send-btn {
+  width:36px; height:36px; border-radius:50%;
+  background:linear-gradient(135deg,var(--accent2),#6d28d9);
+  border:none; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  color:#fff; transition:transform .15s, box-shadow .15s;
+}
+.chat-send-btn:hover { transform:scale(1.08); box-shadow:0 3px 12px rgba(124,58,237,0.4); }
+.chat-send-btn svg { width:16px; height:16px; }
+
+/* ===== DB DASHBOARD ===== */
+.db-panel-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,0.6);
+  z-index:2500; display:flex; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none; transition:opacity .3s; padding:16px;
+}
+.db-panel-overlay.open { opacity:1; pointer-events:auto; }
+.db-panel {
+  background:#0f172a; border:1px solid var(--card-border);
+  border-radius:16px; width:100%; max-width:720px; max-height:85vh;
+  overflow-y:auto; transform:translateY(24px); transition:transform .3s;
+}
+.db-panel-overlay.open .db-panel { transform:translateY(0); }
+.db-panel-header {
+  padding:18px 24px; border-bottom:1px solid var(--card-border);
+  display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; background:#0f172a; z-index:1;
+}
+.db-panel-header h3 { font-family:'Rajdhani',sans-serif; font-size:1.2rem; }
+.db-panel-header h3 span { color:var(--accent); }
+.db-panel-close { background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer; }
+.db-panel-close:hover { color:var(--red); }
+.db-tabs { display:flex; gap:6px; padding:14px 24px; flex-wrap:wrap; }
+.db-tab {
+  padding:6px 16px; border-radius:20px; border:1px solid var(--card-border);
+  background:transparent; color:var(--text-muted); font-size:.75rem;
+  font-weight:600; cursor:pointer; transition:all .2s; font-family:inherit;
+  letter-spacing:.3px;
+}
+.db-tab:hover, .db-tab.active { background:rgba(0,212,255,0.1); border-color:var(--accent); color:var(--accent); }
+.db-content { padding:0 24px 24px; }
+.db-table-wrap { overflow-x:auto; border-radius:10px; border:1px solid var(--card-border); }
+.db-table {
+  width:100%; border-collapse:collapse; font-size:.75rem;
+}
+.db-table thead th {
+  background:#111827; color:var(--accent); font-weight:600;
+  padding:10px 12px; text-align:left; letter-spacing:.4px;
+  font-size:.68rem; text-transform:uppercase; border-bottom:1px solid var(--card-border);
+  white-space:nowrap;
+}
+.db-table tbody td {
+  padding:9px 12px; color:var(--text-muted); border-bottom:1px solid var(--card-border)22;
+  white-space:nowrap;
+}
+.db-table tbody tr:last-child td { border-bottom:none; }
+.db-table tbody tr:hover td { background:rgba(0,212,255,0.04); color:var(--text); }
+.db-badge {
+  display:inline-block; padding:2px 8px; border-radius:10px;
+  font-size:.65rem; font-weight:700; letter-spacing:.3px;
+}
+.db-badge.success { background:rgba(34,197,94,0.15); color:var(--green); }
+.db-badge.pending { background:rgba(245,158,11,0.15); color:var(--accent-gold); }
+.db-badge.cancelled { background:rgba(239,68,68,0.15); color:var(--red); }
+.db-badge.reserved { background:rgba(245,158,11,0.15); color:var(--reserve); }
+.db-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-bottom:20px; }
+.db-stat-card {
+  background:#111827; border:1px solid var(--card-border); border-radius:10px; padding:16px;
+}
+.db-stat-card .stat-label { font-size:.68rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
+.db-stat-card .stat-value { font-family:'Rajdhani',sans-serif; font-size:1.5rem; font-weight:700; color:var(--accent); }
+.db-stat-card .stat-sub { font-size:.65rem; color:var(--text-muted); margin-top:2px; }
+.db-empty { text-align:center; color:var(--text-muted); padding:40px; font-size:.82rem; }
+
+/* =========================================================
+   RESERVATION SYSTEM STYLES
+   ========================================================= */
+
+/* ===== RESERVATION PANEL (side drawer) ===== */
+.reserve-panel {
+  position:fixed; top:0; right:-480px; width:min(460px,100%);
+  height:100%; background:#111827; z-index:1000;
+  border-left:1px solid var(--card-border);
+  transition:right .38s cubic-bezier(.4,0,.2,1);
+  display:flex; flex-direction:column;
+}
+.reserve-panel.open { right:0; }
+.reserve-panel-header {
+  padding:22px 24px; border-bottom:1px solid var(--card-border);
+  display:flex; align-items:center; justify-content:space-between;
+  background:linear-gradient(135deg, rgba(245,158,11,0.08), rgba(15,23,42,1));
+}
+.reserve-panel-header h3 { font-family:'Rajdhani',sans-serif; font-size:1.35rem; color:var(--text); }
+.reserve-panel-header h3 span { color:var(--reserve); }
+.reserve-panel-close { background:none; border:none; color:var(--text-muted); font-size:1.4rem; cursor:pointer; transition:color .2s; }
+.reserve-panel-close:hover { color:var(--red); }
+
+.reserve-panel-body { flex:1; overflow-y:auto; padding:20px 24px; }
+
+/* reservation list item */
+.reserve-item {
+  display:flex; gap:14px; align-items:flex-start;
+  padding:16px 0; border-bottom:1px solid var(--card-border);
+  animation:fadeInUp .3s ease;
+}
+.reserve-item:last-child { border-bottom:none; }
+.reserve-item-icon { font-size:1.8rem; width:46px; text-align:center; flex-shrink:0; }
+.reserve-item-info { flex:1; min-width:0; }
+.reserve-item-name { font-size:.88rem; font-weight:600; color:var(--text); margin-bottom:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.reserve-item-meta { font-size:.72rem; color:var(--text-muted); margin-bottom:6px; }
+.reserve-item-meta span { color:var(--reserve); font-weight:600; }
+
+/* countdown timer */
+.reserve-countdown {
+  display:inline-flex; align-items:center; gap:5px;
+  background:rgba(245,158,11,0.1); border:1px solid var(--reserve-border);
+  padding:3px 10px; border-radius:6px; font-size:.7rem; font-weight:600; color:var(--reserve);
+}
+.reserve-countdown.urgent { border-color:var(--red); background:rgba(239,68,68,0.1); color:var(--red); animation:pulse-urgent 1.5s infinite; }
+@keyframes pulse-urgent { 0%,100%{opacity:1} 50%{opacity:.6} }
+.reserve-countdown svg { width:12px; height:12px; fill:currentColor; }
+
+/* price & actions row */
+.reserve-item-bottom { display:flex; align-items:center; justify-content:space-between; margin-top:8px; }
+.reserve-item-price { font-family:'Rajdhani',sans-serif; font-size:1.1rem; font-weight:700; color:var(--accent); }
+.reserve-item-actions { display:flex; gap:8px; }
+.reserve-item-actions .btn { padding:6px 14px; font-size:.74rem; }
+.btn-confirm-reserve {
+  background:linear-gradient(135deg, var(--reserve), #d97706);
+  color:#0a0e1a; font-weight:700;
+}
+.btn-confirm-reserve:hover { box-shadow:0 3px 14px rgba(245,158,11,0.4); }
+.btn-cancel-reserve {
+  background:rgba(239,68,68,0.1); color:var(--red);
+  border:1px solid rgba(239,68,68,0.25);
+}
+.btn-cancel-reserve:hover { background:rgba(239,68,68,0.2); }
+
+/* empty state */
+.reserve-empty {
+  text-align:center; padding:70px 0;
+  color:var(--text-muted); font-size:.88rem;
+}
+.reserve-empty-icon { font-size:3rem; margin-bottom:14px; display:block; opacity:.4; }
+
+/* ===== RESERVATION MODAL (quick reserve form) ===== */
+.reserve-modal { max-width:520px; }
+.reserve-modal-header { background:linear-gradient(135deg, rgba(245,158,11,0.1), transparent); }
+.reserve-modal .modal-header h3 { color:var(--text); }
+.reserve-modal .modal-header h3 span { color:var(--reserve); }
+
+/* product preview in modal */
+.reserve-product-preview {
+  display:flex; align-items:center; gap:16px;
+  background:var(--bg); border-radius:12px; padding:16px;
+  margin-bottom:22px; border:1px solid var(--card-border);
+}
+.reserve-product-preview .rpp-emoji { font-size:2.4rem; }
+.reserve-product-preview .rpp-info { flex:1; }
+.reserve-product-preview .rpp-name { font-weight:600; font-size:.9rem; color:var(--text); margin-bottom:3px; }
+.reserve-product-preview .rpp-cat { font-size:.68rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:.6px; }
+.reserve-product-preview .rpp-price { font-family:'Rajdhani',sans-serif; font-size:1.2rem; font-weight:700; color:var(--reserve); }
+
+/* duration selector */
+.reserve-duration-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px; }
+.reserve-duration-opt {
+  padding:14px 10px; border-radius:10px; border:2px solid var(--card-border);
+  background:var(--primary); color:var(--text-muted); text-align:center;
+  cursor:pointer; transition:all .2s; font-size:.78rem; font-weight:600;
+}
+.reserve-duration-opt:hover { border-color:var(--reserve); color:var(--reserve); }
+.reserve-duration-opt.selected { border-color:var(--reserve); background:var(--reserve-bg); color:var(--reserve); }
+.reserve-duration-opt .rdo-hours { font-family:'Rajdhani',sans-serif; font-size:1.4rem; font-weight:700; display:block; margin-bottom:2px; }
+.reserve-duration-opt .rdo-label { font-size:.65rem; color:var(--text-muted); }
+.reserve-duration-opt.selected .rdo-label { color:var(--reserve); opacity:.7; }
+
+/* notes textarea */
+.reserve-notes {
+  width:100%; min-height:70px; padding:10px 14px; border-radius:8px;
+  background:var(--primary); border:1px solid var(--card-border);
+  color:var(--text); font-size:.82rem; outline:none; font-family:inherit;
+  resize:vertical; transition:border-color .2s;
+}
+.reserve-notes:focus { border-color:var(--reserve); }
+.reserve-notes::placeholder { color:var(--text-muted); }
+
+/* qty selector in modal */
+.reserve-qty-row { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
+.reserve-qty-row label { font-size:.78rem; color:var(--text-muted); font-weight:600; }
+.reserve-qty-ctrl { display:flex; align-items:center; gap:8px; }
+.rqc-btn {
+  width:30px; height:30px; border-radius:8px;
+  background:var(--primary); border:1px solid var(--card-border);
+  color:var(--text); cursor:pointer; font-size:1rem;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .15s;
+}
+.rqc-btn:hover { border-color:var(--reserve); color:var(--reserve); }
+.rqc-val { font-weight:700; font-size:.95rem; min-width:24px; text-align:center; }
+
+/* summary in reserve modal */
+.reserve-summary {
+  background:var(--bg); border-radius:10px; padding:14px 16px;
+  margin:18px 0; border:1px solid var(--card-border);
+}
+.reserve-summary-row { display:flex; justify-content:space-between; font-size:.8rem; margin-bottom:5px; color:var(--text-muted); }
+.reserve-summary-row.total-row { font-weight:700; font-size:.92rem; color:var(--reserve); margin-top:8px; padding-top:8px; border-top:1px solid var(--card-border); }
+
+/* modal status */
+#reserve-status { text-align:center; font-size:.82rem; min-height:18px; margin-top:10px; font-weight:600; }
+
+/* ===== CONFIRM PAYMENT AFTER RESERVE ===== */
+.reserve-pay-modal { max-width:500px; }
+.reserve-pay-modal .modal-header h3 span { color:var(--reserve); }
+
+/* ===== RESERVATION SECTION (optional dedicated section) ===== */
+.reservations-banner {
+  background:linear-gradient(135deg, rgba(245,158,11,0.08), rgba(124,58,237,0.06));
+  border:1px solid var(--reserve-border);
+  border-radius:16px; padding:24px 28px;
+  display:flex; align-items:center; justify-content:space-between;
+  max-width:1200px; margin:0 auto 48px; gap:16px; flex-wrap:wrap;
+}
+.reservations-banner-left { display:flex; align-items:center; gap:14px; }
+.reservations-banner-icon { font-size:2rem; }
+.reservations-banner-text h4 { font-family:'Rajdhani',sans-serif; font-size:1.1rem; color:var(--text); margin-bottom:2px; }
+.reservations-banner-text p { font-size:.78rem; color:var(--text-muted); }
+.reservations-banner .btn { flex-shrink:0; }
+
+/* ===== EXTEND RESERVATION MODAL ===== */
+.extend-duration-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:16px; }
+.extend-duration-opt {
+  padding:10px 6px; border-radius:8px; border:2px solid var(--card-border);
+  background:var(--primary); color:var(--text-muted); text-align:center;
+  cursor:pointer; transition:all .2s; font-size:.72rem; font-weight:600;
+}
+.extend-duration-opt:hover { border-color:var(--reserve); color:var(--reserve); }
+.extend-duration-opt.selected { border-color:var(--reserve); background:var(--reserve-bg); color:var(--reserve); }
+
+/* ===== DIGITAL BADGE ON RESERVED ===== */
+.product-reserved-ribbon {
+  position:absolute; top:12px; right:12px;
+  background:linear-gradient(135deg, var(--reserve), #d97706);
+  color:#0a0e1a; font-size:.6rem; font-weight:700;
+  padding:3px 8px; border-radius:10px;
+  letter-spacing:.4px; text-transform:uppercase;
+  display:none;
+}
+.product-reserved-ribbon.visible { display:block; }
+
+</style>
+<link rel="icon" type="image/png" href="images/favicon.png"/>
+<script src="js/auth.js"></script>
+<script>if (typeof AuthCS === 'undefined') { location.replace('index.html'); } else { AuthCS.requireAuth(); }</script>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <a href="accueil.html" class="nav-logo">
+    <img src="images/logo-icon.png" alt="Carlos Shop" class="brand-icon"/>
+    <span class="logo-text">CARLOS</span>
+  </a>
+  <div class="nav-links">
+    <a href="#home" class="active" data-nav="home">Accueil</a>
+    <a href="#products" data-nav="products">Produits</a>
+    <a href="#training" data-nav="training">Formations</a>
+    <a href="#promo" data-nav="promo">Promos</a>
+    <a href="shop.html">Boutique</a>
+    <a href="suivi_commandes.html">Commandes</a>
+    <a href="admin.html" data-admin-only>Admin</a>
+  
+  </div>
+  <div class="nav-actions">
+    <select class="lang-select" id="langSelect" onchange="changeLang(this.value)">
+      <option value="fr">🇫🇷 Français</option>
+      <option value="en">🇬🇧 English</option>
+    </select>
+    <button class="cart-btn" onclick="toggleChat()" style="font-size:1.2rem;" title="AI Assistant">🤖</button>
+    <!-- RESERVE NAV BUTTON -->
+    <button class="cart-btn reserve-nav-btn" onclick="openReservePanel()" style="font-size:1.15rem;" title="Mes Réservations" id="reserveNavBtn">
+      ⏰
+      <span class="reserve-nav-badge" id="reserveNavBadge" style="display:none;">0</span>
+    </button>
+    <button class="cart-btn" onclick="toggleCart()">
+      🛒
+      <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge" id="heroBadge">⚡ Bienvenue chez Carlos Shop</div>
+    <h1 id="heroTitle">Électronique, Digital &amp; <span>Formations</span></h1>
+    <p id="heroDesc">Découvrez les meilleurs appareils électroniques, produits digitaux et formations en un seul endroit. Qualité garantie, prix imbattables.</p>
+    <div class="hero-btns">
+      <a href="#products" class="btn btn-primary" id="heroBtn1">🛍️ Explorer les Produits</a>
+      <a href="#training" class="btn btn-outline" id="heroBtn2">📚 Voir les Formations</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRODUCTS ===== -->
+<section id="products">
+  <div class="section-header reveal">
+    <h2 id="secProducts"><span>Nos</span> Produits</h2>
+    <p id="secProductsDesc">Électronique, digital &amp; plus</p>
+    <div class="accent-line"></div>
+  </div>
+  <!-- Reservations active banner (shown when user has reservations) -->
+  <div class="reservations-banner reveal" id="reservationsBanner" style="display:none;">
+    <div class="reservations-banner-left">
+      <div class="reservations-banner-icon">⏰</div>
+      <div class="reservations-banner-text">
+        <h4 id="resBannerTitle">Vous avez des réservations actives</h4>
+        <p id="resBannerDesc">Consultez vos produits réservés avant qu'ils expirent.</p>
+      </div>
+    </div>
+    <button class="btn btn-reserve" onclick="openReservePanel()">
+      <span id="resBannerBtn">Voir mes réservations</span>
+    </button>
+  </div>
+  <div class="cat-tabs reveal" id="catTabs">
+    <button class="cat-tab active" onclick="filterCat('all',this)" data-cat-label="all">🌐 Tous</button>
+    <button class="cat-tab" onclick="filterCat('electronics',this)" data-cat-label="electronics">📱 Électronique</button>
+    <button class="cat-tab" onclick="filterCat('digital',this)" data-cat-label="digital">💾 Digital</button>
+    <button class="cat-tab" onclick="filterCat('accessories',this)" data-cat-label="accessories">🎧 Accessoires</button>
+  </div>
+  <div class="products-grid" id="productsGrid"></div>
+</section>
+
+<!-- ===== PROMO ===== -->
+<section id="promo">
+  <div class="promo-section reveal">
+    <h3 id="promoTitle">🎁 Code Promo Exclusif</h3>
+    <p id="promoDesc">Entrez votre code promo pour obtenir une réduction sur votre achat.</p>
+    <div class="promo-input-row">
+      <input type="text" class="promo-input" id="promoInput" placeholder="Ex: CARLOS20" oninput="this.value=this.value.toUpperCase()"/>
+      <button class="btn btn-primary" onclick="applyPromo()">Appliquer</button>
+    </div>
+    <div id="promo-msg"></div>
+  </div>
+</section>
+
+<!-- ===== TRAINING ===== -->
+<section id="training">
+  <div class="section-header reveal">
+    <h2 id="secTraining"><span>Formations</span> Digital</h2>
+    <p id="secTrainingDesc">Maîtrisez les outils du numérique avec nos experts</p>
+    <div class="accent-line"></div>
+  </div>
+  <div class="products-grid" id="trainingGrid"></div>
+</section>
+
+<!-- ===== CART PANEL ===== -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <h3 id="cartTitle">🛒 Panier</h3>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-total-row"><span id="cartLabelSub">Sous-total</span><span id="cartSubtotal">0 FCFA</span></div>
+    <div class="cart-discount" id="cartDiscount" style="display:none;"></div>
+    <div class="cart-total-row total"><span id="cartLabelTotal">Total</span><span id="cartTotal">0 FCFA</span></div>
+    <button class="btn btn-primary" onclick="openPayment()" style="margin-top:16px;">💳 Passer à la caisse</button>
+  </div>
+</div>
+
+<!-- ===== PAYMENT MODAL ===== -->
+<div class="modal-overlay" id="payOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="payTitle">💳 Paiement</h3>
+      <button class="modal-close" onclick="closePayment()">✕</button>
+    </div>
+    <div class="modal-body">
+      <label style="font-size:.78rem;color:var(--text-muted);font-weight:600;" id="payMethodLabel">Méthode de paiement</label>
+      <div class="payment-methods" id="payMethods" style="grid-template-columns:repeat(3, 1fr);">
+        <div class="pay-method selected" onclick="selectPay('card',this)"><span class="pay-icon">💳</span><span id="pm1">Carte</span></div>
+        <div class="pay-method" onclick="selectPay('paypal',this)"><span class="pay-icon">🅿️</span><span id="pm2">PayPal</span></div>
+        <div class="pay-method" onclick="selectPay('wave',this)"><span class="pay-icon">📱</span><span id="pm3">Wave</span></div>
+        <div class="pay-method" onclick="selectPay('orange',this)"><span class="pay-icon">🟠</span><span id="pm5">Orange Money</span></div>
+        <div class="pay-method" onclick="selectPay('mtn',this)"><span class="pay-icon">🟡</span><span id="pm6">MTN Money</span></div>
+        <div class="pay-method" onclick="selectPay('express',this)"><span class="pay-icon">🔵</span><span id="pm7">Express Union</span></div>
+        <div class="pay-method" onclick="selectPay('cash',this)"><span class="pay-icon">💵</span><span id="pm4">Espèces</span></div>
+      </div>
+      <div id="cardFields">
+        <div class="form-group"><label id="lblName">Nom complet</label><input type="text" placeholder="Carlos Dupont" id="inp_name"/></div>
+        <div class="form-group"><label id="lblCard">Numéro de carte</label><input type="text" placeholder="1234 5678 9012 3456" id="inp_card" maxlength="19" oninput="formatCard(this)"/></div>
+        <div style="display:flex;gap:12px;">
+          <div class="form-group" style="flex:1;"><label id="lblExp">Expiration</label><input type="text" placeholder="MM/AA" id="inp_exp" maxlength="5" oninput="formatExp(this)"/></div>
+          <div class="form-group" style="flex:1;"><label id="lblCvv">CVV</label><input type="text" placeholder="123" id="inp_cvv" maxlength="3"/></div>
+        </div>
+      </div>
+      <div id="paypalFields" style="display:none;">
+        <div class="form-group"><label id="lblEmail">Email PayPal</label><input type="email" placeholder="carlos@email.com" id="inp_email"/></div>
+      </div>
+      <div id="waveFields" style="display:none;">
+        <div class="form-group"><label id="lblPhone">Numéro Wave</label><input type="tel" placeholder="+221 77 123 45 67" id="inp_phone"/></div>
+        <div class="form-group"><label>Code de confirmation (optionnel)</label><input type="text" placeholder="Entrez le code reçu par SMS" id="inp_wave_code"/></div>
+      </div>
+      <div id="orangeFields" style="display:none;">
+        <div class="form-group"><label>Numéro Orange Money</label><input type="tel" placeholder="+225 07 12 34 56 78" id="inp_orange_phone"/></div>
+        <div class="form-group"><label>Code PIN Orange Money</label><input type="password" placeholder="••••" maxlength="4" id="inp_orange_pin"/></div>
+        <div class="form-group"><label>Montant à payer</label><input type="text" id="inp_orange_amount" disabled style="background:var(--bg);color:var(--accent);"/></div>
+      </div>
+      <div id="mtnFields" style="display:none;">
+        <div class="form-group"><label>Numéro MTN Mobile Money</label><input type="tel" placeholder="+237 6 12 34 56 78" id="inp_mtn_phone"/></div>
+        <div class="form-group"><label>Code secret MTN</label><input type="password" placeholder="••••" maxlength="4" id="inp_mtn_pin"/></div>
+        <div class="form-group"><label>Montant à payer</label><input type="text" id="inp_mtn_amount" disabled style="background:var(--bg);color:var(--accent);"/></div>
+      </div>
+      <div id="expressFields" style="display:none;">
+        <div class="form-group"><label>Numéro de compte Express Union</label><input type="text" placeholder="EU123456789" id="inp_express_account"/></div>
+        <div class="form-group"><label>Nom complet</label><input type="text" placeholder="Votre nom complet" id="inp_express_name"/></div>
+        <div class="form-group"><label>Code secret</label><input type="password" placeholder="••••••" id="inp_express_pin"/></div>
+        <div class="form-group"><label>Montant à payer</label><input type="text" id="inp_express_amount" disabled style="background:var(--bg);color:var(--accent);"/></div>
+      </div>
+      <div id="cashFields" style="display:none;">
+        <div style="background:var(--bg);border-radius:10px;padding:20px;text-align:center;">
+          <p style="font-size:.85rem;color:var(--text-muted);" id="cashNote">Vous pourrez payer en espèces lors de la livraison. Préparez le montant exact.</p>
+        </div>
+      </div>
+      <div class="payment-summary">
+        <div class="pay-sum-row"><span id="pSub">Sous-total</span><span id="pSubVal">0 FCFA</span></div>
+        <div class="pay-sum-row" id="pDiscRow" style="display:none;"><span id="pDisc">Réduction</span><span id="pDiscVal" class="green">-0 FCFA</span></div>
+        <div class="pay-sum-row total"><span id="pTotal">Total</span><span id="pTotalVal">0 FCFA</span></div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="confirmPayment()">
+        <span id="payBtnText">✅ Confirmer le Paiement</span>
+      </button>
+      <div id="pay-status"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RESERVATION QUICK FORM MODAL ===== -->
+<div class="modal-overlay" id="reserveModalOverlay" onclick="if(event.target===this)closeReserveModal()">
+  <div class="modal reserve-modal">
+    <div class="modal-header reserve-modal-header">
+      <h3>⏰ <span>Réserver</span></h3>
+      <button class="modal-close" onclick="closeReserveModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- product preview -->
+      <div class="reserve-product-preview" id="rppContainer">
+        <div class="rpp-emoji" id="rppEmoji">📱</div>
+        <div class="rpp-info">
+          <div class="rpp-name" id="rppName">Produit</div>
+          <div class="rpp-cat" id="rppCat">Catégorie</div>
+        </div>
+        <div class="rpp-price" id="rppPrice">0 FCFA</div>
+      </div>
+      <!-- quantity -->
+      <div class="reserve-qty-row">
+        <label id="lblReserveQty">Quantité</label>
+        <div class="reserve-qty-ctrl">
+          <button class="rqc-btn" onclick="changeReserveQty(-1)">−</button>
+          <span class="rqc-val" id="reserveQtyVal">1</span>
+          <button class="rqc-btn" onclick="changeReserveQty(1)">+</button>
+        </div>
+      </div>
+      <!-- duration -->
+      <label style="font-size:.78rem;color:var(--text-muted);font-weight:600;" id="lblReserveDuration">Durée de réservation</label>
+      <div class="reserve-duration-grid" id="reserveDurationGrid">
+        <div class="reserve-duration-opt selected" onclick="selectReserveDuration(1,this)">
+          <span class="rdo-hours">1h</span><span class="rdo-label">Rapide</span>
+        </div>
+        <div class="reserve-duration-opt" onclick="selectReserveDuration(3,this)">
+          <span class="rdo-hours">3h</span><span class="rdo-label">Standard</span>
+        </div>
+        <div class="reserve-duration-opt" onclick="selectReserveDuration(6,this)">
+          <span class="rdo-hours">6h</span><span class="rdo-label">Étendue</span>
+        </div>
+        <div class="reserve-duration-opt" onclick="selectReserveDuration(24,this)">
+          <span class="rdo-hours">24h</span><span class="rdo-label">Jour entier</span>
+        </div>
+      </div>
+      <!-- notes -->
+      <div class="form-group">
+        <label id="lblReserveNotes">Notes (optionnel)</label>
+        <textarea class="reserve-notes" id="reserveNotesInput" placeholder="Ex: Je veux la version blanche..."></textarea>
+      </div>
+      <!-- summary -->
+      <div class="reserve-summary">
+        <div class="reserve-summary-row"><span id="rsLabelProduct">Produit</span><span id="rsProductName">—</span></div>
+        <div class="reserve-summary-row"><span id="rsLabelQty">Quantité</span><span id="rsQty">×1</span></div>
+        <div class="reserve-summary-row"><span id="rsLabelDuration">Durée</span><span id="rsDuration">1 heure</span></div>
+        <div class="reserve-summary-row"><span id="rsLabelExpire">Expire à</span><span id="rsExpireAt">—</span></div>
+        <div class="reserve-summary-row total-row"><span id="rsLabelTotal">Total réservé</span><span id="rsTotal">0 FCFA</span></div>
+      </div>
+      <button class="btn btn-reserve" style="width:100%;justify-content:center;padding:13px;" onclick="confirmReservation()">
+        <span id="reserveSubmitBtnText">⏰ Confirmer la Réservation</span>
+      </button>
+      <div id="reserve-status"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== EXTEND RESERVATION MODAL ===== -->
+<div class="modal-overlay" id="extendModalOverlay" onclick="if(event.target===this)closeExtendModal()">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-header">
+      <h3>🕐 <span style="color:var(--reserve);">Prolonger</span></h3>
+      <button class="modal-close" onclick="closeExtendModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:16px;" id="extendProductName">Prolonger la réservation de ce produit.</p>
+      <label style="font-size:.78rem;color:var(--text-muted);font-weight:600;" id="lblExtendDuration">Durée supplémentaire</label>
+      <div class="extend-duration-grid" id="extendDurationGrid">
+        <div class="extend-duration-opt selected" onclick="selectExtendDuration(1,this)">+1h</div>
+        <div class="extend-duration-opt" onclick="selectExtendDuration(2,this)">+2h</div>
+        <div class="extend-duration-opt" onclick="selectExtendDuration(4,this)">+4h</div>
+        <div class="extend-duration-opt" onclick="selectExtendDuration(6,this)">+6h</div>
+        <div class="extend-duration-opt" onclick="selectExtendDuration(12,this)">+12h</div>
+        <div class="extend-duration-opt" onclick="selectExtendDuration(24,this)">+24h</div>
+      </div>
+      <div style="background:var(--bg);border-radius:8px;padding:12px 14px;margin:14px 0;">
+        <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--text-muted);margin-bottom:4px;">
+          <span id="extLblCurrent">Expire actuellement</span><span id="extCurrentExpiry">—</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--reserve);font-weight:600;">
+          <span id="extLblNew">Nouvelle expiration</span><span id="extNewExpiry">—</span>
+        </div>
+      </div>
+      <button class="btn btn-reserve" style="width:100%;justify-content:center;" onclick="confirmExtend()">
+        <span id="extendBtnText">🕐 Prolonger</span>
+      </button>
+      <div id="extend-status" style="text-align:center;font-size:.78rem;min-height:18px;margin-top:8px;font-weight:600;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RESERVATION PANEL (drawer) ===== -->
+<div class="cart-overlay" id="reserveOverlay" onclick="closeReservePanel()"></div>
+<div class="reserve-panel" id="reservePanel">
+  <div class="reserve-panel-header">
+    <h3>⏰ <span>Mes Réservations</span></h3>
+    <button class="reserve-panel-close" onclick="closeReservePanel()">✕</button>
+  </div>
+  <div class="reserve-panel-body" id="reservePanelBody"></div>
+</div>
+
+<!-- ===== CONFIRM RESERVE → PAY MODAL ===== -->
+<div class="modal-overlay" id="reservePayOverlay" onclick="if(event.target===this)closeReservePay()">
+  <div class="modal reserve-pay-modal">
+    <div class="modal-header">
+      <h3>💳 <span style="color:var(--reserve);">Payer la Réservation</span></h3>
+      <button class="modal-close" onclick="closeReservePay()">✕</button>
+    </div>
+    <div class="modal-body">
+      <label style="font-size:.78rem;color:var(--text-muted);font-weight:600;" id="rpMethodLabel">Méthode de paiement</label>
+      <div class="payment-methods" id="rpMethods">
+        <div class="pay-method selected" onclick="selectRPay('card',this)"><span class="pay-icon">💳</span><span>Carte</span></div>
+        <div class="pay-method" onclick="selectRPay('paypal',this)"><span class="pay-icon">🅿️</span><span>PayPal</span></div>
+        <div class="pay-method" onclick="selectRPay('wave',this)"><span class="pay-icon">📱</span><span>Wave</span></div>
+        <div class="pay-method" onclick="selectRPay('cash',this)"><span class="pay-icon">💵</span><span>Espèces</span></div>
+      </div>
+      <div id="rpCardFields">
+        <div class="form-group"><label>Nom complet</label><input type="text" placeholder="Carlos Dupont" id="rp_name"/></div>
+        <div class="form-group"><label>Numéro de carte</label><input type="text" placeholder="1234 5678 9012 3456" id="rp_card" maxlength="19" oninput="formatCard(this)"/></div>
+        <div style="display:flex;gap:12px;">
+          <div class="form-group" style="flex:1;"><label>Expiration</label><input type="text" placeholder="MM/AA" id="rp_exp" maxlength="5" oninput="formatExp(this)"/></div>
+          <div class="form-group" style="flex:1;"><label>CVV</label><input type="text" placeholder="123" id="rp_cvv" maxlength="3"/></div>
+        </div>
+      </div>
+      <div id="rpPaypalFields" style="display:none;"><div class="form-group"><label>Email PayPal</label><input type="email" placeholder="carlos@email.com" id="rp_email"/></div></div>
+      <div id="rpWaveFields" style="display:none;"><div class="form-group"><label>Numéro de téléphone</label><input type="tel" placeholder="+212 600 000 000" id="rp_phone"/></div></div>
+      <div id="rpCashFields" style="display:none;"><div style="background:var(--bg);border-radius:10px;padding:16px;text-align:center;"><p style="font-size:.82rem;color:var(--text-muted);">Paiement sera confirmé à la livraison.</p></div></div>
+      <div class="reserve-summary">
+        <div class="reserve-summary-row"><span>Produit réservé</span><span id="rpProductName">—</span></div>
+        <div class="reserve-summary-row"><span>Quantité</span><span id="rpQty">×1</span></div>
+        <div class="reserve-summary-row total-row"><span>Total</span><span id="rpTotal">0 FCFA</span></div>
+      </div>
+      <button class="btn btn-reserve" style="width:100%;justify-content:center;padding:13px;" onclick="confirmReservePay()">
+        ✅ Confirmer & Payer
+      </button>
+      <div id="rp-status" style="text-align:center;font-size:.78rem;min-height:18px;margin-top:8px;font-weight:600;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== AI CHAT PANEL ===== -->
+<div class="chat-fab" id="chatFab" onclick="toggleChat()">
+  <span class="chat-fab-icon">🤖</span>
+  <span class="chat-fab-badge" id="chatFabBadge" style="display:none;">1</span>
+</div>
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-header">
+    <div class="chat-header-left">
+      <div class="chat-avatar">🤖</div>
+      <div>
+        <div class="chat-name" id="chatName">Carlos AI</div>
+        <div class="chat-status"><span class="chat-dot"></span><span id="chatStatusTxt">En ligne</span></div>
+      </div>
+    </div>
+    <button class="chat-close-btn" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-typing" id="chatTyping" style="display:none;">
+    <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+  </div>
+  <div class="chat-input-bar">
+    <input type="text" class="chat-input" id="chatInput" placeholder="Écrivez un message..." onkeydown="if(event.key==='Enter')sendMessage()"/>
+    <button class="chat-send-btn" onclick="sendMessage()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+        <svg width="34" height="34" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="gf1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient></defs>
+          <circle cx="40" cy="40" r="36" stroke="url(#gf1)" stroke-width="3" fill="none" opacity="0.6"/>
+          <path d="M52 22 C34 22,20 34,20 44 C20 54,30 62,42 62 C50 62,56 58,58 53" stroke="url(#gf1)" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+          <path d="M44 30 L38 42 L46 42 L40 54" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <span style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.2rem;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px;">CARLOS</span>
+      </div>
+      <p style="font-size:.78rem;color:var(--text-muted);line-height:1.6;" id="footerDesc">Votre boutique en ligne spécialisée en électronique, produits digitaux &amp; formations.</p>
+      <div class="social-links" style="margin-top:16px;">
+        <a href="https://facebook.com" target="_blank" class="social-link"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg><span class="social-tooltip">Facebook</span></a>
+        <a href="https://instagram.com" target="_blank" class="social-link"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg><span class="social-tooltip">Instagram</span></a>
+        <a href="https://twitter.com" target="_blank" class="social-link"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span class="social-tooltip">Twitter / X</span></a>
+        <a href="https://youtube.com" target="_blank" class="social-link"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg><span class="social-tooltip">YouTube</span></a>
+        <a href="https://linkedin.com" target="_blank" class="social-link"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg><span class="social-tooltip">LinkedIn</span></a>
+        <a href="https://tiktok.com" target="_blank" class="social-link"><svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg><span class="social-tooltip">TikTok</span></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4 id="ftQuick">Navigation</h4>
+      <a href="#home" id="ftHome">Accueil</a>
+      <a href="#products" id="ftProducts">Produits</a>
+      <a href="#training" id="ftTraining">Formations</a>
+      <a href="#promo" id="ftPromo">Codes Promos</a>
+    </div>
+    <div class="footer-col">
+      <h4 id="ftSupport">Support</h4>
+      <a href="#" id="ftFaq" onclick="openInfoModal('faq'); return false;">FAQ</a>
+      <a href="#" id="ftShip" onclick="openInfoModal('ship'); return false;">Livraison</a>
+      <a href="#" id="ftReturn" onclick="openInfoModal('return'); return false;">Retours</a>
+      <a href="#" id="ftContact" onclick="openInfoModal('contact'); return false;">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h4 id="ftPay">Paiement Accepté</h4>
+      <p style="font-size:.82rem;color:var(--text-muted);line-height:2;">💳 Carte Bancaire<br/>🅿️ PayPal<br/>📱 Wave / Mobile Money<br/>💵 Espèces (livraison)</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p id="ftCopy">© 2025 Carlos Shop. Tous droits réservés.</p>
+    <p style="font-size:.72rem;color:var(--text-muted);">Fait avec ❤️ par Carlos</p>
+  </div>
+</footer>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon">✅</span>
+  <span id="toastMsg"></span>
+</div>
+
+<!-- ===== INFO MODAL ===== -->
+<div class="modal-overlay" id="infoOverlay" onclick="if(event.target===this)closeInfoModal()">
+  <div class="modal" style="max-width:560px;">
+    <div class="modal-header">
+      <h3 id="infoTitle">FAQ</h3>
+      <button class="modal-close" onclick="closeInfoModal()">✕</button>
+    </div>
+    <div class="modal-body" id="infoBody"></div>
+  </div>
+</div>
+
+<style>
+  .info-section { margin-bottom:22px; }
+  .info-section h4 { font-family:'Rajdhani',sans-serif; font-size:1rem; color:var(--accent); margin-bottom:8px; letter-spacing:.5px; border-bottom:1px solid var(--card-border); padding-bottom:6px; }
+  .info-section p, .info-section li { font-size:.82rem; color:var(--text-muted); line-height:1.7; }
+  .info-section ul { list-style:none; padding:0; }
+  .info-section ul li { padding:4px 0; }
+  .info-section ul li::before { content:"→ "; color:var(--accent); font-weight:700; }
+  .info-faq-item { margin-bottom:14px; }
+  .info-faq-item .faq-q { font-size:.84rem; font-weight:600; color:var(--text); margin-bottom:4px; }
+  .info-faq-item .faq-a { font-size:.78rem; color:var(--text-muted); line-height:1.6; padding-left:14px; border-left:2px solid var(--accent2); }
+  .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .contact-item { background:var(--bg); border-radius:10px; padding:16px; text-align:center; }
+  .contact-item .ci-icon { font-size:1.5rem; margin-bottom:6px; }
+  .contact-item .ci-label { font-size:.68rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:3px; }
+  .contact-item .ci-value { font-size:.78rem; color:var(--accent); font-weight:600; }
+  .contact-social-row { display:flex; gap:8px; justify-content:center; margin-top:18px; flex-wrap:wrap; }
+  .contact-social-btn { display:flex; align-items:center; gap:6px; padding:7px 14px; background:var(--card-bg); border:1px solid var(--card-border); border-radius:8px; color:var(--text-muted); font-size:.72rem; text-decoration:none; transition:all .2s; font-weight:600; }
+  .contact-social-btn svg { width:14px; height:14px; fill:var(--text-muted); transition:fill .2s; }
+  .contact-social-btn:hover { border-color:var(--accent); color:var(--accent); }
+  .contact-social-btn:hover svg { fill:var(--accent); }
+  @media(max-width:480px){ .contact-grid { grid-template-columns:1fr; } }
+</style>
+
+<!-- ===== MAIN SCRIPT ===== -->
+<script src="js/catalog.js"></script>
+<script>
+// ============================================================
+// 1. DONNÉES — tout vient du serveur (voir js/catalog.js)
+//    Seul le panier reste dans le navigateur (une clé par compte).
+// ============================================================
+const CART_KEY = AuthCS.cartKey('cartAccueil');
+async function reloadCatalogData() {
+  dbProducts = (await Catalog.getProducts()).sort((a,b)=>a.id-b.id);
+  dbTraining = (await Catalog.getTraining()).sort((a,b)=>a.id-b.id);
+}
+
+// ============================================================
+// 3. i18n TRANSLATIONS (extended with reservation keys)
+// ============================================================
+const I18N = {
+  fr: {
+    heroBadge:"⚡ Bienvenue chez Carlos Shop",
+    heroTitle:"Électronique, Digital & <span>Formations</span>",
+    heroDesc:"Découvrez les meilleurs appareils électroniques, produits digitaux et formations en un seul endroit. Qualité garantie, prix imbattibles.",
+    heroBtn1:"🛍️ Explorer les Produits", heroBtn2:"📚 Voir les Formations",
+    secProducts:"<span>Nos</span> Produits", secProductsDesc:"Électronique, digital & plus",
+    secTraining:"<span>Formations</span> Digital", secTrainingDesc:"Maîtrisez les outils du numérique avec nos experts",
+    promoTitle:"🎁 Code Promo Exclusif", promoDesc:"Entrez votre code promo pour obtenir une réduction sur votre achat.",
+    cartTitle:"🛒 Panier", cartEmpty:"Votre panier est vide",
+    cartLabelSub:"Sous-total", cartLabelTotal:"Total",
+    payTitle:"💳 Paiement", payMethodLabel:"Méthode de paiement",
+    pm1:"Carte", pm2:"PayPal", pm3:"Wave", pm4:"Espèces",
+    lblName:"Nom complet", lblCard:"Numéro de carte", lblExp:"Expiration", lblCvv:"CVV",
+    lblEmail:"Email PayPal", lblPhone:"Numéro de téléphone",
+    cashNote:"Vous pourrez payer en espèces lors de la livraison. Préparez le montant exact.",
+    pSub:"Sous-total", pDisc:"Réduction", pTotal:"Total",
+    payBtnText:"✅ Confirmer le Paiement",
+    footerDesc:"Votre boutique en ligne spécialisée en électronique, produits digitaux & formations.",
+    ftQuick:"Navigation", ftHome:"Accueil", ftProducts:"Produits", ftTraining:"Formations", ftPromo:"Codes Promos",
+    ftSupport:"Support", ftFaq:"FAQ", ftShip:"Livraison", ftReturn:"Retours", ftContact:"Contact",
+    ftPay:"Paiement Accepté", ftCopy:"© 2025 Carlos Shop. Tous droits réservés.",
+    catAll:"🌐 Tous", catElec:"📱 Électronique", catDig:"💾 Digital", catAcc:"🎧 Accessoires",
+    addedToCart:"ajouté au panier !", tagNew:"Nouveau", tagHot:"Populaire", tagSale:"Promo", tagDigital:"Digital",
+    promoInput:"Ex: CARLOS20", applyBtn:"Appliquer",
+    paySuccess:"✅ Paiement réussi ! Merci pour votre achat.", payError:"❌ Veuillez remplir tous les champs.",
+    chatHello:"Bonjour ! Je suis Carlos AI 🤖. Comment puis-je vous aider ? Je peux vous conseiller sur nos produits, formations, ou répondre à vos questions.",
+    chatPlaceholder:"Écrivez un message...",
+    chatStatusOnline:"En ligne",
+    // === RESERVATION i18n ===
+    btnReserve:"⏰ Réserver",
+    btnReserved:"✓ Réservé",
+    reserveModalTitle:"Réserver",
+    lblReserveQty:"Quantité",
+    lblReserveDuration:"Durée de réservation",
+    lblReserveNotes:"Notes (optionnel)",
+    reserveNotesPlaceholder:"Ex: Je veux la version blanche...",
+    rsLabelProduct:"Produit", rsLabelQty:"Quantité", rsLabelDuration:"Durée",
+    rsLabelExpire:"Expire à", rsLabelTotal:"Total réservé",
+    reserveSubmitBtnText:"⏰ Confirmer la Réservation",
+    reserveSuccess:"✅ Réservation confirmée ! Le produit est à votre nom.",
+    reserveToastMsg:"réservé avec succès !",
+    reserveCancelMsg:"Réservation annulée.",
+    reserveConfirmPayTitle:"Payer la Réservation",
+    reservePanelTitle:"Mes Réservations",
+    reserveEmptyTitle:"Aucune réservation active",
+    reserveEmptyDesc:"Réservez un produit pour le retrouver ici.",
+    reserveExpiredLabel:"Expirée",
+    reserveActiveLabel:"Active",
+    btnExtend:"Prolonger",
+    btnConfirmPay:"Acheter",
+    btnCancelReserve:"Annuler",
+    extendTitle:"Prolonger",
+    extLblCurrent:"Expire actuellement", extLblNew:"Nouvelle expiration",
+    extendBtnText:"🕐 Prolonger",
+    extendSuccess:"✅ Réservation prolongée avec succès !",
+    resBannerTitle:"Vous avez des réservations actives",
+    resBannerDesc:"Consultez vos produits réservés avant qu'ils expirent.",
+    resBannerBtn:"Voir mes réservations",
+    lblExtendDuration:"Durée supplémentaire",
+    rpMethodLabel:"Méthode de paiement",
+    durationLabels:{ 1:"Rapide", 3:"Standard", 6:"Étendue", 24:"Jour entier" },
+  },
+  en: {
+    heroBadge:"⚡ Welcome to Carlos Shop",
+    heroTitle:"Electronics, Digital & <span>Training</span>",
+    heroDesc:"Discover the best electronic devices, digital products and training courses in one place. Quality guaranteed, unbeatable prices.",
+    heroBtn1:"🛍️ Explore Products", heroBtn2:"📚 View Training",
+    secProducts:"<span>Our</span> Products", secProductsDesc:"Electronics, digital & more",
+    secTraining:"<span>Training</span> Digital", secTrainingDesc:"Master the digital tools with our experts",
+    promoTitle:"🎁 Exclusive Promo Code", promoDesc:"Enter your promo code to get a discount on your purchase.",
+    cartTitle:"🛒 Cart", cartEmpty:"Your cart is empty",
+    cartLabelSub:"Subtotal", cartLabelTotal:"Total",
+    payTitle:"💳 Payment", payMethodLabel:"Payment method",
+    pm1:"Card", pm2:"PayPal", pm3:"Wave", pm4:"Cash",
+    lblName:"Full name", lblCard:"Card number", lblExp:"Expiry", lblCvv:"CVV",
+    lblEmail:"PayPal Email", lblPhone:"Phone number",
+    cashNote:"You can pay in cash on delivery. Please prepare the exact amount.",
+    pSub:"Subtotal", pDisc:"Discount", pTotal:"Total",
+    payBtnText:"✅ Confirm Payment",
+    footerDesc:"Your online store specializing in electronics, digital products & training.",
+    ftQuick:"Navigation", ftHome:"Home", ftProducts:"Products", ftTraining:"Training", ftPromo:"Promo Codes",
+    ftSupport:"Support", ftFaq:"FAQ", ftShip:"Shipping", ftReturn:"Returns", ftContact:"Contact",
+    ftPay:"Payment Accepted", ftCopy:"© 2025 Carlos Shop. All rights reserved.",
+    catAll:"🌐 All", catElec:"📱 Electronics", catDig:"💾 Digital", catAcc:"🎧 Accessories",
+    addedToCart:"added to cart!", tagNew:"New", tagHot:"Popular", tagSale:"Sale", tagDigital:"Digital",
+    promoInput:"Ex: CARLOS20", applyBtn:"Apply",
+    paySuccess:"✅ Payment successful! Thank you for your purchase.", payError:"❌ Please fill in all fields.",
+    chatHello:"Hello! I'm Carlos AI 🤖. How can I help you? I can advise on our products, training courses, or answer your questions.",
+    chatPlaceholder:"Write a message...",
+    chatStatusOnline:"Online",
+    btnReserve:"⏰ Reserve",
+    btnReserved:"✓ Reserved",
+    reserveModalTitle:"Reserve",
+    lblReserveQty:"Quantity",
+    lblReserveDuration:"Reservation duration",
+    lblReserveNotes:"Notes (optional)",
+    reserveNotesPlaceholder:"Ex: I want the white version...",
+    rsLabelProduct:"Product", rsLabelQty:"Quantity", rsLabelDuration:"Duration",
+    rsLabelExpire:"Expires at", rsLabelTotal:"Total reserved",
+    reserveSubmitBtnText:"⏰ Confirm Reservation",
+    reserveSuccess:"✅ Reservation confirmed! The product is yours.",
+    reserveToastMsg:"reserved successfully!",
+    reserveCancelMsg:"Reservation cancelled.",
+    reserveConfirmPayTitle:"Pay Reservation",
+    reservePanelTitle:"My Reservations",
+    reserveEmptyTitle:"No active reservations",
+    reserveEmptyDesc:"Reserve a product to find it here.",
+    reserveExpiredLabel:"Expired",
+    reserveActiveLabel:"Active",
+    btnExtend:"Extend",
+    btnConfirmPay:"Buy",
+    btnCancelReserve:"Cancel",
+    extendTitle:"Extend",
+    extLblCurrent:"Currently expires", extLblNew:"New expiration",
+    extendBtnText:"🕐 Extend",
+    extendSuccess:"✅ Reservation extended successfully!",
+    resBannerTitle:"You have active reservations",
+    resBannerDesc:"Check your reserved products before they expire.",
+    resBannerBtn:"View my reservations",
+    lblExtendDuration:"Additional duration",
+    rpMethodLabel:"Payment method",
+    durationLabels:{ 1:"Quick", 3:"Standard", 6:"Extended", 24:"Full day" },
+  }
+};
+
+// ============================================================
+// 4. APP STATE
+// ============================================================
+let cart = [];
+let currentLang = 'fr';
+let activePromo = null;
+let currentFilter = 'all';
+let dbProducts = [];
+let dbTraining = [];
+let reservations = []; // in-memory cache
+let reserveTimers = []; // interval refs for countdowns
+
+// ============================================================
+// 5. RENDER PRODUCTS
+// ============================================================
+function renderProducts() {
+  const grid = document.getElementById('productsGrid');
+  const filtered = currentFilter === 'all' ? dbProducts : dbProducts.filter(p => p.cat === currentFilter);
+  grid.innerHTML = filtered.map(p => {
+    const tagMap = { new:'tagNew', hot:'tagHot', sale:'tagSale', digital:'tagDigital' };
+    const tagHtml = p.tag ? `<span class="product-tag digital">${I18N[currentLang][tagMap[p.tag]]||p.tag}</span>` : '';
+    const hasOld = p.oldPrice > p.price;
+    const disc = hasOld ? Math.round((1 - p.price/p.oldPrice)*100) : 0;
+    const imgStyle = p.image ? `background:url('${Catalog.cssUrl(p.image)}') center/cover;` : `background:linear-gradient(135deg,${catColor(p.cat)}22,${catColor(p.cat)}08);`;
+    const isReserved = isProductReserved(p.id);
+    return `<div class="product-card reveal">
+      <div class="product-img" style="${imgStyle}">
+        ${tagHtml}
+        <span class="product-reserved-ribbon ${isReserved?'visible':''}">${I18N[currentLang].btnReserved.replace('✓ ','')}</span>
+        ${p.image ? '' : `<span>${p.emoji}</span>`}
+      </div>
+      <div class="product-body">
+        <div class="product-cat">${catLabel(p.cat)}</div>
+        <div class="product-name">${p.name[currentLang]}</div>
+        <div class="product-rating">★★★★☆ (${p.rating})</div>
+        <div class="product-price-row">
+          <span class="product-price">${p.price.toLocaleString()} FCFA</span>
+          ${hasOld ? `<span class="product-price-old">${p.oldPrice.toLocaleString()} FCFA</span>
+          <span style="font-size:.68rem;background:var(--green);color:#fff;padding:2px 7px;border-radius:8px;font-weight:700;">-${disc}%</span>` : ''}
+        </div>
+        <div class="product-actions">
+          <button class="btn btn-cart" onclick="addToCart(${p.id})">🛒</button>
+          <button class="btn btn-buy" onclick="addToCart(${p.id},true)">💥 ${currentLang==='fr'?'Acheter':currentLang==='en'?'Buy':'اشتري'}</button>
+          <button class="btn btn-reserve ${isReserved?'reserved':''}" onclick="${isReserved?'openReservePanel()':'openReserveModal('+p.id+')'}">
+            ${isReserved ? I18N[currentLang].btnReserved : I18N[currentLang].btnReserve}
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  triggerReveal();
+}
+
+function catColor(cat) { return cat==='electronics'?'#0891b2':cat==='digital'?'#d97706':cat==='accessories'?'#7c3aed':'#64748b'; }
+function catLabel(cat) { return cat==='electronics'?(currentLang==='fr'?'Électronique':currentLang==='en'?'Electronics':'الإلكترونيات'):cat==='digital'?(currentLang==='fr'?'Digital':currentLang==='en'?'Digital':'الرقمي'):cat==='accessories'?(currentLang==='fr'?'Accessoires':currentLang==='en'?'Accessories':'الوصول'):''; }
+
+// ============================================================
+// 6. RENDER TRAINING
+// ============================================================
+function renderTraining() {
+  const grid = document.getElementById('trainingGrid');
+  grid.innerHTML = dbTraining.map(t => {
+    const isReserved = isProductReserved(t.id);
+    return `<div class="training-card reveal">
+      <div class="training-img" style="${t.image ? `background:url('${Catalog.cssUrl(t.image)}') center/cover;` : `background:linear-gradient(135deg,${t.color||'#7c3aed'}22,${t.color||'#7c3aed'}08);`}">
+        <span class="product-tag training">${currentLang==='fr'?'Formation':currentLang==='en'?'Training':'تدريب'}</span>
+        <span class="product-reserved-ribbon ${isReserved?'visible':''}" style="top:12px;right:12px;">${I18N[currentLang].btnReserved.replace('✓ ','')}</span>
+        ${t.image ? '' : `<span>${t.emoji}</span>`}
+      </div>
+      <div class="training-body">
+        <div class="training-lessons">${t.lessons[currentLang]}</div>
+        <div class="training-name">${t.name[currentLang]}</div>
+        <div class="training-desc">${t.desc[currentLang]}</div>
+        <div class="training-price-row">
+          <span class="training-price">${t.price.toLocaleString()} FCFA</span>
+          ${t.oldPrice > t.price ? `<span style="font-size:.72rem;color:var(--text-muted);text-decoration:line-through;">${t.oldPrice.toLocaleString()} FCFA</span>` : ''}
+        </div>
+        <div class="training-actions">
+          <button class="btn btn-cart" onclick="addToCart(${t.id})">🛒</button>
+          <button class="btn btn-buy" onclick="addToCart(${t.id},true)">💥 ${currentLang==='fr'?'Acheter':currentLang==='en'?'Buy':'اشتري'}</button>
+          <button class="btn btn-reserve ${isReserved?'reserved':''}" onclick="${isReserved?'openReservePanel()':'openReserveModal('+t.id+')'}">
+            ${isReserved ? I18N[currentLang].btnReserved : I18N[currentLang].btnReserve}
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  triggerReveal();
+}
+
+// ============================================================
+// 7. CART
+// ============================================================
+function getProduct(id) { return dbProducts.find(p=>p.id===id) || dbTraining.find(t=>t.id===id); }
+
+function addToCart(id, immediate=false) {
+  const existing = cart.find(i=>i.id===id);
+  if(existing) existing.qty++;
+  else cart.push({id, qty:1});
+  syncCartToDB();
+  updateCart();
+  const p = getProduct(id);
+  showToast('✅', `${p.name[currentLang]} ${I18N[currentLang].addedToCart}`);
+  if(immediate) { toggleCart(); setTimeout(()=>openPayment(),400); }
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(i=>i.id===id);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty <= 0) cart = cart.filter(i=>i.id!==id);
+  syncCartToDB();
+  updateCart();
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(i=>i.id!==id);
+  syncCartToDB();
+  updateCart();
+}
+
+function syncCartToDB() {
+  try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch(e) {}
+}
+
+function loadCartFromDB() {
+  try { cart = (JSON.parse(localStorage.getItem(CART_KEY)) || []).filter(i => i && getProduct(i.id)); } catch(e) { cart = []; }
+}
+
+function getSubtotal() { return cart.reduce((s,i)=>{ const p=getProduct(i.id); return s+(p?p.price*i.qty:0); },0); }
+function getDiscount() { return activePromo ? Math.round(getSubtotal()*activePromo.discount) : 0; }
+function getTotal()    { return getSubtotal() - getDiscount(); }
+
+function updateCart() {
+  const badge = document.getElementById('cartBadge');
+  const totalQty = cart.reduce((s,i)=>s+i.qty,0);
+  badge.textContent = totalQty;
+  badge.style.display = totalQty>0?'flex':'none';
+  const container = document.getElementById('cartItems');
+  if(cart.length===0) {
+    container.innerHTML = `<div class="cart-empty">🛒 ${I18N[currentLang].cartEmpty}</div>`;
+    document.getElementById('cartFooter').style.display='none';
+    return;
+  }
+  container.innerHTML = cart.map(item => {
+    const p = getProduct(item.id);
+    if(!p) return '';
+    return `<div class="cart-item">
+      <div class="cart-item-icon">${p.image ? `<img src="${p.image}" alt="" style="width:42px;height:42px;object-fit:cover;border-radius:8px;display:block;">` : p.emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${p.name[currentLang]}</div>
+        <div class="cart-item-price">${(p.price*item.qty).toLocaleString()} FCFA</div>
+      </div>
+      <div class="cart-item-qty">
+        <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+        <span style="font-size:.85rem;font-weight:600;min-width:18px;text-align:center;">${item.qty}</span>
+        <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
+      </div>
+      <button class="cart-item-remove" onclick="removeFromCart(${item.id})">🗑️</button>
+    </div>`;
+  }).join('');
+  document.getElementById('cartFooter').style.display='block';
+  document.getElementById('cartSubtotal').textContent = getSubtotal().toLocaleString()+' FCFA';
+  document.getElementById('cartTotal').textContent = getTotal().toLocaleString()+' FCFA';
+  const discEl = document.getElementById('cartDiscount');
+  if(activePromo) { discEl.style.display='block'; discEl.textContent=`🏷️ ${activePromo.label[currentLang]} (−${getDiscount().toLocaleString()} FCFA)`; }
+  else { discEl.style.display='none'; }
+}
+
+function toggleCart() {
+  document.getElementById('cartOverlay').classList.toggle('open');
+  document.getElementById('cartPanel').classList.toggle('open');
+}
+
+// ============================================================
+// 8. PROMO
+// ============================================================
+async function applyPromo() {
+  const code = document.getElementById('promoInput').value.trim().toUpperCase();
+  const msg  = document.getElementById('promo-msg');
+  let promo = null;
+  try { promo = code ? await Catalog.promos.get(code) : null; } catch(e) { promo = null; }
+  if(promo) {
+    activePromo = promo;
+    msg.style.color='var(--green)';
+    msg.textContent = promo.label[currentLang];
+    updateCart();
+    showToast('🎉', promo.label[currentLang]);
+  } else {
+    activePromo = null;
+    msg.style.color='var(--red)';
+    msg.textContent = currentLang==='fr'?'Code invalide. Essayez: CARLOS20, TECH10, WELCOME15, DIGITAL30, TRAIN50':
+                      currentLang==='en'?'Invalid code. Try: CARLOS20, TECH10, WELCOME15, DIGITAL30, TRAIN50':
+                      'كود غير صالح. حاول: CARLOS20, TECH10, WELCOME15, DIGITAL30, TRAIN50';
+    updateCart();
+  }
+}
+
+// ============================================================
+// 9. PAYMENT
+// ============================================================
+let selectedPayMethod = 'card';
+function openPayment() {
+  if(cart.length===0) return;
+  document.getElementById('payOverlay').classList.add('open');
+  document.getElementById('pSubVal').textContent = getSubtotal().toLocaleString()+' FCFA';
+  document.getElementById('pTotalVal').textContent = getTotal().toLocaleString()+' FCFA';
+  const pDiscRow = document.getElementById('pDiscRow');
+  if(activePromo) { pDiscRow.style.display='flex'; document.getElementById('pDiscVal').textContent='−'+getDiscount().toLocaleString()+' FCFA'; }
+  else { pDiscRow.style.display='none'; }
+  document.getElementById('pay-status').textContent='';
+}
+function closePayment() { document.getElementById('payOverlay').classList.remove('open'); }
+function selectPay(method, el) {
+  selectedPayMethod = method;
+  document.querySelectorAll('#payMethods .pay-method').forEach(m=>m.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('cardFields').style.display   = method==='card'?'block':'none';
+  document.getElementById('paypalFields').style.display  = method==='paypal'?'block':'none';
+  document.getElementById('waveFields').style.display    = method==='wave'?'block':'none';
+  document.getElementById('orangeFields').style.display  = method==='orange'?'block':'none';
+  document.getElementById('mtnFields').style.display     = method==='mtn'?'block':'none';
+  document.getElementById('expressFields').style.display = method==='express'?'block':'none';
+  document.getElementById('cashFields').style.display    = method==='cash'?'block':'none';
+  
+  // Update amounts for mobile money
+  const total = getTotal().toLocaleString() + ' FCFA';
+  if(method==='orange') document.getElementById('inp_orange_amount').value = total;
+  if(method==='mtn') document.getElementById('inp_mtn_amount').value = total;
+  if(method==='express') document.getElementById('inp_express_amount').value = total;
+}
+function formatCard(el) { let v=el.value.replace(/\D/g,'').substring(0,16); el.value=v.replace(/(.{4})/g,'$1 ').trim(); }
+function formatExp(el)  { let v=el.value.replace(/\D/g,'').substring(0,4); if(v.length>=2) v=v.substring(0,2)+'/'+v.substring(2); el.value=v; }
+
+async function confirmPayment() {
+  const status = document.getElementById('pay-status');
+  let valid = true;
+  if(selectedPayMethod==='card') {
+    if(!document.getElementById('inp_name').value.trim()||document.getElementById('inp_card').value.replace(/\s/g,'').length<16||document.getElementById('inp_exp').value.length<5||document.getElementById('inp_cvv').value.length<3) valid=false;
+  } else if(selectedPayMethod==='paypal') {
+    if(!document.getElementById('inp_email').value.trim().includes('@')) valid=false;
+  } else if(selectedPayMethod==='wave') {
+    if(document.getElementById('inp_phone').value.replace(/\D/g,'').length<10) valid=false;
+  } else if(selectedPayMethod==='orange') {
+    if(document.getElementById('inp_orange_phone').value.replace(/\D/g,'').length<10 || document.getElementById('inp_orange_pin').value.length<4) valid=false;
+  } else if(selectedPayMethod==='mtn') {
+    if(document.getElementById('inp_mtn_phone').value.replace(/\D/g,'').length<10 || document.getElementById('inp_mtn_pin').value.length<4) valid=false;
+  } else if(selectedPayMethod==='express') {
+    if(!document.getElementById('inp_express_account').value.trim() || !document.getElementById('inp_express_name').value.trim() || document.getElementById('inp_express_pin').value.length<4) valid=false;
+  }
+  if(!valid) { status.style.color='var(--red)'; status.textContent=I18N[currentLang].payError; return; }
+  status.style.color='var(--text-muted)'; status.textContent='⏳ Traitement...';
+  setTimeout(async ()=>{
+    try {
+      // Le serveur recalcule les prix, la remise et le stock. Aucune donnée de carte n'est envoyée.
+      await Catalog.orders.create({
+        items: cart.map(i=>({ id:i.id, qty:i.qty })),
+        method: selectedPayMethod,
+        promoCode: activePromo ? activePromo.code || '' : ''
+      });
+    } catch(err) {
+      status.style.color='var(--red)'; status.textContent='❌ ' + err.message;
+      await reloadCatalogData(); renderProducts(); renderTraining();
+      return;
+    }
+    status.style.color='var(--green)'; status.textContent=I18N[currentLang].paySuccess;
+    showToast('🎉', I18N[currentLang].paySuccess);
+    cart=[]; activePromo=null;
+    syncCartToDB();
+    await reloadCatalogData(); renderProducts(); renderTraining();
+    updateCart();
+    setTimeout(()=>{ closePayment(); },2200);
+  },1800);
+}
+
+// ============================================================
+// 10. LANGUAGE
+// ============================================================
+function changeLang(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang==='ar'?'rtl':'ltr';
+  applyI18n();
+  renderProducts();
+  renderTraining();
+  updateCart();
+  renderReservePanelBody();
+  document.getElementById('chatInput').placeholder = I18N[currentLang].chatPlaceholder;
+  document.getElementById('chatStatusTxt').textContent = I18N[currentLang].chatStatusOnline;
+}
+function applyI18n() {
+  const t = I18N[currentLang];
+  const set = (id,val) => { const el=document.getElementById(id); if(el) el.innerHTML=val; };
+  set('heroBadge',t.heroBadge); set('heroTitle',t.heroTitle); set('heroDesc',t.heroDesc);
+  set('heroBtn1',t.heroBtn1); set('heroBtn2',t.heroBtn2);
+  set('secProducts',t.secProducts); set('secProductsDesc',t.secProductsDesc);
+  set('secTraining',t.secTraining); set('secTrainingDesc',t.secTrainingDesc);
+  set('promoTitle',t.promoTitle); set('promoDesc',t.promoDesc);
+  set('cartTitle',t.cartTitle); set('cartLabelSub',t.cartLabelSub); set('cartLabelTotal',t.cartLabelTotal);
+  set('payTitle',t.payTitle); set('payMethodLabel',t.payMethodLabel);
+  set('pm1',t.pm1); set('pm2',t.pm2); set('pm3',t.pm3); set('pm4',t.pm4);
+  set('lblName',t.lblName); set('lblCard',t.lblCard); set('lblExp',t.lblExp); set('lblCvv',t.lblCvv);
+  set('lblEmail',t.lblEmail); set('lblPhone',t.lblPhone); set('cashNote',t.cashNote);
+  set('pSub',t.pSub); set('pDisc',t.pDisc); set('pTotal',t.pTotal); set('payBtnText',t.payBtnText);
+  set('footerDesc',t.footerDesc);
+  set('ftQuick',t.ftQuick); set('ftHome',t.ftHome); set('ftProducts',t.ftProducts);
+  set('ftTraining',t.ftTraining); set('ftPromo',t.ftPromo);
+  set('ftSupport',t.ftSupport); set('ftFaq',t.ftFaq); set('ftShip',t.ftShip);
+  set('ftReturn',t.ftReturn); set('ftContact',t.ftContact);
+  set('ftPay',t.ftPay); set('ftCopy',t.ftCopy);
+  const tabs = document.querySelectorAll('.cat-tab');
+  const tabKeys = ['catAll','catElec','catDig','catAcc'];
+  tabs.forEach((tab,i)=>{ tab.textContent=t[tabKeys[i]]; });
+  document.getElementById('promoInput').placeholder = t.promoInput;
+  // reservation i18n
+  set('resBannerTitle',t.resBannerTitle);
+  set('resBannerDesc',t.resBannerDesc);
+  set('resBannerBtn',t.resBannerBtn);
+}
+
+// ============================================================
+// 11. FILTER
+// ============================================================
+function filterCat(cat, el) {
+  currentFilter = cat;
+  document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderProducts();
+}
+
+// ============================================================
+// 12. TOAST
+// ============================================================
+function showToast(icon, msg, isError=false, isReserve=false) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastMsg').textContent = msg;
+  toast.classList.toggle('error', isError);
+  toast.classList.toggle('reserve-toast', isReserve);
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),3200);
+}
+
+// ============================================================
+// 13. SCROLL REVEAL & NAV ACTIVE
+// ============================================================
+function triggerReveal() {
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  },{ threshold:0.1 });
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el=>observer.observe(el));
+}
+window.addEventListener('scroll',()=>{
+  ['home','products','promo','training'].forEach(id=>{
+    const s = document.getElementById(id);
+    if(!s) return;
+    const r = s.getBoundingClientRect();
+    const link = document.querySelector(`.nav-links [data-nav="${id}"]`);
+    if(link) link.classList.toggle('active', r.top<=100 && r.bottom>100);
+  });
+});
+
+// ============================================================
+// 14. AI CHAT
+// ============================================================
+let chatHistory = [];
+let chatOpen = false;
+
+function toggleChat() {
+  chatOpen = !chatOpen;
+  document.getElementById('chatPanel').classList.toggle('open', chatOpen);
+  document.getElementById('chatFab').classList.toggle('open', chatOpen);
+  document.getElementById('chatFabBadge').style.display='none';
+  if(chatOpen && chatHistory.length===0) appendChatMsg('bot', I18N[currentLang].chatHello);
+  if(chatOpen) document.getElementById('chatInput').focus();
+}
+
+function appendChatMsg(role, text) {
+  const container = document.getElementById('chatMessages');
+  const now = new Date();
+  const time = now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+  const div = document.createElement('div');
+  div.className = 'chat-msg '+role;
+  div.innerHTML = `<div>${text.replace(/\n/g,'<br>')}</div><div class="msg-time">${time}</div>`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if(!text) return;
+  input.value = '';
+  appendChatMsg('user', text);
+  chatHistory.push({ role:'user', content:text });
+  document.getElementById('chatTyping').style.display='flex';
+  document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+  try {
+    const prodList = dbProducts.map(p => `- ${p.name[currentLang]} | ${p.cat} | ${p.price} FCFA | stock: ${p.stock}`).join('\n');
+    const trainList = dbTraining.map(t => `- ${t.name[currentLang]} | ${t.price} FCFA | ${t.lessons[currentLang]}`).join('\n');
+    const resInfo = reservations.filter(r=>r.status==='active').map(r=>{ const p=getProduct(r.productId); return p?`- ${p.name[currentLang]} (réservé, expire: ${new Date(r.expiresAt).toLocaleString()})`:''}).join('\n');
+    const systemPrompt = `Tu es Carlos AI, l'assistant intelligent de Carlos Shop.\nRéponds toujours en la même langue que l'utilisateur.\nSois amical, professionnel et concis.\n\n=== PRODUITS ===\n${prodList}\n\n=== FORMATIONS ===\n${trainList}\n\n=== RÉSERVATIONS ACTIVES ===\n${resInfo||'Aucune'}\n\n=== CODES PROMO ===\nCARLOS20 (20%), TECH10 (10%), WELCOME15 (15%), DIGITAL30 (30%), TRAIN50 (50%)\n\n=== RÈGLES ===\n- Ne mentionne jamais de prix extérieurs.\n- Si tu ne sais pas, dis-le et suggère le support.\n- Max 3-4 phrases.\n- Tu peux informer l'utilisateur qu'il peut réserver des produits avec le bouton ⏰ sur chaque carte.`;
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 1000, system: systemPrompt, messages: chatHistory })
+    });
+    const data = await response.json();
+    const reply = data.content && data.content[0] ? data.content[0].text : (currentLang==='fr'?'Désolé, une erreur est survenue.':currentLang==='en'?'Sorry, an error occurred.':'عذراً، حدث خطأ.');
+    chatHistory.push({ role:'assistant', content:reply });
+    document.getElementById('chatTyping').style.display='none';
+    appendChatMsg('bot', reply);
+  } catch(err) {
+    document.getElementById('chatTyping').style.display='none';
+    appendChatMsg('bot', currentLang==='fr'?'Oops ! Impossible de contacter l\'IA.':currentLang==='en'?'Oops! Unable to reach AI.':'أوبس! لا يمكن الوصول إلى الذكاء الاصطناعي.');
+  }
+}
+
+// ============================================================
+// 16. ====== RESERVATION SYSTEM ======
+// ============================================================
+
+// --- State for the "open reserve modal" flow ---
+let currentReserveProductId = null;
+let currentReserveQty = 1;
+let currentReserveDurationHours = 1;
+
+// --- Helpers ---
+function isProductReserved(productId) {
+  return reservations.some(r => r.productId === productId && r.status === 'active');
+}
+
+function getActiveReservation(productId) {
+  return reservations.find(r => r.productId === productId && r.status === 'active');
+}
+
+function formatDateTime(ts) {
+  return new Date(ts).toLocaleString(currentLang==='ar'?'ar-SA':currentLang==='en'?'en-US':'fr-FR', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+}
+
+function formatTimeLeft(expiresAt) {
+  const diff = expiresAt - Date.now();
+  if(diff <= 0) return null;
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  if(h > 0) return `${h}h ${m.toString().padStart(2,'0')}m`;
+  if(m > 0) return `${m}m ${s.toString().padStart(2,'0')}s`;
+  return `${s}s`;
+}
+
+// --- Open the quick reserve modal ---
+function openReserveModal(productId) {
+  currentReserveProductId = productId;
+  currentReserveQty = 1;
+  currentReserveDurationHours = 1;
+  const p = getProduct(productId);
+  if(!p) return;
+
+  // Fill product preview
+  { const _e = document.getElementById('rppEmoji'); if (p.image) _e.innerHTML = `<img src="${p.image}" alt="" style="width:90px;height:90px;object-fit:cover;border-radius:14px;display:block;margin:0 auto;">`; else _e.textContent = p.emoji; }
+  document.getElementById('rppName').textContent = p.name[currentLang];
+  document.getElementById('rppCat').textContent = (p.cat||'training').toUpperCase();
+  document.getElementById('rppPrice').textContent = p.price.toLocaleString() + ' FCFA';
+
+  // Reset qty
+  document.getElementById('reserveQtyVal').textContent = '1';
+
+  // Reset duration selection
+  document.querySelectorAll('.reserve-duration-opt').forEach(o=>o.classList.remove('selected'));
+  document.querySelector('.reserve-duration-opt[onclick*="1,"]').classList.add('selected');
+  currentReserveDurationHours = 1;
+
+  // Reset notes
+  document.getElementById('reserveNotesInput').value = '';
+  document.getElementById('reserveNotesInput').placeholder = I18N[currentLang].reserveNotesPlaceholder;
+
+  // Labels
+  document.getElementById('lblReserveQty').textContent = I18N[currentLang].lblReserveQty;
+  document.getElementById('lblReserveDuration').textContent = I18N[currentLang].lblReserveDuration;
+  document.getElementById('lblReserveNotes').textContent = I18N[currentLang].lblReserveNotes;
+  document.getElementById('reserveSubmitBtnText').textContent = I18N[currentLang].reserveSubmitBtnText;
+
+  // Update duration labels
+  const durOpts = document.querySelectorAll('.reserve-duration-opt');
+  const durHours = [1,3,6,24];
+  durOpts.forEach((opt, i) => {
+    const lblEl = opt.querySelector('.rdo-label');
+    if(lblEl) lblEl.textContent = I18N[currentLang].durationLabels[durHours[i]] || '';
+  });
+
+  // Update summary
+  updateReserveSummary();
+
+  // Status reset
+  document.getElementById('reserve-status').textContent = '';
+
+  document.getElementById('reserveModalOverlay').classList.add('open');
+}
+
+function closeReserveModal() {
+  document.getElementById('reserveModalOverlay').classList.remove('open');
+}
+
+function changeReserveQty(delta) {
+  currentReserveQty = Math.max(1, currentReserveQty + delta);
+  document.getElementById('reserveQtyVal').textContent = currentReserveQty;
+  updateReserveSummary();
+}
+
+function selectReserveDuration(hours, el) {
+  currentReserveDurationHours = hours;
+  document.querySelectorAll('.reserve-duration-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  updateReserveSummary();
+}
+
+function updateReserveSummary() {
+  const p = getProduct(currentReserveProductId);
+  if(!p) return;
+  const L = currentLang;
+  document.getElementById('rsLabelProduct').textContent = I18N[L].rsLabelProduct;
+  document.getElementById('rsProductName').textContent = p.name[L];
+  document.getElementById('rsLabelQty').textContent = I18N[L].rsLabelQty;
+  document.getElementById('rsQty').textContent = '×' + currentReserveQty;
+  document.getElementById('rsLabelDuration').textContent = I18N[L].rsLabelDuration;
+  document.getElementById('rsDuration').textContent = currentReserveDurationHours + (L==='fr'?' heure(s)':L==='en'?' hour(s)':' ساعة(ات)');
+  document.getElementById('rsLabelExpire').textContent = I18N[L].rsLabelExpire;
+  const expireAt = new Date(Date.now() + currentReserveDurationHours * 3600000);
+  document.getElementById('rsExpireAt').textContent = formatDateTime(expireAt.getTime());
+  document.getElementById('rsLabelTotal').textContent = I18N[L].rsLabelTotal;
+  document.getElementById('rsTotal').textContent = (p.price * currentReserveQty).toLocaleString() + ' FCFA';
+}
+
+async function confirmReservation() {
+  const status = document.getElementById('reserve-status');
+  const p = getProduct(currentReserveProductId);
+  if(!p) return;
+
+  status.style.color = 'var(--text-muted)';
+  status.textContent = '⏳ ' + (currentLang==='fr'?'Création...':currentLang==='en'?'Creating...':'إنشاء...');
+
+  // Simulate processing
+  await new Promise(r => setTimeout(r, 800));
+
+  let reservation;
+  try {
+    reservation = await Catalog.reservations.create({
+      productId: currentReserveProductId, qty: currentReserveQty,
+      durationHours: currentReserveDurationHours,
+      notes: document.getElementById('reserveNotesInput').value.trim()
+    });
+  } catch(err) { status.style.color = 'var(--red)'; status.textContent = '❌ ' + err.message; return; }
+  reservations.push(reservation);
+
+  status.style.color = 'var(--green)';
+  status.textContent = I18N[currentLang].reserveSuccess;
+  showToast('⏰', `${p.name[currentLang]} ${I18N[currentLang].reserveToastMsg}`, false, true);
+
+  // Start countdown for this reservation
+  startReservationCountdown(reservation);
+
+  // Re-render
+  renderProducts();
+  renderTraining();
+  updateReserveBanner();
+
+  // Close modal after delay
+  setTimeout(() => { closeReserveModal(); }, 1800);
+}
+
+// --- Reservation Panel (drawer showing all reservations) ---
+function openReservePanel() {
+  document.getElementById('reserveOverlay').classList.add('open');
+  document.getElementById('reservePanel').classList.add('open');
+  renderReservePanelBody();
+}
+
+function closeReservePanel() {
+  document.getElementById('reserveOverlay').classList.remove('open');
+  document.getElementById('reservePanel').classList.remove('open');
+}
+
+function renderReservePanelBody() {
+  const body = document.getElementById('reservePanelBody');
+  const L = currentLang;
+  // Update panel header
+  document.querySelector('.reserve-panel-header h3').innerHTML = `⏰ <span>${I18N[L].reservePanelTitle}</span>`;
+
+  // Filter: active first, then expired/cancelled
+  const sorted = [...reservations].sort((a,b)=> {
+    if(a.status==='active' && b.status!=='active') return -1;
+    if(a.status!=='active' && b.status==='active') return 1;
+    return b.createdAt - a.createdAt;
+  });
+
+  if(sorted.length === 0) {
+    body.innerHTML = `<div class="reserve-empty">
+      <span class="reserve-empty-icon">⏰</span>
+      <strong>${I18N[L].reserveEmptyTitle}</strong><br/>
+      <span style="font-size:.78rem;color:var(--text-muted);margin-top:6px;display:block;">${I18N[L].reserveEmptyDesc}</span>
+    </div>`;
+    return;
+  }
+
+  body.innerHTML = sorted.map(r => {
+    const p = getProduct(r.productId);
+    if(!p) return '';
+    const isActive = r.status === 'active' && r.expiresAt > Date.now();
+    const isExpired = r.status === 'active' && r.expiresAt <= Date.now();
+    const isCancelled = r.status === 'cancelled';
+    const statusClass = isActive ? 'active' : 'expired';
+    const statusLabel = isActive ? I18N[L].reserveActiveLabel : (isCancelled ? (L==='fr'?'Annulée':L==='en'?'Cancelled':'ملغاة') : I18N[L].reserveExpiredLabel);
+    const timeLeft = isActive ? formatTimeLeft(r.expiresAt) : null;
+    const isUrgent = isActive && (r.expiresAt - Date.now()) < 1800000; // < 30min
+
+    return `<div class="reserve-item" id="reserve-item-${r.id}">
+      <div class="reserve-item-icon">${p.image ? `<img src="${p.image}" alt="" style="width:46px;height:46px;object-fit:cover;border-radius:8px;display:block;">` : p.emoji}</div>
+      <div class="reserve-item-info">
+        <div class="reserve-item-name">${p.name[L]}</div>
+        <div class="reserve-item-meta">
+          ×${r.qty} • <span>${statusLabel}</span>
+          ${r.notes ? ` • 📝 ${r.notes}` : ''}
+        </div>
+        ${isActive ? `<div class="reserve-countdown ${isUrgent?'urgent':''}" id="countdown-${r.id}">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+          <span id="timeLeft-${r.id}">${timeLeft || '—'}</span>
+        </div>` : `<div style="font-size:.7rem;color:var(--text-muted);margin-top:4px;">
+          ${L==='fr'?'Créé':L==='en'?'Created':'تم الإنشاء'}: ${formatDateTime(r.createdAt)}
+        </div>`}
+        <div class="reserve-item-bottom">
+          <div class="reserve-item-price">${(p.price * r.qty).toLocaleString()} FCFA</div>
+          <div class="reserve-item-actions">
+            ${isActive ? `
+              <button class="btn btn-cancel-reserve" onclick="cancelReservation(${r.id})">${I18N[L].btnCancelReserve}</button>
+              <button class="btn btn-reserve" style="padding:6px 12px;font-size:.72rem;" onclick="openExtendModal(${r.id})">${I18N[L].btnExtend}</button>
+              <button class="btn btn-confirm-reserve" onclick="openReservePay(${r.id})">${I18N[L].btnConfirmPay}</button>
+            ` : '—'}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// --- Cancel Reservation ---
+async function cancelReservation(resId) {
+  const idx = reservations.findIndex(r => r.id === resId);
+  if(idx === -1) return;
+  try { reservations[idx] = await Catalog.reservations.cancel(resId); } catch(err) { showToast('⚠️', err.message, true, true); return; }
+  showToast('🗑️', I18N[currentLang].reserveCancelMsg, false, true);
+  renderProducts();
+  renderTraining();
+  renderReservePanelBody();
+  updateReserveBanner();
+}
+
+// --- Extend Modal ---
+let currentExtendResId = null;
+let currentExtendHours = 1;
+
+function openExtendModal(resId) {
+  currentExtendResId = resId;
+  currentExtendHours = 1;
+  const res = reservations.find(r => r.id === resId);
+  if(!res) return;
+  const p = getProduct(res.productId);
+  const L = currentLang;
+
+  document.getElementById('extendProductName').textContent = L==='fr'?`Prolonger la réservation de "${p?.name[L] || ''}".`:L==='en'?`Extend reservation for "${p?.name[L] || ''}".`:`تمديد حجز "${p?.name[L] || ''}".`;
+  document.getElementById('lblExtendDuration').textContent = I18N[L].lblExtendDuration;
+  document.getElementById('extLblCurrent').textContent = I18N[L].extLblCurrent;
+  document.getElementById('extLblNew').textContent = I18N[L].extLblNew;
+  document.getElementById('extendBtnText').textContent = I18N[L].extendBtnText;
+  document.getElementById('extCurrentExpiry').textContent = formatDateTime(res.expiresAt);
+
+  // Reset selection
+  document.querySelectorAll('.extend-duration-opt').forEach(o=>o.classList.remove('selected'));
+  document.querySelector('.extend-duration-opt[onclick*="1,"]').classList.add('selected');
+  currentExtendHours = 1;
+  updateExtendPreview();
+
+  document.getElementById('extend-status').textContent = '';
+  document.getElementById('extendModalOverlay').classList.add('open');
+}
+
+function closeExtendModal() { document.getElementById('extendModalOverlay').classList.remove('open'); }
+
+function selectExtendDuration(hours, el) {
+  currentExtendHours = hours;
+  document.querySelectorAll('.extend-duration-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  updateExtendPreview();
+}
+
+function updateExtendPreview() {
+  const res = reservations.find(r => r.id === currentExtendResId);
+  if(!res) return;
+  const newExpiry = res.expiresAt + currentExtendHours * 3600000;
+  document.getElementById('extNewExpiry').textContent = formatDateTime(newExpiry);
+}
+
+async function confirmExtend() {
+  const status = document.getElementById('extend-status');
+  const idx = reservations.findIndex(r => r.id === currentExtendResId);
+  if(idx === -1) return;
+
+  status.style.color = 'var(--text-muted)';
+  status.textContent = '⏳ ' + (currentLang==='fr'?'Prolongation...':currentLang==='en'?'Extending...':'تمديد...');
+
+  await new Promise(r => setTimeout(r, 600));
+
+  try { reservations[idx] = await Catalog.reservations.extend(currentExtendResId, currentExtendHours); }
+  catch(err) { status.style.color='var(--red)'; status.textContent='❌ ' + err.message; return; }
+
+  status.style.color = 'var(--green)';
+  status.textContent = I18N[currentLang].extendSuccess;
+  showToast('🕐', I18N[currentLang].extendSuccess, false, true);
+
+  renderReservePanelBody();
+  setTimeout(() => closeExtendModal(), 1500);
+}
+
+// --- Reserve Pay Modal (convert reservation → order) ---
+let currentReservePayResId = null;
+let selectedRPMethod = 'card';
+
+function openReservePay(resId) {
+  currentReservePayResId = resId;
+  selectedRPMethod = 'card';
+  const res = reservations.find(r => r.id === resId);
+  if(!res) return;
+  const p = getProduct(res.productId);
+
+  document.getElementById('rpProductName').textContent = p ? p.name[currentLang] : '—';
+  document.getElementById('rpQty').textContent = '×' + res.qty;
+  document.getElementById('rpTotal').textContent = (p ? p.price * res.qty : 0).toLocaleString() + ' FCFA';
+  document.getElementById('rpMethodLabel').textContent = I18N[currentLang].rpMethodLabel;
+
+  // Reset payment method UI
+  document.querySelectorAll('#rpMethods .pay-method').forEach(m=>m.classList.remove('selected'));
+  document.querySelector('#rpMethods .pay-method:first-child').classList.add('selected');
+  document.getElementById('rpCardFields').style.display = 'block';
+  document.getElementById('rpPaypalFields').style.display = 'none';
+  document.getElementById('rpWaveFields').style.display = 'none';
+  document.getElementById('rpCashFields').style.display = 'none';
+
+  document.getElementById('rp-status').textContent = '';
+  document.getElementById('reservePayOverlay').classList.add('open');
+}
+
+function closeReservePay() { document.getElementById('reservePayOverlay').classList.remove('open'); }
+
+function selectRPay(method, el) {
+  selectedRPMethod = method;
+  document.querySelectorAll('#rpMethods .pay-method').forEach(m=>m.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('rpCardFields').style.display   = method==='card'?'block':'none';
+  document.getElementById('rpPaypalFields').style.display  = method==='paypal'?'block':'none';
+  document.getElementById('rpWaveFields').style.display    = method==='wave'?'block':'none';
+  document.getElementById('rpCashFields').style.display    = method==='cash'?'block':'none';
+}
+
+async function confirmReservePay() {
+  const status = document.getElementById('rp-status');
+  // Validate
+  let valid = true;
+  if(selectedRPMethod==='card') {
+    if(!document.getElementById('rp_name').value.trim()||document.getElementById('rp_card').value.replace(/\s/g,'').length<16||document.getElementById('rp_exp').value.length<5||document.getElementById('rp_cvv').value.length<3) valid=false;
+  } else if(selectedRPMethod==='paypal') {
+    if(!document.getElementById('rp_email').value.trim().includes('@')) valid=false;
+  } else if(selectedRPMethod==='wave') {
+    if(document.getElementById('rp_phone').value.replace(/\D/g,'').length<10) valid=false;
+  }
+  if(!valid) { status.style.color='var(--red)'; status.textContent=I18N[currentLang].payError; return; }
+
+  status.style.color='var(--text-muted)'; status.textContent='⏳ Traitement...';
+
+  await new Promise(r => setTimeout(r, 1800));
+
+  const idx = reservations.findIndex(r => r.id === currentReservePayResId);
+  if(idx === -1) return;
+  const res = reservations[idx];
+  const p = getProduct(res.productId);
+
+  try {
+    await Catalog.orders.create({ items: [{ id: res.productId, qty: res.qty }], method: selectedRPMethod, reservationId: res.id });
+    reservations = await Catalog.reservations.list();
+  } catch(err) { status.style.color='var(--red)'; status.textContent='❌ ' + err.message; return; }
+  await reloadCatalogData();
+
+  status.style.color='var(--green)'; status.textContent=I18N[currentLang].paySuccess;
+  showToast('🎉', I18N[currentLang].paySuccess);
+
+  renderProducts();
+  renderTraining();
+  renderReservePanelBody();
+  updateReserveBanner();
+
+  setTimeout(() => { closeReservePay(); }, 2000);
+}
+
+// --- Reservation Countdown Timers ---
+function startReservationCountdown(res) {
+  if(res.status !== 'active') return;
+  const timer = setInterval(() => {
+    if(res.expiresAt <= Date.now()) {
+      clearInterval(timer);
+      // Mark as expired
+      const idx = reservations.findIndex(r => r.id === res.id);
+      if(idx !== -1 && reservations[idx].status === 'active') {
+        reservations[idx].status = 'expired';
+        renderProducts();
+        renderTraining();
+        renderReservePanelBody();
+        updateReserveBanner();
+        showToast('⚠️', `${getProduct(res.productId)?.name[currentLang] || ''} — ${currentLang==='fr'?'Réservation expirée':currentLang==='en'?'Reservation expired':'انتهت المدة'}`, true, true);
+      }
+      return;
+    }
+    // Update live countdown in panel if open
+    const el = document.getElementById(`timeLeft-${res.id}`);
+    if(el) {
+      const timeLeft = formatTimeLeft(res.expiresAt);
+      el.textContent = timeLeft || '—';
+      // Update urgent class
+      const countdownEl = document.getElementById(`countdown-${res.id}`);
+      if(countdownEl) countdownEl.classList.toggle('urgent', (res.expiresAt - Date.now()) < 1800000);
+    }
+  }, 1000);
+  reserveTimers.push(timer);
+}
+
+// --- Banner management ---
+function updateReserveBanner() {
+  const activeCount = reservations.filter(r => r.status === 'active').length;
+  document.getElementById('reservationsBanner').style.display = activeCount > 0 ? 'flex' : 'none';
+  // Update nav badge
+  const badge = document.getElementById('reserveNavBadge');
+  badge.textContent = activeCount;
+  badge.style.display = activeCount > 0 ? 'flex' : 'none';
+}
+
+// --- Load reservations from DB ---
+async function loadReservationsFromDB() {
+  try { reservations = await Catalog.reservations.list(); } catch(e) { reservations = []; }
+  // Start timers for active ones
+  reservations.forEach(r => {
+    if(r.status === 'active') startReservationCountdown(r);
+  });
+  updateReserveBanner();
+}
+
+// ============================================================
+// 17. INFO MODAL DATA
+// ============================================================
+const INFO_DATA = {
+  faq: {
+    title: { fr:"❓ Questions Fréquentes", en:"❓ Frequently Asked Questions", ar:"❓ الأسئلة المطروحة" },
+    items: [
+      { q:{fr:"Comment puis-je passer une commande ?",en:"How can I place an order?",ar:"كيف يمكنني تقديم طلب؟"}, a:{fr:"Ajoutez les produits à votre panier, puis cliquez sur « Passer à la caisse ».",en:"Add products to your cart, then click 'Checkout'.",ar:"أضف المنتجات إلى سلتك، ثم اضغط على 'الدفع'."} },
+      { q:{fr:"Quelles sont les méthodes de paiement ?",en:"What payment methods are available?",ar:"ما هي طرق الدفع?"}, a:{fr:"Carte bancaire, PayPal, Wave / Mobile Money, et espèces à la livraison.",en:"Bank cards, PayPal, Wave / Mobile Money, and cash on delivery.",ar:"البطاقات البنكية، بيبال، ويف، والدفع نقداً عند التسليم."} },
+      { q:{fr:"Comment utiliser un code promo ?",en:"How to use a promo code?",ar:"كيف أستخدم كوداً ترويجياً؟"}, a:{fr:"Rendez-vous dans la section « Code Promo », entrez votre code et cliquez « Appliquer ».",en:"Go to 'Promo Code' section, enter your code and click 'Apply'.",ar:"انتقل إلى قسم 'كود ترويجي' واضغط 'تطبيق'."} },
+      { q:{fr:"Qu'est-ce que la réservation ?",en:"What is the reservation feature?",ar:"ما هي ميزة الحجز؟"}, a:{fr:"La réservation permet de bloquer temporairement un produit. Vous pouvez choisir la durée (1h à 24h), puis confirmer votre achat depuis vos réservations. Si la réservation expire, le produit est libéré.",en:"Reservation lets you temporarily hold a product. Choose a duration (1h–24h), then confirm your purchase from your reservations. If it expires, the product is released.",ar:"الحجز يسمح لك بحظر منتج مؤقتاً. اختر المدة (1–24 ساعة)، ثم أكّد شراءك. إذا انتهت المدة، يُحرر المنتج."} },
+      { q:{fr:"Comment prolonger une réservation ?",en:"How to extend a reservation?",ar:"كيف أمدد الحجز؟"}, a:{fr:"Dans le panneau « Mes Réservations », cliquez « Prolonger » et choisissez une durée supplémentaire.",en:"In 'My Reservations', click 'Extend' and pick additional time.",ar:"في لوحة 'حجوزاتي'، اضغط 'تمديد' واختر وقتاً إضافياً."} },
+    ]
+  },
+  ship: {
+    title: { fr:"🚚 Livraison", en:"🚚 Shipping", ar:"🚚 الشحن" },
+    zones: [
+      { zone:{fr:"Maroc (villes principales)",en:"Morocco (main cities)",ar:"المغرب (المدن الرئيسية)"}, delay:{fr:"2–4 jours ouvrables",en:"2–4 business days",ar:"2–4 أيام عمل"}, cost:{fr:"Gratuit dès 500 FCFA",en:"Free from 500 FCFA",ar:"مجاني من 500 درهم"} },
+      { zone:{fr:"Maroc (zones rurales)",en:"Morocco (rural areas)",ar:"المغرب (المناطق الريفية)"}, delay:{fr:"4–7 jours ouvrables",en:"4–7 business days",ar:"4–7 أيام عمل"}, cost:{fr:"49 FCFA",en:"49 FCFA",ar:"49 درهم"} },
+      { zone:{fr:"Produits digitaux",en:"Digital products",ar:"المنتجات الرقمية"}, delay:{fr:"Instantanée",en:"Instant",ar:"فوري"}, cost:{fr:"Gratuit",en:"Free",ar:"مجاني"} },
+      { zone:{fr:"Formations",en:"Training courses",ar:"الدورات التدريبية"}, delay:{fr:"Accès immédiat",en:"Immediate access",ar:"وصول فوري"}, cost:{fr:"Gratuit",en:"Free",ar:"مجاني"} }
+    ]
+  },
+  return: {
+    title: { fr:"🔄 Politique de Retour", en:"🔄 Return Policy", ar:"🔄 سياسة العودات" },
+    points: [
+      {fr:"Vous avez 30 jours après la réception pour retourner un produit.",en:"You have 30 days after receiving to return a product.",ar:"لديك 30 يوماً بعد الاستلام لإعادة منتج."},
+      {fr:"Le produit doit être en état neuf, dans son emballage d'origine.",en:"The product must be in new condition, in its original packaging.",ar:"يجب أن يكون المنتج في حالة جديدة في حزمته الأصلية."},
+      {fr:"Les produits digitaux et formations ne sont pas remboursables après activation.",en:"Digital products and training are non-refundable after activation.",ar:"المنتجات الرقمية والدورات غير قابلة للاسترداد بعد التفعيل."},
+      {fr:"Contactez notre support pour initier un retour.",en:"Contact support to initiate a return.",ar:"تواصل مع الدعم لبدء العودة."},
+      {fr:"Le remboursement sera effectué dans 5–10 jours ouvrables.",en:"Refund within 5–10 business days.",ar:"سيُعالَج الاسترداد خلال 5–10 أيام عمل."}
+    ]
+  },
+  contact: {
+    title: { fr:"📞 Contact Us", en:"📞 Contact Us", ar:"📞 تواصل معنا" },
+    email: "carlos.shop@gmail.com",
+    phone: "+212 600 123 456",
+    address: { fr:"Casablanca, Maroc", en:"Casablanca, Morocco", ar:"الدار البيضاء، المغرب" },
+    hours: { fr:"Lun – Ven : 9h – 19h", en:"Mon – Fri : 9am – 7pm", ar:"الإثنين – الجمعة : 9ص – 7م" }
+  }
+};
+
+async function openInfoModal(type) {
+  const data = INFO_DATA[type];
+  if(!data) return;
+  const L = currentLang;
+  document.getElementById('infoTitle').textContent = data.title[L];
+  let html = '';
+  if(type === 'faq') {
+    html = data.items.map(item => `<div class="info-faq-item"><div class="faq-q">❓ ${item.q[L]}</div><div class="faq-a">${item.a[L]}</div></div>`).join('');
+  } else if(type === 'ship') {
+    html = `<div class="info-section"><h4>${L==='fr'?'Délais & Frais':L==='en'?'Delays & Costs':'أوقات ورسوم'}</h4>
+      <table style="width:100%;border-collapse:collapse;font-size:.78rem;">
+        <thead><tr style="border-bottom:1px solid var(--card-border);">
+          <th style="text-align:left;padding:8px 6px;color:var(--text-muted);">${L==='fr'?'Zone':L==='en'?'Zone':'المنطقة'}</th>
+          <th style="text-align:left;padding:8px 6px;color:var(--text-muted);">${L==='fr'?'Délai':L==='en'?'Delay':'المدة'}</th>
+          <th style="text-align:left;padding:8px 6px;color:var(--text-muted);">${L==='fr'?'Coût':L==='en'?'Cost':'التكلفة'}</th>
+        </tr></thead>
+        <tbody>${data.zones.map(z=>`<tr style="border-bottom:1px solid var(--card-border)33;">
+          <td style="padding:10px 6px;">${z.zone[L]}</td>
+          <td style="padding:10px 6px;color:var(--accent);">${z.delay[L]}</td>
+          <td style="padding:10px 6px;color:var(--green);font-weight:600;">${z.cost[L]}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>`;
+  } else if(type === 'return') {
+    html = `<div class="info-section"><h4>${L==='fr'?'Conditions':L==='en'?'Conditions':'الشروط'}</h4><ul>${data.points.map(p=>`<li>${p[L]}</li>`).join('')}</ul></div>`;
+  } else if(type === 'contact') {
+    let cfg = {}; try { cfg = await Catalog.settings.get(); } catch(e) {}
+    const items = [
+      cfg.email   ? `<div class="contact-item"><div class="ci-icon">📧</div><div class="ci-label">Email</div><div class="ci-value" style="font-size:.72rem;">${cfg.email}</div></div>` : '',
+      cfg.phone   ? `<div class="contact-item"><div class="ci-icon">📞</div><div class="ci-label">${L==='fr'?'Téléphone':'Phone'}</div><div class="ci-value">${cfg.phone}</div></div>` : '',
+      cfg.address ? `<div class="contact-item"><div class="ci-icon">📍</div><div class="ci-label">${L==='fr'?'Adresse':'Address'}</div><div class="ci-value">${cfg.address}</div></div>` : '',
+      cfg.hours   ? `<div class="contact-item"><div class="ci-icon">🕐</div><div class="ci-label">${L==='fr'?'Horaires':'Hours'}</div><div class="ci-value">${cfg.hours}</div></div>` : ''
+    ].join('');
+    html = `<div class="info-section">${items ? '<div class="contact-grid">' + items + '</div>' : '<p style="text-align:center;color:var(--text-muted);">' + (L==='fr'?'Nos coordonnées seront bientôt disponibles.':'Our contact details will be available soon.') + '</p>'}</div>`;
+  }
+  document.getElementById('infoBody').innerHTML = html;
+  document.getElementById('infoOverlay').classList.add('open');
+}
+function closeInfoModal() { document.getElementById('infoOverlay').classList.remove('open'); }
+
+// ============================================================
+// 18. INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', async ()=>{
+  try { await reloadCatalogData(); } catch(e) { console.error(e); }
+  loadCartFromDB();
+  await loadReservationsFromDB();
+  applyI18n();
+  renderProducts();
+  renderTraining();
+  updateCart();
+  updateReserveBanner();
+  triggerReveal();
+  document.getElementById('payOverlay').addEventListener('click',function(e){ if(e.target===this) closePayment(); });
+});
+</script>
+</body>
+</html>
